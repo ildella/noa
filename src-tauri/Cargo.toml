@@ -1,6 +1,6 @@
 [package]
 name = "NOA"
-version = "0.5.1"
+version = "0.5.2"
 description = "Nostr Onboard Application"
 authors = ["Daniele Dellafiore"]
 edition = "2021"
