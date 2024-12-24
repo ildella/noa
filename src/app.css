@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+h1 {
+  @apply text-3xl font-bold my-4;
+}
+h2 {
+  @apply text-2xl font-semibold my-3;
+}
+h3 {
+  @apply text-xl font-semibold my-2;
+}
+h4 {
+  @apply text-xl font-medium my-2;
+}
+h5 {
+  @apply text-lg my-1;
+}
+h6 {
+  @apply text-base my-1;
+}
+button:disabled {
+  @apply opacity-65 cursor-not-allowed;
+}
+input:disabled {
+  @apply opacity-65 cursor-not-allowed;
+}
+a {
+  @apply clickable
+}
+
+.custom-input-text {
+  @apply border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-noa-500;
+}
+.clickable {
+  @apply text-noa-600 text-lg py-2 px-4 hover:text-noa-700 transition duration-200 ease-in-out;
+}
+.custom-big-button {
+  @apply bg-noa-500 text-white text-lg py-3 px-6 rounded-lg hover:bg-noa-600 transition duration-200 ease-in-out;
+}
+.custom-mid-button {
+  @apply bg-zinc-500 hover:bg-zinc-600 text-white text-base py-2 px-4 rounded transition duration-300 ease-in-out font-semibold ;
+}
+.custom-mid-warn-button {
+  @apply bg-orange-500 hover:bg-orange-600 text-white text-base py-2 px-4 rounded transition duration-300 ease-in-out font-semibold ;
+}
+.custom-bottom-button {
+  @apply bg-noa-600 text-white text-lg py-3 px-6 hover:bg-green-600 transition duration-200 ease-in-out;
+}
+.custom-info-button {
+  @apply bg-white border border-orange-500 text-orange-500 text-lg py-1 px-4 rounded-lg hover:bg-orange-500 hover:text-white transition duration-200 ease-in-out;
+}
+.custom-accept-button {
+  @apply bg-white border border-green-500 text-green-500 text-lg py-1 px-4 rounded-lg hover:bg-green-500 hover:text-white transition duration-200 ease-in-out;
+}
+.custom-label {
+  @apply block text-sm font-medium text-gray-700;
+}
+.custom-input-text {
+  @apply mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500;
+}
+.custom-input-checkbox {
+  @apply h-5 w-5 text-indigo-600 transition duration-150 ease-in-out;
+}
+.custom-drop-area {
+  @apply border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:bg-gray-100 transition-colors;
+}

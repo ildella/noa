@@ -1,0 +1,6 @@
+noa:
+  android:
+    name: NOA
+    description: Nostr Onboarding App
+    repository: https://github.com/ildella/noa
+    license: GPL-3.0

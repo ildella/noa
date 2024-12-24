@@ -1,0 +1,14 @@
+.DS_Store
+node_modules
+/build
+/.svelte-kit
+.env
+.env.*
+!.env.example
+vite.config.js.timestamp-*
+.yarn/
+.vscode
+.eslintcache
+tests/screenshots/
+playwright-report/
+test-results/
