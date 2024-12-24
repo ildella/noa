@@ -15,7 +15,7 @@ echo "Update to version $target"
 
 cargo release "$target" --manifest-path src-tauri/Cargo.toml --no-publish --no-tag --no-push --execute
 yarn version "$target"
-git commit -am "version $target"
+git commit -am "Bump version to $target"
 git push
 
 echo "Completed."
