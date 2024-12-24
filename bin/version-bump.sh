@@ -13,7 +13,7 @@ git push --tags
 
 echo "Update to version $target"
 
-cargo release "$target" --manifest-path src-tauri/Cargo.toml --no-publish --execute
+cargo release "$target" --manifest-path src-tauri/Cargo.toml --no-publish --no-tag --no-push --execute
 yarn version "$target"
 git commit -am "version $target"
 git push
