@@ -6,7 +6,7 @@ const platform = process.env.TAURI_ENV_PLATFORM
 const debugMode = Boolean(process.env.TAURI_ENV_DEBUG)
 console.debug({host, platform, debugMode})
 
-const packagesCdnUrl = 'https://packages.frankie.tools//noa'
+const packagesCdnUrl = 'https://packages.frankie.tools/noa'
 const releaseType = debugMode
   ? 'debug'
   : 'release'

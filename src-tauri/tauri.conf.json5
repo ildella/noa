@@ -13,8 +13,14 @@
     windows: [
       {
         title: 'Nostr Onboard',
-        width: 1024,
-        height: 768,
+        width: 680,
+        height: 1200,
+        resizable: true,
+        decorations: true,
+        minWidth: 500,  
+        minHeight: 700, 
+        maxWidth: 1000, 
+        maxHeight: 1200
       },
     ],
     // security: {
