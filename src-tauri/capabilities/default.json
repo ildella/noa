@@ -13,6 +13,9 @@
     "windows"
   ],
   "permissions": [
+    "autostart:allow-enable",
+    "autostart:allow-disable",
+    "autostart:allow-is-enabled",
     "core:app:allow-default-window-icon",
     "core:default",
     "core:webview:allow-create-webview",

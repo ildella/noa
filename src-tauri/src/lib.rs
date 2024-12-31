@@ -35,14 +35,18 @@ pub fn run() {
                 use tauri_plugin_deep_link::DeepLinkExt;
                 app.deep_link().register_all()?;
             }
-            #[cfg(mobile)]
+            #[cfg(mobile)] {
+                app.handle().plugin(tauri_plugin_biometric::init())?;
             // app.handle().plugin(tauri_plugin_biometric::Builder::new().build());
-            app.handle().plugin(tauri_plugin_biometric::init())?;
+            }
             // if let Ok(urls) = app.deep_link().get_current() {
             //     if let Some(urls) = urls {
             //         app.manage(urls);
             //     }
             // }
+            #[cfg(desktop)] {
+                app.handle().plugin(tauri_plugin_autostart::init(tauri_plugin_autostart::MacosLauncher::LaunchAgent, Some(vec!["--flag1", "--flag2"])));
+            }
             Ok(())
         })
         // .invoke_handler(tauri::generate_handler![greet])

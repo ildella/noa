@@ -4,6 +4,7 @@ import {getCurrentWindow, Window} from '@tauri-apps/api/window'
 import {TrayIcon} from '@tauri-apps/api/tray'
 import {defaultWindowIcon} from '@tauri-apps/api/app'
 import {Menu} from '@tauri-apps/api/menu'
+import {enable, isEnabled, disable} from '@tauri-apps/plugin-autostart'
 import {closeConnection} from '$lib/relay-connection'
 
 const quit = itemId => {
@@ -119,6 +120,9 @@ export async function init () {
   window.addEventListener('keydown', handleKeydown)
   await registerTrayIcon()
   // await registerDeepLinkSigner()
+  await enable()
+  console.log(`Registered for autostart? ${await isEnabled()}`)
+
   // const unlisten = await getCurrentWindow().onFocusChanged(({payload: focused}) => {
   //   console.log('Focus changed, window is focused? ' + focused)
   // })
