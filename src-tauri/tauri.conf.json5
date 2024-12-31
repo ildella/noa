@@ -1,4 +1,4 @@
-{
+  {
   '$schema': 'https://schema.tauri.app/config/2',
   productName: 'NOA',
   identifier: 'tools.frankie.nostr.noa',
@@ -13,14 +13,14 @@
     windows: [
       {
         title: 'Nostr Onboard',
-        width: 680,
-        height: 1200,
+        width: 600,
+        height: 1100,
         resizable: true,
         decorations: true,
-        minWidth: 500,  
+        minWidth: 480,  
         minHeight: 700, 
-        maxWidth: 1000, 
-        maxHeight: 1200
+        maxWidth: 900, 
+        maxHeight: 1600
       },
     ],
     // security: {

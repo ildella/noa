@@ -4,34 +4,34 @@ import {getCurrentWindow, Window} from '@tauri-apps/api/window'
 import {TrayIcon} from '@tauri-apps/api/tray'
 import {defaultWindowIcon} from '@tauri-apps/api/app'
 import {Menu} from '@tauri-apps/api/menu'
-import {enable, isEnabled, disable} from '@tauri-apps/plugin-autostart'
+import {enable, isEnabled} from '@tauri-apps/plugin-autostart'
 import {closeConnection} from '$lib/relay-connection'
 
 const quit = itemId => {
   console.log(itemId)
   closeConnection()
-  getCurrentWindow().close()
+  getCurrentWindow().hide()
+  if (itemId === 'quit')
+    return getCurrentWindow().close()
 }
 
-// eslint-disable-next-line max-statements
 const show = async () => {
-  const isVisible = await getCurrentWindow().isVisible()
-  const isMinimized = await getCurrentWindow().isMinimized()
-  const innerPosition = await getCurrentWindow().innerPosition()
-  const outerPosition = await getCurrentWindow().outerPosition()
-  console.log(isVisible, isMinimized)
-  console.log(innerPosition)
-  console.log(outerPosition)
-  // const allWindows = await Window.getAll()
+  // const isVisible = await getCurrentWindow().isVisible()
+  // const isMinimized = await getCurrentWindow().isMinimized()
+  // const innerPosition = await getCurrentWindow().innerPosition()
+  // const outerPosition = await getCurrentWindow().outerPosition()
+  // console.log(isVisible, isMinimized)
+  // console.log(innerPosition)
+  // console.log(outerPosition)
   const mainWindow = await Window.getByLabel('main')
   console.log(mainWindow)
-  const result = await mainWindow.setVisibleOnAllWorkspaces(true)
+  // const result = await mainWindow.setVisibleOnAllWorkspaces(true)
   const showed = await mainWindow.show()
   const enabled = await mainWindow.setEnabled(true)
-  const unminimized = await mainWindow.unminimize()
-  const centered = await mainWindow.center()
+  // const unminimized = await mainWindow.unminimize()
+  // const centered = await mainWindow.center()
   const focused = await mainWindow.setFocus()
-  console.log(focused, result, enabled, showed, unminimized, centered)
+  // console.log(focused, presented, enabled, showed, unminimized, centered)
 }
 
 // const testOpenWindow = () => {
@@ -93,16 +93,6 @@ const registerTrayIcon = async () => {
         text: 'Show',
         action: show,
       },
-      // {
-      //   id: 'sign',
-      //   text: 'Sign',
-      //   action: sign,
-      // },
-      // {
-      //   id: 'testOpenWindow',
-      //   text: 'Test Open Window',
-      //   action: testOpenWindow,
-      // },
     ],
   })
   const options = {
