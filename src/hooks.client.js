@@ -48,7 +48,7 @@ const sign = async () => {
   //   console.log('event', event)
   // })
   // unlisten()
-  const webview = new WebviewWindow('Signer', {url: '/about'})
+  const webview = new WebviewWindow('Signer', {url: '/src/routes/about/+page.svelte'})
   webview.once('tauri://created', () => {
     console.log('created webview window')
   })
