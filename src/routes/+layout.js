@@ -1,10 +1,8 @@
 import {app} from '@tauri-apps/api'
-import {getCurrentWindow} from '@tauri-apps/api/window'
 import {
   onOpenUrl,
   // getCurrent as getCurrentDeepLinkUrls,
 } from '@tauri-apps/plugin-deep-link'
-import {closeConnection} from '$lib/relay-connection'
 
 // eslint-disable-next-line no-undef
 const platform = PLATFORM
@@ -20,14 +18,6 @@ const help = {
 }
 /* eslint-enable @stylistic/js/max-len */
 
-const handleKeydown = event => {
-  if ((event.ctrlKey || event.metaKey) && event.key === 'q') {
-    event.preventDefault()
-    closeConnection()
-    getCurrentWindow().close()
-  }
-}
-
 const appInfo = async () => {
   try {
     // console.log(await app.getTauriVersion())
@@ -42,12 +32,6 @@ const appInfo = async () => {
 }
 
 export async function load ({url}) {
-  window.addEventListener('keydown', handleKeydown)
-  // getCurrentWindow().listen('on_window_event', ({ event, payload }) => {
-  //   console.log('on_window_event')
-  //   console.log(event)
-  //   console.log(payload)
-  // })
   const detectedLanguage = navigator.language || navigator.userLanguage
   const identitiesString = await localStorage.getItem('identities')
   const identities = JSON.parse(identitiesString)
