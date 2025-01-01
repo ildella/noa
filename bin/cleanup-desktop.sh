@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
+# set -euo pipefail
 
 xdg-mime query default x-scheme-handler/nostrsigner
 
