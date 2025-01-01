@@ -32,11 +32,11 @@ pub fn run() {
         .setup(|app| {
             // This is only to test scheme registration at runtime
             // which creates problems
-            // #[cfg(any(windows, target_os = "linux"))]
-            // {
-            //     use tauri_plugin_deep_link::DeepLinkExt;
-            //     app.deep_link().register_all()?;
-            // }
+            #[cfg(any(windows, target_os = "linux"))]
+            {
+                use tauri_plugin_deep_link::DeepLinkExt;
+                app.deep_link().register_all()?;
+            }
             #[cfg(mobile)] {
                 app.handle().plugin(tauri_plugin_biometric::init())?;
             // app.handle().plugin(tauri_plugin_biometric::Builder::new().build());

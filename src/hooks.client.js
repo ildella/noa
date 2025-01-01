@@ -65,7 +65,7 @@ export async function init () {
   window.addEventListener('keydown', handleKeydown)
   if (platform === 'linux') {
     await registerTrayIcon()
-    // await enable()
+    await enable()
     console.log(`Registered for autostart? ${await isEnabled()}`)
   }
   // const matches = await getMatches()
