@@ -13,7 +13,7 @@ apkFolder=$packagesFolder/apk/
 linuxFolder=$packagesFolder/linux/
 apkTargetPath="$apkFolder""noa-$apkFilename"
 debTargetPath="$linuxFolder"NOA_amd64-$target.deb
-appimageTargetPath="$linuxFolder"NOA_amd64-$target.AppImage
+# appimageTargetPath="$linuxFolder"NOA_amd64-$target.AppImage
 rpmTargetPath="$linuxFolder"NOA.x86_64-$target.rpm
 
 mkdir -p "$packagesFolder"/apk
@@ -43,7 +43,7 @@ scp release.json root@"$FRANKIE_DOMAIN":"$packagesFolder"
 
 if [ "$target" == "release" ]; then
   scp "$desktopTarget"rpm/NOA-"$VERSION"-1.x86_64.rpm root@"$FRANKIE_DOMAIN":"$rpmTargetPath"
-  scp "$desktopTarget"appimage/NOA_"$VERSION"_amd64.AppImage root@"$FRANKIE_DOMAIN":"$appimageTargetPath"
+  # scp "$desktopTarget"appimage/NOA_"$VERSION"_amd64.AppImage root@"$FRANKIE_DOMAIN":"$appimageTargetPath"
   echo "Run this to publish to ZapStore:"
   echo "zapstore publish -a $apkSourcePath -v $VERSION"
 fi
