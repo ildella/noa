@@ -70,7 +70,7 @@
       <input
         id='secretKey'
         type='text'
-        placeholder='Either in hex or nsec format.'
+        placeholder='Nsec format.'
         bind:value={secretKey}
         class='custom-input-text'
       />
