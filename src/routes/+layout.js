@@ -1,10 +1,8 @@
 import {app} from '@tauri-apps/api'
-import {getCurrentWindow} from '@tauri-apps/api/window'
 import {
   onOpenUrl,
   // getCurrent as getCurrentDeepLinkUrls,
 } from '@tauri-apps/plugin-deep-link'
-import {closeConnection} from '$lib/relay-connection'
 
 // eslint-disable-next-line no-undef
 const platform = PLATFORM
@@ -16,24 +14,16 @@ const help = {
   why: 'Platforms are built and owned by someone, typically a very large company. They hold the keys and the access to the network and can play as they please. Protocols are public and open, anyone can build on it.',
   identity: 'An Identity is just a self-generated digital key pair, here represented as simple "piece of text". It’s yours alone, and you have complete control over it.',
   keypair: 'The identity is represented by a key pair: a public key that you can share with others, and a secret key that you keep safe and private.',
+  import: 'You can import your Nostr identity by either uploading a file or pasting your secret key. If your file is password-protected, please enter the password below.',
   // identity: 'It is almost like an email address or a phone number, but there is no central authority involved to issue it. This software will generate a unique one for you. Remember: you are the only one to hold it. Be responsible.',
 }
 /* eslint-enable @stylistic/js/max-len */
-
-const handleKeydown = event => {
-  if ((event.ctrlKey || event.metaKey) && event.key === 'q') {
-    event.preventDefault()
-    closeConnection()
-    getCurrentWindow().close()
-  }
-}
 
 const appInfo = async () => {
   try {
     // console.log(await app.getTauriVersion())
     const appName = await app.getName()
     const currentVersion = await app.getVersion()
-    console.debug(appName, currentVersion)
     return {appName, currentVersion}
   } catch (error) {
     console.debug('No tauri app:', error.message)
@@ -42,12 +32,6 @@ const appInfo = async () => {
 }
 
 export async function load ({url}) {
-  window.addEventListener('keydown', handleKeydown)
-  // getCurrentWindow().listen('on_window_event', ({ event, payload }) => {
-  //   console.log('on_window_event')
-  //   console.log(event)
-  //   console.log(payload)
-  // })
   const detectedLanguage = navigator.language || navigator.userLanguage
   const identitiesString = await localStorage.getItem('identities')
   const identities = JSON.parse(identitiesString)

@@ -1,8 +1,9 @@
 <script>
   import {onMount} from 'svelte'
+  import QRCode from 'qrcode'
+  import {goto} from '$app/navigation'
   import CopyButton from '$lib/CopyButton.svelte'
   import {downloadFile} from '$lib/download-keys.js'
-  import QRCode from 'qrcode'
 
   const {data} = $props()
   const {
@@ -17,7 +18,7 @@
   const deleteKey = () => {
     localStorage.removeItem(publicKey)
     localStorage.removeItem('identities')
-    location.href = '/'
+    return goto('/')
   }
 
   const toggleQRCodeVisibility = () => {

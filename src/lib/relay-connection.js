@@ -1,14 +1,3 @@
-// const relayConnection = () => {
-//   // console.log('setup relay connection.')
-//   if ('serviceWorker' in navigator) {
-//     console.log('Service workers available.')
-//     addEventListener('load', function () {
-//       console.log('Service worker listener: load')
-//       navigator.serviceWorker.register('../service-worker.js')
-//     })
-//   }
-// }
-
 import {Relay} from 'nostr-tools/relay'
 // import { SimplePool } from 'nostr-tools/pool'
 

@@ -1,6 +1,8 @@
 import {save} from '@tauri-apps/plugin-dialog'
 import {writeTextFile, BaseDirectory} from '@tauri-apps/plugin-fs'
 import {getPublicKey} from 'nostr-tools/pure'
+import * as nip19 from 'nostr-tools/nip19'
+
 import {encrypt, decrypt} from './cipher'
 
 const {Download} = BaseDirectory
@@ -54,6 +56,7 @@ export const uploadFile = ({file, password}) => {
       const content = await decrypt({arrayBuffer, password})
       console.debug(content)
       localStorage.setItem('identities', `[${content}]`)
+      // TODO: horror, pass the listener as param
       location.href = '/'
     } catch (error) {
       console.error('Decryption failed:', error)
@@ -62,10 +65,12 @@ export const uploadFile = ({file, password}) => {
   reader.readAsArrayBuffer(file)
 }
 
-export const importSecretKey = ({secretKey}) => {
-  console.log(secretKey)
-  const publicKey = getPublicKey(secretKey)
+export const importSecretKey = ({secretKey: nsec}) => {
+  // console.log(nsec)
+  const {type, data: hex} = nip19.decode(nsec)
+  console.log(hex)
+  const publicKey = getPublicKey(hex)
   console.log(publicKey)
-  localStorage.setItem('identities', JSON.stringify([{secretKey, publicKey}]))
-  location.href = '/'
+  localStorage.setItem('identities', JSON.stringify([{secretKey: hex, publicKey}]))
+  return true
 }
