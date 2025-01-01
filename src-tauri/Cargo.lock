@@ -4,7 +4,7 @@ version = 3
 
 [[package]]
 name = "NOA"
-version = "0.6.1-beta.3"
+version = "0.6.1-beta.4"
 dependencies = [
  "serde",
  "serde_json",
