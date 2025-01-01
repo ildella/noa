@@ -45,7 +45,11 @@ pub fn run() {
             //     }
             // }
             #[cfg(desktop)] {
-                app.handle().plugin(tauri_plugin_autostart::init(tauri_plugin_autostart::MacosLauncher::LaunchAgent, Some(vec!["--flag1", "--flag2"])));
+                // app.handle().plugin(tauri_plugin_autostart::init(tauri_plugin_autostart::MacosLauncher::LaunchAgent, Some(vec!["--flag1", "--flag2"])));
+                let _ = app.handle().plugin(tauri_plugin_autostart::init(
+                    tauri_plugin_autostart::MacosLauncher::LaunchAgent,
+                    Some(vec!["--autostart", "--flag2"]),
+                ));
             }
             Ok(())
         })

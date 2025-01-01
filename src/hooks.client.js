@@ -7,7 +7,6 @@ import {closeConnection} from '$lib/relay-connection'
 import {nostrsigner, biometric} from '$lib/support'
 
 const quit = itemId => {
-  console.log(itemId)
   closeConnection()
   getCurrentWindow().hide()
   if (itemId === 'quit')
@@ -23,7 +22,7 @@ const show = async () => {
   // await mainWindow.setVisibleOnAllWorkspaces(true)
   await mainWindow.show()
   // await mainWindow.setEnabled(true)
-  // await mainWindow.unminimize()
+  await mainWindow.unminimize()
   // await mainWindow.center()
   await mainWindow.setFocus()
 }

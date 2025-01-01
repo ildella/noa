@@ -23,7 +23,6 @@ const appInfo = async () => {
     // console.log(await app.getTauriVersion())
     const appName = await app.getName()
     const currentVersion = await app.getVersion()
-    console.debug(appName, currentVersion)
     return {appName, currentVersion}
   } catch (error) {
     console.debug('No tauri app:', error.message)
