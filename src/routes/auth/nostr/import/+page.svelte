@@ -1,4 +1,5 @@
 <script>
+  import {goto} from '$app/navigation'
   import {uploadFile, importSecretKey} from '$lib/download-keys'
 
   let secretKey = $state('')
@@ -21,7 +22,9 @@
 
   const importFile = () => {
     if (hasSecretKey === true) {
-      return importSecretKey({secretKey})
+      const success = importSecretKey({secretKey})
+      if (success === true)
+        return goto('/')
     }
     if (hasFiles === true) {
       const file = files[0]
