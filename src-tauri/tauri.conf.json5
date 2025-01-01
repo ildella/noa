@@ -105,7 +105,7 @@
         schemes: ['nostrsigner'],
       },
       mobile: [
-        { host: '100.78.227.2', pathPrefix: ['/signer'], },
+        // { host: '100.78.227.2', pathPrefix: ['/signer'], },
         { host: 'tauri.app', pathPrefix: ['/signer'], },
       ],
     },
