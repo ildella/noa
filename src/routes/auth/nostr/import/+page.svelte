@@ -1,6 +1,9 @@
 <script>
+  import {page} from '$app/state'
   import {goto} from '$app/navigation'
   import {uploadFile, importSecretKey} from '$lib/download-keys'
+
+  const {data: {help}} = page
 
   let secretKey = $state('')
   let files = $state()
@@ -36,25 +39,31 @@
 </script>
 
 <div class='container mx-auto'>
-  <h1 class='text-2xl font-bold mb-4'>Import an existing Nostr Identity.</h1>
-  <div class='text-lg space-y-2'>
+  <h1 class='text-2xl font-bold mb-4'>Import an Existing Nostr Identity</h1>
+  <p class='text-lg mb-4'>{help.import}</p>
+
+  <div class='text-lg space-y-4'>
     <div class='flex flex-col space-y-2 mb-8'>
       <label
-        for='nostr-keys'
+        for='password'
         class='text-lg'
-      >Password</label>
+      >Password (optional)</label>
       <input
         id='password'
         type='password'
         bind:value={password}
-        placeholder='Leave blank if no password was used during export.'
+        placeholder='Leave blank for no password.'
         disabled={uploadDisabled}
         class='custom-input-text'
       />
+      <p class='text-sm text-gray-500'>The optional password used during file export from NOA.</p>
+    </div>
+
+    <div class='flex flex-col space-y-2 mb-8'>
       <label
         for='nostr-keys'
         class='text-lg'
-      >Upload a file...</label>
+      >Upload a file</label>
       <input
         type='file'
         id='nostr-keys'
@@ -62,11 +71,16 @@
         accept='application/octet-stream'
         disabled={uploadDisabled}
         bind:files
-      >
+        class='custom-input-file'
+      />
+      <p class='text-sm text-gray-500'>Accepted only files exported by NOA.</p>
+    </div>
+
+    <div class='flex flex-col space-y-2 mb-8'>
       <label
         for='secretKey'
         class='text-lg'
-      >...or insert a Secret key (not encrypted).</label>
+      >...or insert your Secret Key (not encrypted)</label>
       <input
         id='secretKey'
         type='text'
@@ -74,19 +88,22 @@
         bind:value={secretKey}
         class='custom-input-text'
       />
-      <button
-        disabled={importDisabled}
-        class='custom-big-button'
-        onclick={() => importFile()}
-      >
-        Import
-      </button>
     </div>
+
+    <button
+      disabled={importDisabled}
+      class='custom-big-button'
+      onclick={() => importFile()}
+    >
+      Import
+    </button>
   </div>
-  <!--   {#if files}
-    <h2>Selected files:</h2>
-    {#each Array.from(files) as file}
-      <p>{file.name} ({file.size} bytes)</p>
-    {/each}
-  {/if} -->
 </div>
+
+<!-- {#if files}
+  <h2>Selected files:</h2>
+  {#each Array.from(files) as file}
+    <p>{file.name} ({file.size} bytes)</p>
+  {/each}
+{/if}
+ -->
