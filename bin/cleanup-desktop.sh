@@ -5,12 +5,14 @@
 printf "\n\n--- xdg-mime ---\n"
 xdg-mime query default x-scheme-handler/nostrsigner
 
-printf "\n\n--- USER ---\n"
-# ls ~/.local/share/applications/NOA-handler.desktop
+printf "\n"
+ls ~/.local/share/applications/NOA-handler.desktop
+printf "\n--- USER ---\n"
 cat ~/.local/share/applications/NOA-handler.desktop
 
-printf "\n\n--- SYSTEM ---\n"
-# ls /usr/share/applications/NOA.desktop
+printf "\n"
+ls /usr/share/applications/NOA.desktop
+printf "\n--- SYSTEM ---\n"
 cat /usr/share/applications/NOA.desktop
 
 # rm ~/.local/share/applications/NOA-handler.desktop
