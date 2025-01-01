@@ -2,7 +2,6 @@
   import {onMount} from 'svelte'
   import {getCurrentWindow} from '@tauri-apps/api/window'
   import {open} from '@tauri-apps/plugin-shell'
-  // import { getCurrentWebview } from '@tauri-apps/api/webview'
   import {finalizeEvent} from 'nostr-tools/pure'
   import {page} from '$app/state'
   import CopyButton from '$lib/CopyButton.svelte'
@@ -10,8 +9,8 @@
   let signedEventString = $state('')
   let fullCallbackUrl = $state('')
   let requestType = $state('')
-
   let eventLog = $state([])
+  let buttonsDisabled = $state(false)
 
   $effect(() => {
     const stored = localStorage.getItem('eventLog')
@@ -23,6 +22,7 @@
   })
 
   const callback = () => {
+    buttonsDisabled = true
     const [url] = fullCallbackUrl.split('?event=')
     const todo = {
       event: JSON.parse(signedEventString),
@@ -34,7 +34,7 @@
     eventLog.push(todo)
     setTimeout(() => {
       location.href = '/'
-    }, 2500)
+    }, 1500)
     return open(fullCallbackUrl)
   }
 
@@ -50,7 +50,7 @@
     eventLog.push(todo)
     setTimeout(() => {
       location.href = '/'
-    }, 2500)
+    }, 1500)
     return signedEventString
   }
 
@@ -94,6 +94,7 @@
   />
   <button
     class='custom-big-button'
+    disabled={buttonsDisabled}
     onclick={() => callback()}
   >
     Sign

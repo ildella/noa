@@ -1,11 +1,9 @@
 <script>
-  import {onMount} from 'svelte'
   import {message} from '@tauri-apps/plugin-dialog'
   import {categories} from '$lib/apps'
   import {stores} from '$lib/stores'
   import * as nip19 from 'nostr-tools/nip19'
   import {open} from '$lib/open-url'
-  import {nostrsigner, biometric} from '$lib/support'
 
   const {data} = $props()
   const {
@@ -66,13 +64,6 @@
       await open(`https://njump.me/${npub}`)
     }
   }
-
-  onMount(() => {
-    nostrsigner()
-      .then(() => ({})).catch(error => console.error(error))
-    biometric()
-      .then(() => ({})).catch(error => console.error(error))
-  })
 
 </script>
 
