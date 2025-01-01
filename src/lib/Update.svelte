@@ -101,9 +101,9 @@
     // console.debug('check for release:', releasesUrl)
     axios(releasesUrl, {timeout: 2500}).then(({data: {version: publishedVersion}}) => {
       // console.debug('Current version:', currentVersion)
-      console.debug('Last published release:', publishedVersion)
+      // console.debug('Last published release:', publishedVersion)
       if (semver.gt(publishedVersion, currentVersion)) {
-        console.info('New release available.')
+        console.info('New release available.', publishedVersion)
         isNewVersionAvailable = true
       }
     }).catch(error => {

@@ -7,7 +7,7 @@
   import {connect, publish, subscribe} from '$lib/relay-connection'
 
   const {identities, publicKey: hex} = page.data
-  const since = getUnixTime(subDays(Date.now(), 20))
+  const since = getUnixTime(subDays(Date.now(), 200))
   const property = 'profile'
   // const {[property]: storedData} = $derived(page.data)
   let propertyState = $state(page.data[property])
@@ -67,8 +67,6 @@
   })
 
 </script>
-
-<!-- <p>{JSON.stringify(formModel)}</p> -->
 
 <div class='p-4 mb-4 border-l-4 shadow-md {infoBorders}'>
   {title}

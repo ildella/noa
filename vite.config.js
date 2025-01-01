@@ -6,7 +6,7 @@ const platform = process.env.TAURI_ENV_PLATFORM
 const debugMode = Boolean(process.env.TAURI_ENV_DEBUG)
 console.debug({host, platform, debugMode})
 
-const packagesCdnUrl = 'https://packages.frankie.tools//noa'
+const packagesCdnUrl = 'https://packages.frankie.tools/noa'
 const releaseType = debugMode
   ? 'debug'
   : 'release'
@@ -62,14 +62,15 @@ export default defineConfig({
       // 3. tell vite to ignore watching `src-tauri`
       ignored: [
         '**/src-tauri/**',
+        '**/tests/**',
         '**/test-results/**',
-        // '**/playwright-report/**',
+        '**/playwright-report/**',
       ],
     },
     proxy: {'/.well-known/assetlinks.json': assets},
   },
-  resolve: process.env.VITEST
-    ? {conditions: ['browser']}
-    // eslint-disable-next-line no-undefined
-    : undefined,
+  // resolve: process.env.VITEST
+  //   ? {conditions: ['browser']}
+  //   // eslint-disable-next-line no-undefined
+  //   : undefined,
 })
