@@ -1,3 +1,4 @@
+// import {getMatches} from '@tauri-apps/plugin-cli'
 import {getCurrentWindow, Window} from '@tauri-apps/api/window'
 import {TrayIcon} from '@tauri-apps/api/tray'
 import {defaultWindowIcon} from '@tauri-apps/api/app'
@@ -67,6 +68,11 @@ export async function init () {
     await enable()
     console.log(`Registered for autostart? ${await isEnabled()}`)
   }
+  // const matches = await getMatches()
+  // const autostarted = matches.args.autostart?.value ?? false
+  // if (autostarted) {
+  //   await getCurrentWindow().hide()
+  // }
 
   // await registerDeepLinkSigner()
   nostrsigner()
@@ -77,6 +83,4 @@ export async function init () {
   // const unlisten = await getCurrentWindow().onFocusChanged(({payload: focused}) => {
   //   console.log('Focus changed, window is focused? ' + focused)
   // })
-  // await getCurrentWindow().minimize()
-  // await getCurrentWindow().hide()
 }
