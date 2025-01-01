@@ -60,9 +60,7 @@
     "playwright.ui": "yarn playwright --ui",
     "playwright.watch": "PWTEST_WATCH=1 && yarn playwright",
     "tauri": "tauri",
-    "tauri.update": "cd src-tauri && cargo update -p tauri",
-    "test": "vitest",
-    "coverage": "vitest run --coverage"
+    "tauri.update": "cd src-tauri && cargo update -p tauri"
   },
   "dependencies": {
     "@tauri-apps/api": "2.1.1",

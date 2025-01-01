@@ -5,8 +5,7 @@
 <div class='container mx-auto'>
   <h1 class='text-2xl font-bold mb-4'>Nostr identity generated.</h1>
   <div class='text-lg space-y-2'>
-    <p>Congratulations! This was easy, right? :)</p>
-    <p id='public-key'>{data.publicKey}</p>
+    <p>Congratulations! This was easy, right?</p>
     <div class='flex items-center space-x-1'>
       <a
         href={`/profile/${data.publicKey}`}

@@ -1,23 +1,5 @@
 export const categories = [
   {
-    name: 'Identity and Profile',
-    // description: 'Full-featured apps to manage your identity and your profile',
-    apps: [
-      {
-        name: 'Amber',
-        logo: 'apps/amber.svg',
-        identifiers: {android: 'com.greenart7c3.nostrsigner'},
-        description: 'Signer',
-      },
-      {
-        name: 'Profile Manager',
-        logo: 'apps/profile.png',
-        identifiers: {web: 'https://metadata.nostr.com/'},
-        description: 'Profile backup',
-      },
-    ],
-  },
-  {
     name: 'Chat',
     description: 'Direct and group messaging.',
     apps: [
@@ -60,4 +42,23 @@ export const categories = [
       },
     ],
   },
+  {
+    name: 'Identity and Profile',
+    // description: 'Full-featured apps to manage your identity and your profile',
+    apps: [
+      {
+        name: 'Amber',
+        logo: 'apps/amber.svg',
+        identifiers: {android: 'com.greenart7c3.nostrsigner'},
+        description: 'Signer',
+      },
+      {
+        name: 'Profile Manager',
+        logo: 'apps/profile.png',
+        identifiers: {web: 'https://metadata.nostr.com/'},
+        description: 'Profile backup',
+      },
+    ],
+  },
+
 ]

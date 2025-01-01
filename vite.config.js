@@ -62,14 +62,15 @@ export default defineConfig({
       // 3. tell vite to ignore watching `src-tauri`
       ignored: [
         '**/src-tauri/**',
+        '**/tests/**',
         '**/test-results/**',
-        // '**/playwright-report/**',
+        '**/playwright-report/**',
       ],
     },
     proxy: {'/.well-known/assetlinks.json': assets},
   },
-  resolve: process.env.VITEST
-    ? {conditions: ['browser']}
-    // eslint-disable-next-line no-undefined
-    : undefined,
+  // resolve: process.env.VITEST
+  //   ? {conditions: ['browser']}
+  //   // eslint-disable-next-line no-undefined
+  //   : undefined,
 })

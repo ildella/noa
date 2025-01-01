@@ -60,7 +60,7 @@ const registerTrayIcon = async () => {
 export async function init () {
   // eslint-disable-next-line no-undef
   const platform = PLATFORM
-  console.log('Initializing.', {platform})
+  console.log('Initializing:', platform)
   window.addEventListener('keydown', handleKeydown)
   if (platform === 'linux') {
     await registerTrayIcon()
