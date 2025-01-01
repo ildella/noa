@@ -70,6 +70,7 @@ export async function init () {
   }
   // const matches = await getMatches()
   // const autostarted = matches.args.autostart?.value ?? false
+  // console.log('autostarted?', autostarted)
   // if (autostarted) {
   //   await getCurrentWindow().hide()
   // }
