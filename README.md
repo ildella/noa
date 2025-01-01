@@ -16,6 +16,9 @@ To setup the build for native desktop and mobile platforms, more work is require
 yarn dev
 yarn desktop
 yarn android
+
+# Use the following if there are networking issue
+yarn android --host 192.168.x.x
 ```
 
 ## Onboarding websites

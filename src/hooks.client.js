@@ -61,13 +61,15 @@ const registerTrayIcon = async () => {
 export async function init () {
   // eslint-disable-next-line no-undef
   const platform = PLATFORM
-  console.log('INIT.', {platform})
+  console.log('Initializing.', {platform})
   window.addEventListener('keydown', handleKeydown)
-  await registerTrayIcon()
-  // await registerDeepLinkSigner()
-  await enable()
-  console.log(`Registered for autostart? ${await isEnabled()}`)
+  if (platform === 'linux') {
+    await registerTrayIcon()
+    await enable()
+    console.log(`Registered for autostart? ${await isEnabled()}`)
+  }
 
+  // await registerDeepLinkSigner()
   nostrsigner()
     .then(() => ({})).catch(error => console.error(error))
   biometric()
