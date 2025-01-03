@@ -38,21 +38,21 @@
     <h2>Public Key</h2>
     <p class='mb-2'>This is how people will find you.</p>
     <p>
-      <span class='text-lg'>hex: {shortPublicKey}...</span>
-      <CopyButton
-        icon='fa-copy'
-        label=''
-        title='Copy public key'
-        onClick={() => publicKey}
-      />
-    </p>
-    <p>
       <span class='text-lg'>npub: {shortNpub}...</span>
       <CopyButton
         icon='fa-copy'
         label=''
         title='Copy public key'
         onClick={() => npub}
+      />
+    </p>
+    <p>
+      <span class='text-lg'>hex: {shortPublicKey}...</span>
+      <CopyButton
+        icon='fa-copy'
+        label=''
+        title='Copy public key'
+        onClick={() => publicKey}
       />
     </p>
   </div>
@@ -62,7 +62,13 @@
     <button
       class='custom-mid-button'
       onclick={() => toggleQRCodeVisibility()}
-    >Show/Hide</button>
+    >Show/Hide QR Code</button>
+    <CopyButton
+      style='custom-mid-button'
+      label='Copy to clipboard'
+      icon='fa-copy'
+      onClick={() => secretKey}
+    />
     <div class={showQRCode ? '' : 'hidden'}>
       <img
         class='w-64 h-64 object-contain'
