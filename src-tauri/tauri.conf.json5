@@ -12,7 +12,7 @@
   app: {
     windows: [
       {
-        title: 'Nostr Onboard',
+        title: 'NOA',
         width: 600,
         height: 1100,
         resizable: true,
@@ -34,6 +34,8 @@
   },
   bundle: {
     active: true,
+    category: 'Utility',
+    licenseFile: 'LICENSE',
     android: {
       minSdkVersion: 24,
     },
@@ -41,8 +43,16 @@
       minimumSystemVersion: '14',
     },
     createUpdaterArtifacts: false,
-    targets: 'all',
-    copyright: 'Copyright © 2024 Daniele Dellafiore',
+    targets: [
+      'deb', 
+      'rpm', 
+      // 'appimage', // > 130 MB...
+      // 'nsi', 
+      // 'msi', 
+      // 'app', 
+      // 'dmg',
+    ],
+    copyright: 'Copyright © 2024-2025 Daniele Dellafiore',
     publisher: 'Daniele Dellafiore',
     icon: [
       'icons/32x32.png',

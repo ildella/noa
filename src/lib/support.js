@@ -4,7 +4,7 @@ import {checkStatus} from '@tauri-apps/plugin-biometric'
 const nostrsigner = async () => {
   try {
     const isNostrSignerRegistered = await isRegistered('nostrsigner')
-    console.debug('Scheme redistered: nostrsigner://', isNostrSignerRegistered)
+    console.debug('Registered scheme nostrsigner:', isNostrSignerRegistered)
   } catch (error) {
     console.debug(error)
   }

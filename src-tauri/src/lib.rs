@@ -1,5 +1,6 @@
 // use tauri::{AppHandle, Manager};
 use tauri::Manager;
+use tauri_plugin_deep_link::DeepLinkExt;
 
 // #[tauri::command]
 // fn greet(name: &str) -> String {
@@ -17,7 +18,7 @@ pub fn run() {
     #[cfg(desktop)]
     {
         builder = builder.plugin(tauri_plugin_single_instance::init(|app, args, _cwd| {
-            println!("a new app instance was opened with {args:?} and the deep link event was already triggered");
+            println!("A new app instance was opened with args: {args:?} and the deep link event was already triggered.");
             let _ = app.get_webview_window("main")
                        .expect("no main window")
                        .set_focus();
@@ -30,6 +31,7 @@ pub fn run() {
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_deep_link::init())
         .setup(|app| {
+            // Runtime registration for Deep Link - useful in Dev
             #[cfg(any(windows, target_os = "linux"))]
             {
                 use tauri_plugin_deep_link::DeepLinkExt;
@@ -37,7 +39,6 @@ pub fn run() {
             }
             #[cfg(mobile)] {
                 app.handle().plugin(tauri_plugin_biometric::init())?;
-            // app.handle().plugin(tauri_plugin_biometric::Builder::new().build());
             }
             // if let Ok(urls) = app.deep_link().get_current() {
             //     if let Some(urls) = urls {
@@ -51,6 +52,9 @@ pub fn run() {
                     Some(vec!["--autostart"]),
                 ));
             }
+            app.deep_link().on_open_url(|event| {
+                println!("deep link URLs: {:?}", event.urls());
+            });
             Ok(())
         })
         // .invoke_handler(tauri::generate_handler![greet])
