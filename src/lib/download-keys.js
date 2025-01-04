@@ -6,7 +6,8 @@ import * as nip19 from 'nostr-tools/nip19'
 import {encrypt, decrypt} from './cipher'
 
 const {Download} = BaseDirectory
-const defaultPath = 'nostr-keys'
+
+const defaultPath = 'nostr-keys.txt'
 
 const askForPath = () => {
   try {
@@ -35,15 +36,16 @@ export const downloadFile = async ({secretKey, publicKey, password}) => {
   const content = JSON.stringify({secretKey, publicKey})
   const ciphertext = await encrypt({content, password})
   if (platform) {
-    console.log('defaultPath:', defaultPath)
-    const path = await askForPath()
+    const path = await askForPath({password})
     console.log('path:', path)
     return writeTextFile(path, ciphertext, {baseDir: Download})
   }
-  const blob = new Blob([ciphertext], {type: 'application/octet-stream'})
+  // const path = password ? 'nostr-keys.enc' : 'nostr-keys.txt'
+  const path = 'nostr-keys.txt'
+  const blob = new Blob([ciphertext], {type: 'text/plain'})
   const link = document.createElement('a')
   link.href = URL.createObjectURL(blob)
-  link.download = defaultPath
+  link.download = path
   document.body.appendChild(link)
   link.click()
   document.body.removeChild(link)
