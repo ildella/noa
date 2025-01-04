@@ -7,8 +7,9 @@ import {encrypt, decrypt} from './cipher'
 
 const {Download} = BaseDirectory
 
-const askForPath = ({password}) => {
-  const defaultPath = password ? 'nostr-keys.enc' : 'nostr-keys.txt'
+const defaultPath = 'nostr-keys.txt'
+
+const askForPath = () => {
   try {
     return save({
       directory: true,
@@ -39,8 +40,9 @@ export const downloadFile = async ({secretKey, publicKey, password}) => {
     console.log('path:', path)
     return writeTextFile(path, ciphertext, {baseDir: Download})
   }
-  const path = password ? 'nostr-keys.enc' : 'nostr-keys.txt'
-  const blob = new Blob([ciphertext], {type: 'application/octet-stream'})
+  // const path = password ? 'nostr-keys.enc' : 'nostr-keys.txt'
+  const path = 'nostr-keys.txt'
+  const blob = new Blob([ciphertext], {type: 'text/plain'})
   const link = document.createElement('a')
   link.href = URL.createObjectURL(blob)
   link.download = path
