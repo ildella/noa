@@ -6,6 +6,9 @@
     "type": "git",
     "url": "git+https://github.com/ildella/noa.git"
   },
+  "engines": {
+    "node": "22.x"
+  },
   "keywords": [
     "nostr",
     "signer",
@@ -84,7 +87,6 @@
     "@stylistic/eslint-plugin-js": "2.12.1",
     "@sveltejs/adapter-static": "3.0.8",
     "@sveltejs/kit": "2.15.1",
-    "@sveltejs/vite-plugin-svelte": "5.0.3",
     "@tauri-apps/cli": "2.2.2",
     "autoprefixer": "10.4.20",
     "axios": "1.7.9",
@@ -93,7 +95,6 @@
     "eslint-nostandard": "0.3.2",
     "eslint-plugin-playwright": "2.1.0",
     "eslint-plugin-svelte": "2.46.1",
-    "exstream.js": "0.25.0",
     "globals": "15.14.0",
     "jsdom": "25.0.1",
     "nostr-tools": "2.10.4",
@@ -106,8 +107,7 @@
     "tailwindcss": "3.4.17",
     "typescript": "5.7.2",
     "vite": "6.0.7",
-    "vitest": "2.1.8",
-    "ws": "8.18.0"
+    "vitest": "2.1.8"
   },
   "stableVersion": "0.6.1"
 }

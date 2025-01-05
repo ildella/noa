@@ -1019,36 +1019,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sveltejs/vite-plugin-svelte-inspector@npm:^4.0.1":
-  version: 4.0.1
-  resolution: "@sveltejs/vite-plugin-svelte-inspector@npm:4.0.1"
-  dependencies:
-    debug: "npm:^4.3.7"
-  peerDependencies:
-    "@sveltejs/vite-plugin-svelte": ^5.0.0
-    svelte: ^5.0.0
-    vite: ^6.0.0
-  checksum: 10c0/03cc334346fcf291d3d0cba435bf752d15df91c0ac55dccdb5bf1372ae5a85fcb25f0f63ca3d1f7a25ebaa9e711fd1178d8a1fd6f495d57ac2eb327b855c0aea
-  languageName: node
-  linkType: hard
-
-"@sveltejs/vite-plugin-svelte@npm:5.0.3":
-  version: 5.0.3
-  resolution: "@sveltejs/vite-plugin-svelte@npm:5.0.3"
-  dependencies:
-    "@sveltejs/vite-plugin-svelte-inspector": "npm:^4.0.1"
-    debug: "npm:^4.4.0"
-    deepmerge: "npm:^4.3.1"
-    kleur: "npm:^4.1.5"
-    magic-string: "npm:^0.30.15"
-    vitefu: "npm:^1.0.4"
-  peerDependencies:
-    svelte: ^5.0.0
-    vite: ^6.0.0
-  checksum: 10c0/e3ad57e164e01c4c67f332901ed438aa83602e6d532ccafb7e35988082de6a2dd1de540b5cd6b879fcb1343e63666c5b0bab5ae691504d52c9e7f3fea691c40c
-  languageName: node
-  linkType: hard
-
 "@tauri-apps/api@npm:2.2.0":
   version: 2.2.0
   resolution: "@tauri-apps/api@npm:2.2.0"
@@ -1351,7 +1321,6 @@ __metadata:
     "@stylistic/eslint-plugin-js": "npm:2.12.1"
     "@sveltejs/adapter-static": "npm:3.0.8"
     "@sveltejs/kit": "npm:2.15.1"
-    "@sveltejs/vite-plugin-svelte": "npm:5.0.3"
     "@tauri-apps/api": "npm:2.2.0"
     "@tauri-apps/cli": "npm:2.2.2"
     "@tauri-apps/plugin-autostart": "npm:2.2.0"
@@ -1368,7 +1337,6 @@ __metadata:
     eslint-nostandard: "npm:0.3.2"
     eslint-plugin-playwright: "npm:2.1.0"
     eslint-plugin-svelte: "npm:2.46.1"
-    exstream.js: "npm:0.25.0"
     globals: "npm:15.14.0"
     jsdom: "npm:25.0.1"
     nostr-tools: "npm:2.10.4"
@@ -1382,7 +1350,6 @@ __metadata:
     typescript: "npm:5.7.2"
     vite: "npm:6.0.7"
     vitest: "npm:2.1.8"
-    ws: "npm:8.18.0"
   languageName: unknown
   linkType: soft
 
@@ -1892,18 +1859,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:^4.4.0":
-  version: 4.4.0
-  resolution: "debug@npm:4.4.0"
-  dependencies:
-    ms: "npm:^2.1.3"
-  peerDependenciesMeta:
-    supports-color:
-      optional: true
-  checksum: 10c0/db94f1a182bf886f57b4755f85b3a74c39b5114b9377b7ab375dc2cfa3454f09490cc6c30f829df3fc8042bc8b8995f6567ce5cd96f3bc3688bd24027197d9de
-  languageName: node
-  linkType: hard
-
 "decamelize@npm:^1.2.0":
   version: 1.2.0
   resolution: "decamelize@npm:1.2.0"
@@ -1929,13 +1884,6 @@ __metadata:
   version: 0.1.4
   resolution: "deep-is@npm:0.1.4"
   checksum: 10c0/7f0ee496e0dff14a573dc6127f14c95061b448b87b995fc96c017ce0a1e66af1675e73f1d6064407975bc4ea6ab679497a29fff7b5b9c4e99cb10797c1ad0b4c
-  languageName: node
-  linkType: hard
-
-"deepmerge@npm:^4.3.1":
-  version: 4.3.1
-  resolution: "deepmerge@npm:4.3.1"
-  checksum: 10c0/e53481aaf1aa2c4082b5342be6b6d8ad9dfe387bc92ce197a66dea08bd4265904a087e75e464f14d1347cf2ac8afe1e4c16b266e0561cc5df29382d3c5f80044
   languageName: node
   linkType: hard
 
@@ -2450,13 +2398,6 @@ __metadata:
   version: 3.1.1
   resolution: "exponential-backoff@npm:3.1.1"
   checksum: 10c0/160456d2d647e6019640bd07111634d8c353038d9fa40176afb7cd49b0548bdae83b56d05e907c2cce2300b81cae35d800ef92fefb9d0208e190fa3b7d6bb579
-  languageName: node
-  linkType: hard
-
-"exstream.js@npm:0.25.0":
-  version: 0.25.0
-  resolution: "exstream.js@npm:0.25.0"
-  checksum: 10c0/9efb65038c96ec04935d76519b525e67af4519172425e25ad6be2f95ec7e7ee60b5bd465e4e993897714bb42a184e3251179c384a1cb63c7871498c8b37dff9c
   languageName: node
   linkType: hard
 
@@ -3177,15 +3118,6 @@ __metadata:
   dependencies:
     "@jridgewell/sourcemap-codec": "npm:^1.5.0"
   checksum: 10c0/16826e415d04b88378f200fe022b53e638e3838b9e496edda6c0e086d7753a44a6ed187adc72d19f3623810589bf139af1a315541cd6a26ae0771a0193eaf7b8
-  languageName: node
-  linkType: hard
-
-"magic-string@npm:^0.30.15":
-  version: 0.30.15
-  resolution: "magic-string@npm:0.30.15"
-  dependencies:
-    "@jridgewell/sourcemap-codec": "npm:^1.5.0"
-  checksum: 10c0/7d10403cb0b403c0453d7af57d8d01a58c334b260e64653c5f5c2311800f4c6b1b7f4502153f9051dd8a87116acd50e5e3fce4bf79ec9d7127f087aa1c08b96b
   languageName: node
   linkType: hard
 
@@ -4803,18 +4735,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vitefu@npm:^1.0.4":
-  version: 1.0.4
-  resolution: "vitefu@npm:1.0.4"
-  peerDependencies:
-    vite: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0
-  peerDependenciesMeta:
-    vite:
-      optional: true
-  checksum: 10c0/d7356312c76fdfa78d6a8880f2abbcb375cf67d034b6e79436c954974cf3059b1bed737245cdc3df6a68835d577b55c27b358bc2a693bfcb96f7bb19467bd28d
-  languageName: node
-  linkType: hard
-
 "vitest@npm:2.1.8":
   version: 2.1.8
   resolution: "vitest@npm:2.1.8"
@@ -4988,7 +4908,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ws@npm:8.18.0, ws@npm:^8.18.0":
+"ws@npm:^8.18.0":
   version: 8.18.0
   resolution: "ws@npm:8.18.0"
   peerDependencies:
