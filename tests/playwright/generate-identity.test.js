@@ -20,9 +20,7 @@ test('check navigation', async () => {
 })
 
 test('check storage', async () => {
-  const storedIdentities = await page.evaluate(() =>
-    localStorage.getItem('identities')
-  )
+  const storedIdentities = await page.evaluate(() => localStorage.getItem('identities'))
   const identities = JSON.parse(storedIdentities)
   expect(identities).toHaveLength(1)
   const [{publicKey}] = identities

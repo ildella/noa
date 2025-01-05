@@ -106,12 +106,13 @@
         console.info('New release available.', publishedVersion)
         isNewVersionAvailable = true
       }
-    }).catch(error => {
-      // networkError = true
-      console.warn(`
+    })
+      .catch(error => {
+        // networkError = true
+        console.warn(`
         Can't check new release at ${releasesUrl} cause '${error.code}: ${error.message}'
       `)
-    })
+      })
   })
 
 </script>

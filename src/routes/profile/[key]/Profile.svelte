@@ -19,7 +19,8 @@
   let sending = $state(false)
   let profileFound = $state(false)
   const unchanged = $derived(
-    JSON.stringify(formModel) === JSON.stringify(page.data[property]))
+    JSON.stringify(formModel) === JSON.stringify(page.data[property])
+  )
   const submitDisabled = $derived(sending || unchanged)
 
   const send = async () => {

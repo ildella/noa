@@ -16,9 +16,7 @@ const biometric = async () => {
     if (biometricStatus.isAvailable) {
       console.debug('Yes! Biometric Authentication is available')
     } else {
-      console.debug(
-        'No! Biometric Authentication is not available:', biometricStatus.error
-      )
+      console.debug('No! Biometric Authentication is not available:', biometricStatus.error)
     }
   } catch (error) {
     console.debug(error)

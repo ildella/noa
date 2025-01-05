@@ -1,7 +1,7 @@
 import {devices} from '@playwright/test'
 
 export default {
-  testDir: 'tests',
+  testDir: 'tests/playwright',
   globalTimeout: 60000,
   timeout: 2000,
   fullyParallel: false,

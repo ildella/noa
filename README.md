@@ -12,8 +12,10 @@ To setup the build for native desktop and mobile platforms, more work is require
 
 ## Start
 
+Developments mode
+
 ```sh
-yarn dev
+yarn web
 yarn desktop
 yarn android
 
@@ -21,8 +23,7 @@ yarn android
 yarn android --host 192.168.x.x
 ```
 
-## Onboarding websites
+## Onboarding and migration
 
-https://nostr.org/#info
-https://nostr.how/en/guides/get-verified#self-hosted
-  https://zaps.lol/
+* https://nostr.org/
+* Migrate from Twitter: https://exit.pub/

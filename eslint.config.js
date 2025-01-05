@@ -1,8 +1,6 @@
 import globals from 'globals'
-// import js from '@eslint/js'
-// import stylisticJs from '@stylistic/eslint-plugin-js'
+import nostandard from 'eslint-nostandard'
 import eslintPluginSvelte from 'eslint-plugin-svelte'
-import nostandard from '@ildella/nostandard'
 import playwright from 'eslint-plugin-playwright'
 
 const camelcase = [
@@ -30,14 +28,10 @@ export default [
     name: 'NOA',
     ignores,
   },
-  // js.configs.recommended,
   ...nostandard(),
   ...eslintPluginSvelte.configs['flat/recommended'],
   {
     languageOptions: {globals: globals.browser},
-    // plugins: {
-    //   '@stylistic/js': stylisticJs
-    // },
     rules: {
       camelcase,
       '@stylistic/js/max-len': ['warn', {
@@ -96,12 +90,12 @@ export default [
       'svelte/mustache-spacing': [
         'warn',
         {
-          textExpressions: 'never', // or "always"
-          attributesAndProps: 'never', // or "always"
-          directiveExpressions: 'never', // or "always"
+          textExpressions: 'never',
+          attributesAndProps: 'never',
+          directiveExpressions: 'never',
           tags: {
-            openingBrace: 'never', // or "always"
-            closingBrace: 'never', // or "always" or "always-after-expression"
+            openingBrace: 'never',
+            closingBrace: 'never',
           },
         },
       ],

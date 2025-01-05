@@ -68,11 +68,8 @@ export const uploadFile = ({file, password}) => {
 }
 
 export const importSecretKey = ({secretKey: nsec}) => {
-  // console.log(nsec)
-  const {type, data: hex} = nip19.decode(nsec)
-  console.log(hex)
+  const {data: hex} = nip19.decode(nsec)
   const publicKey = getPublicKey(hex)
-  console.log(publicKey)
   localStorage.setItem('identities', JSON.stringify([{secretKey: hex, publicKey}]))
   return true
 }

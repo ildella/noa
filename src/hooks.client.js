@@ -61,7 +61,7 @@ const registerTrayIcon = async () => {
 export async function init () {
   // eslint-disable-next-line no-undef
   const platform = PLATFORM
-  console.log('Initializing:', platform)
+  console.log('Initializing:', platform || 'Web')
   window.addEventListener('keydown', handleKeydown)
   if (platform === 'linux') {
     await registerTrayIcon()
@@ -77,9 +77,11 @@ export async function init () {
 
   // await registerDeepLinkSigner()
   nostrsigner()
-    .then(() => ({})).catch(error => console.error(error))
+    .then(() => ({}))
+    .catch(error => console.error(error))
   biometric()
-    .then(() => ({})).catch(error => console.error(error))
+    .then(() => ({}))
+    .catch(error => console.error(error))
 
   // const unlisten = await getCurrentWindow().onFocusChanged(({payload: focused}) => {
   //   console.log('Focus changed, window is focused? ' + focused)

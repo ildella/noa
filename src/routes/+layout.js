@@ -9,7 +9,7 @@ const platform = PLATFORM
 
 /* eslint-disable @stylistic/js/max-len */
 const help = {
-  welcome: 'To use Nostr services we create a unique, universal "key" and then install apps of your choice.',
+  welcome: 'We first self-generate a new Identity and associate a User Profile.',
   what: 'We are about to get rid of platform-based communication and go back to protocol-based communication. Like it was with email.',
   why: 'Platforms are built and owned by someone, typically a very large company. They hold the keys and the access to the network and can play as they please. Protocols are public and open, anyone can build on it.',
   identity: 'An Identity is just a self-generated digital key pair, here represented as simple "piece of text". It’s yours alone, and you have complete control over it.',
@@ -28,7 +28,7 @@ const appInfo = async () => {
   } catch (error) {
     console.debug('No tauri app:', error.message)
   }
-  return {appName: 'NOA', currentVersion: '1000.0.0'}
+  return {appName: 'NOA', currentVersion: 'About'}
 }
 
 export async function load ({url}) {

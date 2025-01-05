@@ -22,7 +22,7 @@ test('sign', async ({page}) => {
   // await page.waitForURL()
   const idetityGenerated = page.locator('h1:has-text("Nostr identity generated")')
   await expect(idetityGenerated).toBeVisible()
-  const publicKey = await page.locator('#public-key').textContent()
+  // const publicKey = await page.locator('#public-key').textContent()
   // console.log(publicKey)
   // console.log(intent)
 
@@ -38,7 +38,7 @@ test('sign', async ({page}) => {
     kind: 1,
     content: 'Authenticate me',
     tags: [],
-    pubkey: publicKey,
+    // pubkey: publicKey,
   })
   expect(signedEvent).toHaveProperty('id')
   expect(signedEvent).toHaveProperty('sig')
