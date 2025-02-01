@@ -2,4 +2,4 @@
 
 set -euo pipefail
 
-cd /src-tauri/target/release/bundle
+cd src-tauri/target/release/bundle
