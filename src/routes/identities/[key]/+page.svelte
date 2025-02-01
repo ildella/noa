@@ -66,7 +66,7 @@
     >Show/Hide QR Code</button>
     <CopyButton
       style='custom-mid-button'
-      label='Copy to clipboard'
+      label='Copy'
       icon='fa-copy'
       onClick={() => npub}
     />
@@ -91,7 +91,7 @@
     >Show/Hide QR Code</button>
     <CopyButton
       style='custom-mid-button'
-      label='Copy to clipboard'
+      label='Copy'
       icon='fa-copy'
       onClick={() => secretKey}
     />
