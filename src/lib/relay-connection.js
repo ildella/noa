@@ -7,7 +7,6 @@ let isConnected = false
 const relays = [
   'relay.damus.io',
   'relay.primal.net',
-  'relay.nostr.bg',
   'eden.nostr.land',
   'relay.vengeful.eu',
   'relay.nostr.band',

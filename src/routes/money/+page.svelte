@@ -1,63 +1,71 @@
 <script>
   import {onMount} from 'svelte'
   // import {sha256} from '@noble/hashes/sha256'
-  import {bytesToHex, hexToBytes} from '@noble/hashes/utils'
+  // import {bytesToHex, hexToBytes} from '@noble/hashes/utils'
   import {randomBytes} from '@noble/ciphers/webcrypto'
   // import {gcm} from '@noble/ciphers/aes'
   // import {utf8ToBytes} from '@noble/ciphers/utils'
 
-  import * as nip19 from 'nostr-tools/nip19'
+  // import * as nip19 from 'nostr-tools/nip19'
   import {v2} from 'nostr-tools/nip44'
 
   const {data} = $props()
   const {
     wallet,
   } = $derived(data)
-  let secretHex = $state()
-  let nsec = $state()
-  let npub = $state()
+  // let secretHex = $state()
+  let identityPublicHex = $state()
+  // let nsec = $state()
+  // let npub = $state()
 
-  const mints = ['https://mint.minibits.cash/Bitcoin', 'https://8333.space:3338']
+  const mints = [
+    'https://mint.minibits.cash/Bitcoin',
+    'https://8333.space:3338',
+  ]
   const relays = [
     'relay.damus.io',
     'relay.primal.net',
-    'relay.nostr.bg',
     'eden.nostr.land',
     'relay.vengeful.eu',
     'relay.nostr.band',
   ]
 
   const createNip60Wallet = async () => {
-    const {publicKey: walletPubHex} = wallet
+    const {
+      // publicKey: walletPubHex,
+      secretKey: walletSecretHex,
+    } = wallet
     const content = [
       ['balance', '100', 'sat'],
-      ['privkey', secretHex],
+      ['privkey', walletSecretHex],
     ]
-    console.log({secretHex, walletPubHex})
-    const conversationKey = v2.utils.getConversationKey(secretHex, walletPubHex)
-    console.log({conversationKey})
+    // console.log({secretHex, walletPubHex})
+    const conversationKey = v2.utils.getConversationKey(walletSecretHex, identityPublicHex)
+    // console.log({conversationKey})
     const nonce = randomBytes(32)
-    console.log({nonce})
+    // console.log({nonce})
     const encryptedContent = v2.encrypt(content, conversationKey, nonce)
-    console.log({encryptedContent})
+    // console.log({encryptedContent})
     const walletEvent = {
       kind: 37375,
       content: encryptedContent,
       tags: [
         ['d', 'noa-test-wallet'],
         ...mints.map(mint => ['mint', mint]),
-        ['name', 'NOA embedded wallet'],
+        ['name', 'NOA embedded NIP-60 wallet'],
         ...relays.map(relay => ['relay', `wss://${relay}`]),
       // ['deleted'],
       ],
     }
-    console.log(walletEvent)
+  // console.log(walletEvent)
+    // const decryptedContent = v2.decrypt(encryptedContent, conversationKey)
+    // console.log(decryptedContent)
   }
 
   import {CashuMint, CashuWallet, MintQuoteState} from '@cashu/cashu-ts'
   // import * as bip39 from 'bip39'
-  import * as bip39 from '@scure/bip39'
-  import {wordlist} from '@scure/bip39/wordlists/english'
+  // import * as bip39 from '@scure/bip39'
+  // import {wordlist} from '@scure/bip39/wordlists/english'
 
   // const mintQuote = {
     //   expiry: null,
@@ -109,9 +117,10 @@
     const identities = await localStorage.getItem('identities')
     const [{secretKey, publicKey}] = JSON.parse(identities)
     // console.log({publicKey, secretKey})
-    secretHex = secretKey
-    npub = nip19.npubEncode(publicKey)
-    nsec = nip19.nsecEncode(hexToBytes(secretKey))
+    // secretHex = secretKey
+    identityPublicHex = publicKey
+    // npub = nip19.npubEncode(publicKey)
+    // nsec = nip19.nsecEncode(hexToBytes(secretKey))
     // console.log({nsec, npub})
     // createCashuWallet()
     //   .then(() => console.log('Wallet created.'))
