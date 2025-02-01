@@ -12,7 +12,7 @@ const help = {
   welcome: 'We first self-generate a new Identity and associate a User Profile.',
   what: 'We are about to get rid of platform-based communication and go back to protocol-based communication. Like it was with email.',
   why: 'Platforms are built and owned by someone, typically a very large company. They hold the keys and the access to the network and can play as they please. Protocols are public and open, anyone can build on it.',
-  identity: 'An Identity is just a self-generated digital key pair, here represented as simple "piece of text". It’s yours alone, and you have complete control over it.',
+  identity: 'An Identity is a self-generated digital key pair, here represented as plain text. It’s yours alone, and you have complete control over it.',
   keypair: 'The identity is represented by a key pair: a public key that you can share with others, and a secret key that you keep safe and private.',
   import: 'You can import your Nostr identity by either uploading a file or pasting your secret key. If your file is password-protected, please enter the password below.',
   // identity: 'It is almost like an email address or a phone number, but there is no central authority involved to issue it. This software will generate a unique one for you. Remember: you are the only one to hold it. Be responsible.',
