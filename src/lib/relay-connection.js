@@ -16,7 +16,7 @@ const connect = async () => {
   const max = relays.length - 1
   const random = Math.floor(Math.random() * max)
   if (!isConnected) {
-    console.log({isConnected, random})
+    console.debug({isConnected, random})
     relay = await Relay.connect(`wss://${relays[random]}`)
     isConnected = true
   }

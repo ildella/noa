@@ -3,7 +3,7 @@ import {bytesToHex} from '@noble/hashes/utils'
 
 export async function load () {
   const wallet = await localStorage.getItem('wallet')
-  console.log({wallet})
+  console.debug({wallet})
   if (!wallet) {
     const sk = generateSecretKey()
     const publicKey = getPublicKey(sk)

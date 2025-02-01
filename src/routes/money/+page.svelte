@@ -5,6 +5,7 @@
   import {randomBytes} from '@noble/ciphers/webcrypto'
   // import {gcm} from '@noble/ciphers/aes'
   // import {utf8ToBytes} from '@noble/ciphers/utils'
+  import QRCode from 'qrcode'
 
   // import * as nip19 from 'nostr-tools/nip19'
   import {v2} from 'nostr-tools/nip44'
@@ -15,6 +16,17 @@
   } = $derived(data)
   // let secretHex = $state()
   let identityPublicHex = $state()
+  let invoiceString = $state()
+  let qrCodeURL = $state()
+  // const qrCodeURL = $derived.by(async () => {
+  //   // console.log({invoiceString})
+  //   if (!invoiceString) return ''
+  //   const url = await QRCode.toDataURL(invoiceString)
+  //   console.log({url})
+  //   return url
+  // })
+  let mintInfo = $state()
+
   // let nsec = $state()
   // let npub = $state()
 
@@ -32,7 +44,7 @@
 
   const createNip60Wallet = async () => {
     const {
-      // publicKey: walletPubHex,
+      publicKey: walletPubHex,
       secretKey: walletSecretHex,
     } = wallet
     const content = [
@@ -83,20 +95,23 @@
   // if (!bip39.validateMnemonic(mnemonic, wordlist)) {
   //   throw new Error('Invalid seed')
   // }
-  const mint = new CashuMint(mintUrl)
 
   const createCashuWallet = async () => {
+    const mint = new CashuMint(mintUrl)
     // const bip39seed = await bip39.mnemonicToSeed(mnemonic)
     // console.log(bip39seed instanceof Uint8Array, bip39seed)
     const wallet = new CashuWallet(mint, {})
     // console.log(wallet.keys, wallet.keysets)
     // console.log(wallet.keys.get('00500550f0494146'))
-    // const info = await wallet.getMintInfo()
+    mintInfo = await wallet.getMintInfo()
     // console.log(info.contact)
     // console.log(info.nuts)
     // console.log(info.version)
     await wallet.loadMint()
-    // const mintQuote = await wallet.createMintQuote(64)
+    return wallet
+  }
+
+  const receiveMinted = async () => {
     const mintQuote = {
       expiry: null,
       paid: true,
@@ -113,6 +128,14 @@
     }
   }
 
+  const generateInvoice = async () => {
+    const wallet = await createCashuWallet()
+    const mintQuote = await wallet.createMintQuote(21)
+    console.log(mintQuote)
+    invoiceString = mintQuote.request
+    qrCodeURL = await QRCode.toDataURL(invoiceString)
+  }
+
   onMount(async () => {
     const identities = await localStorage.getItem('identities')
     const [{secretKey, publicKey}] = JSON.parse(identities)
@@ -125,18 +148,29 @@
     // createCashuWallet()
     //   .then(() => console.log('Wallet created.'))
     //   .catch(error => console.error(error))
-    createNip60Wallet()
-      .then(() => console.log('NIP-60 wallet created.'))
-      .catch(error => console.error(error))
+    // createNip60Wallet()
+    //   .then(() => console.log('NIP-60 wallet created.'))
+    //   .catch(error => console.error(error))
+    await generateInvoice()
   })
-// Usage Example:
-// (async () => {
-//   await connectToRelays();
-//   await createWallet();
-// })();
 
 </script>
 
 <div id='profile'>
   <h2 class='text-2xl font-semibold mb-4'>Money</h2>
+  <p>Wallet public key: {wallet.publicKey}</p>
+  <!-- <p>Mint: {mintInfo.version}</p> -->
+  <button
+    class='custom-mid-button'
+    onclick={generateInvoice}
+  >New invoice.
+  </button>
+  <p>Invoice: {invoiceString}</p>
+  <div>
+    <img
+      class='w-64 h-64 object-contain'
+      src={qrCodeURL}
+      alt='QRCode should be displayed here.'
+    />
+  </div>
 </div>
