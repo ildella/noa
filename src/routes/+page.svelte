@@ -42,10 +42,18 @@
 
 </script>
 
-<div class='container'>
-  <h2>Welcome</h2>
-  <p>{help.welcome}</p>
-</div>
+{#if !identities}
+  <div class='container'>
+    <h1>Welcome</h1>
+    <p>{help.welcome}</p>
+  </div>
+{/if}
+{#if identities}
+  <div class='container'>
+    <h2>Dashboard</h2>
+    <p>{help.dashboard}</p>
+  </div>
+{/if}
 
 <div class='container {sections.identity.classes}'>
   <h2>Identity</h2>

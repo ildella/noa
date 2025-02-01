@@ -15,6 +15,28 @@ export const categories = [
     ],
   },
   {
+    name: 'Wallets',
+    description: 'Self sovreign money.',
+    apps: [
+      {
+        name: 'Cashu.me',
+        logo: 'apps/cashume.png',
+        os: 'web',
+        identifiers: {
+          web: 'https://cashu.me',
+        },
+      },
+      {
+        name: 'Minibits',
+        logo: 'apps/minibits.png',
+        os: 'Android',
+        identifiers: {
+          android: 'com.minibits_wallet',
+        },
+      },
+    ],
+  },
+  {
     name: 'Social',
     description: 'Twitter-like clients. Pick the one you like.',
     apps: [
