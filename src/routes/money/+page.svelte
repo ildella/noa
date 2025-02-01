@@ -25,7 +25,7 @@
   //   console.log({url})
   //   return url
   // })
-  let mintInfo = $state()
+  let mintInfo = $state({})
 
   // let nsec = $state()
   // let npub = $state()
@@ -104,7 +104,7 @@
     // console.log(wallet.keys, wallet.keysets)
     // console.log(wallet.keys.get('00500550f0494146'))
     mintInfo = await wallet.getMintInfo()
-    // console.log(info.contact)
+    console.log(mintInfo)
     // console.log(info.nuts)
     // console.log(info.version)
     await wallet.loadMint()
@@ -131,7 +131,7 @@
   const generateInvoice = async () => {
     const wallet = await createCashuWallet()
     const mintQuote = await wallet.createMintQuote(21)
-    console.log(mintQuote)
+    // console.log(mintQuote)
     invoiceString = mintQuote.request
     qrCodeURL = await QRCode.toDataURL(invoiceString)
   }
@@ -159,7 +159,8 @@
 <div id='profile'>
   <h2 class='text-2xl font-semibold mb-4'>Money</h2>
   <p>Wallet public key: {wallet.publicKey}</p>
-  <!-- <p>Mint: {mintInfo.version}</p> -->
+  <p>{mintInfo.name} - running {mintInfo.version}</p>
+  <p>{mintInfo.description}</p>
   <button
     class='custom-mid-button'
     onclick={generateInvoice}
