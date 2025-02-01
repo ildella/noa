@@ -28,7 +28,7 @@ const appInfo = async () => {
   } catch (error) {
     console.debug('No tauri app:', error.message)
   }
-  return {appName: 'NOA', currentVersion: 'About'}
+  return {appName: 'NOA', currentVersion: 'Web'}
 }
 
 export async function load ({url}) {
