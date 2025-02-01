@@ -152,9 +152,9 @@
     npub = nip19.npubEncode(publicKey)
     nsec = nip19.nsecEncode(hexToBytes(secretKey))
     // console.log({nsec, npub})
-    createCashuWallet()
-      .then(() => console.log('Wallet created.'))
-      .catch(error => console.error(error))
+    // createCashuWallet()
+    //   .then(() => console.log('Wallet created.'))
+    //   .catch(error => console.error(error))
   })
 // Usage Example:
 // (async () => {

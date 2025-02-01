@@ -4,20 +4,30 @@ import {Relay} from 'nostr-tools/relay'
 let relay
 let isConnected = false
 
-const relays = ['wss://relay.damus.io']
+const relays = [
+  'relay.damus.io',
+  'relay.primal.net',
+  'relay.nostr.bg',
+  'eden.nostr.land',
+  'relay.vengeful.eu',
+  'relay.nostr.band',
+]
 
 const connect = async () => {
+  const max = relays.length - 1
+  const random = Math.floor(Math.random() * max)
   if (!isConnected) {
-    relay = await Relay.connect(relays[0])
-    console.log(`Connected to Relay: ${relay.url}`)
+    console.log({isConnected, random})
+    relay = await Relay.connect(`wss://${relays[random]}`)
     isConnected = true
   }
+  return relay
 }
 
-const subscribe = async ({
+const subscribe = ({
   authors, kinds, since, onEvent, onClose,
 }) => {
-  await connect()
+  // await connect()
 
   const sub = relay.subscribe(
     [{authors, kinds, since}],

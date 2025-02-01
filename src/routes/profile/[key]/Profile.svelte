@@ -4,7 +4,7 @@
   import {finalizeEvent, verifyEvent} from 'nostr-tools/pure'
   import {page} from '$app/state'
   import {invalidateAll} from '$app/navigation'
-  import {connect, publish, subscribe} from '$lib/relay-connection'
+  import {publish, subscribe} from '$lib/relay-connection'
 
   const {identities, publicKey: hex} = page.data
   const since = getUnixTime(subDays(Date.now(), 200))
@@ -53,9 +53,8 @@
   const title = $derived(profileFound
     ? 'Profile found on the Network.'
     : 'Looking for existing profile...')
-  onMount(async () => {
-    await connect()
-    subscribe({
+  onMount(() => {
+    const subscription = subscribe({
       authors: [hex],
       kinds: [0],
       since,
@@ -65,6 +64,7 @@
         profileFound = true
       },
     })
+    console.log(subscription)
   })
 
 </script>

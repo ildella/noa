@@ -4,7 +4,9 @@ import {TrayIcon} from '@tauri-apps/api/tray'
 import {defaultWindowIcon} from '@tauri-apps/api/app'
 import {Menu} from '@tauri-apps/api/menu'
 import {enable, isEnabled} from '@tauri-apps/plugin-autostart'
+import {subDays, getUnixTime} from 'date-fns'
 import {closeConnection} from '$lib/relay-connection'
+import {connect, publish, subscribe} from '$lib/relay-connection'
 import {nostrsigner, biometric} from '$lib/support'
 
 const quit = itemId => {
@@ -58,6 +60,9 @@ const registerTrayIcon = async () => {
   await TrayIcon.new(options)
 }
 
+  const since = getUnixTime(subDays(Date.now(), 200))
+
+
 export async function init () {
   // eslint-disable-next-line no-undef
   const platform = PLATFORM
@@ -81,6 +86,12 @@ export async function init () {
     .catch(error => console.error(error))
   biometric()
     .then(() => ({}))
+    .catch(error => console.error(error))
+
+  connect()
+    .then(relay => {
+      console.log('Connected to Relay', relay.url)
+    })
     .catch(error => console.error(error))
 
   // const unlisten = await getCurrentWindow().onFocusChanged(({payload: focused}) => {
