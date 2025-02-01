@@ -5,8 +5,9 @@ import * as nip19 from 'nostr-tools/nip19'
 
 import {encrypt, decrypt} from './cipher'
 
+// eslint-disable-next-line no-undef
+const platform = PLATFORM
 const {Download} = BaseDirectory
-
 const defaultPath = 'nostr-keys.txt'
 
 const askForPath = () => {
@@ -29,9 +30,6 @@ const askForPath = () => {
   }
 }
 
-// eslint-disable-next-line no-undef
-const platform = PLATFORM
-
 export const downloadFile = async ({secretKey, publicKey, password}) => {
   const content = JSON.stringify({secretKey, publicKey})
   const ciphertext = await encrypt({content, password})
@@ -51,15 +49,13 @@ export const downloadFile = async ({secretKey, publicKey, password}) => {
   document.body.removeChild(link)
 }
 
-export const uploadFile = ({file, password}) => {
+export const uploadFile = ({file, password, onUploadCompleted}) => {
   const reader = new FileReader()
   reader.onload = async ({target: {result: arrayBuffer}}) => {
     try {
       const content = await decrypt({arrayBuffer, password})
-      console.debug(content)
       localStorage.setItem('identities', `[${content}]`)
-      // TODO: horror, pass the listener as param
-      location.href = '/'
+      onUploadCompleted()
     } catch (error) {
       console.error('Decryption failed:', error)
     }
