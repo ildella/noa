@@ -1,97 +1,57 @@
 <script>
   import {onMount} from 'svelte'
-  import {sha256} from '@noble/hashes/sha256'
+  // import {sha256} from '@noble/hashes/sha256'
   import {bytesToHex, hexToBytes} from '@noble/hashes/utils'
-  import {gcm} from '@noble/ciphers/aes'
-  import {utf8ToBytes} from '@noble/ciphers/utils'
   import {randomBytes} from '@noble/ciphers/webcrypto'
+  // import {gcm} from '@noble/ciphers/aes'
+  // import {utf8ToBytes} from '@noble/ciphers/utils'
 
   import * as nip19 from 'nostr-tools/nip19'
+  import {v2} from 'nostr-tools/nip44'
 
-  let npub = $state()
+  const {data} = $props()
+  const {
+    wallet,
+  } = $derived(data)
+  let secretHex = $state()
   let nsec = $state()
+  let npub = $state()
 
-  const mints = ['https://8333.space:3338']
-  const relays = ['wss://relay1.example.com', 'wss://relay2.example.com']
-
-  let connections = $state([])
-
-  const decryptContent = async encryptedText => {
-  // const bufferData = Buffer.from(encryptedText, 'hex')
-    // const iv = bufferData.slice(0, 12) // Extract IV used during encryption
-    // const ciphertext = bufferData.slice(12)
-    // return JSON.parse(await gcm.decrypt(nsec, iv, ciphertext))
-  }
-
-  const receiveToken = async tokenData => {
-    const decryptedTokenData = await decryptContent(tokenData.content)
-
-    console.log('Received Token Data:', decryptedTokenData)
-
-  // Process token data here...
-  }
-
-  const handleMessage = message => {
-    const eventObject = JSON.parse(message)
-
-    if (eventObject.kind === 7375) {
-      receiveToken(eventObject)
-    } else {
-      console.log('Unhandled Message:', eventObject)
-    }
-  }
-
-  const connectToRelays = async () => {
-    connections = await Promise.all(
-      relays.map(relay => new Promise((resolve, reject) => {
-        const ws = new WebSocket(relay)
-        ws.onopen = () => {
-          console.log(`Connected to ${relay}`)
-          resolve(ws)
-        }
-        ws.onmessage = message => handleMessage(message.data)
-        ws.onerror = error => {
-          console.error(`Error on ${relay}:`, error)
-          reject(error)
-        }
-      }))
-    )
-  }
-
-  const encryptContent = content => {
-    // const iv = crypto.getRandomValues(new Uint8Array(12)) // Generate random IV
-    // const encryptedBytes = await gcm.encrypt(nsec, iv, JSON.stringify(content))
-    // return Buffer.concat([iv, encryptedBytes]).toString('hex') // Prepend IV for decryption later
-    const key = randomBytes(32)
-    const nonce = randomBytes(24)
-    const data = utf8ToBytes(content)
-    const aes = gcm(key, nonce)
-    const ciphertext = aes.encrypt(data)
-    return aes.decrypt(ciphertext)
-  }
+  const mints = ['https://mint.minibits.cash/Bitcoin', 'https://8333.space:3338']
+  const relays = [
+    'relay.damus.io',
+    'relay.primal.net',
+    'relay.nostr.bg',
+    'eden.nostr.land',
+    'relay.vengeful.eu',
+    'relay.nostr.band',
+  ]
 
   const createNip60Wallet = async () => {
+    const {publicKey: walletPubHex} = wallet
     const content = [
       ['balance', '100', 'sat'],
-      ['privkey', nsec],
+      ['privkey', secretHex],
     ]
-
-    const encryptedContent = encryptContent(content)
-    console.log({encryptContent})
-
+    console.log({secretHex, walletPubHex})
+    const conversationKey = v2.utils.getConversationKey(secretHex, walletPubHex)
+    console.log({conversationKey})
+    const nonce = randomBytes(32)
+    console.log({nonce})
+    const encryptedContent = v2.encrypt(content, conversationKey, nonce)
+    console.log({encryptedContent})
     const walletEvent = {
       kind: 37375,
       content: encryptedContent,
       tags: [
         ['d', 'noa-test-wallet'],
         ...mints.map(mint => ['mint', mint]),
-      // Add other tags as needed like name, description etc.
+        ['name', 'NOA embedded wallet'],
+        ...relays.map(relay => ['relay', `wss://${relay}`]),
+      // ['deleted'],
       ],
     }
-
-    await Promise.all(connections.map(conn => conn.send(JSON.stringify(walletEvent))))
-
-    console.log('Wallet event published:', walletEvent)
+    console.log(walletEvent)
   }
 
   import {CashuMint, CashuWallet, MintQuoteState} from '@cashu/cashu-ts'
@@ -149,12 +109,16 @@
     const identities = await localStorage.getItem('identities')
     const [{secretKey, publicKey}] = JSON.parse(identities)
     // console.log({publicKey, secretKey})
+    secretHex = secretKey
     npub = nip19.npubEncode(publicKey)
     nsec = nip19.nsecEncode(hexToBytes(secretKey))
     // console.log({nsec, npub})
     // createCashuWallet()
     //   .then(() => console.log('Wallet created.'))
     //   .catch(error => console.error(error))
+    createNip60Wallet()
+      .then(() => console.log('NIP-60 wallet created.'))
+      .catch(error => console.error(error))
   })
 // Usage Example:
 // (async () => {

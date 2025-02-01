@@ -13,4 +13,4 @@ rm ~/.local/share/applications/NOA-handler.desktop
 
 set -euo pipefail
 yarn desktop.build
-sudo dpkg -i src-tauri/target/debug/bundle/deb/NOA_"$VERSION"_amd64.deb
+sudo dpkg -i "src-tauri/target/$target/bundle/deb/NOA_"$VERSION"_amd64.deb"
