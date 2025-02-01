@@ -6,6 +6,7 @@
   // import {gcm} from '@noble/ciphers/aes'
   // import {utf8ToBytes} from '@noble/ciphers/utils'
   import QRCode from 'qrcode'
+  import ws from 'ws'
 
   // import * as nip19 from 'nostr-tools/nip19'
   import {v2} from 'nostr-tools/nip44'
@@ -104,14 +105,13 @@
     // console.log(wallet.keys, wallet.keysets)
     // console.log(wallet.keys.get('00500550f0494146'))
     mintInfo = await wallet.getMintInfo()
-    console.log(mintInfo)
-    // console.log(info.nuts)
-    // console.log(info.version)
+    // console.log(mintInfo)
+    // console.log(mintInfo.nuts)
     await wallet.loadMint()
     return wallet
   }
 
-  const receiveMinted = async () => {
+  const receiveMinted = async cashuWallet => {
     const mintQuote = {
       expiry: null,
       paid: true,
@@ -120,20 +120,32 @@
       request: 'lnbc1u1pnemqlapp59r5spakkcpf32trxw82hv79v9yt28cp2ehduusgg53k4reauwcesdq8w3jhxaqcqzzsxqyz5vqrzjqvueefmrckfdwyyu39m0lf24sqzcr9vcrmxrvgfn6empxz7phrjxvrttncqq0lcqqyqqqqlgqqqqqqgq2qsp5dsaqlt555vq6qnyqlcr7cekvke6t74pe3f3ej2yusapee9xkza7s9qxpqysgqp936mmmr296wxtdw044tn3kxqfhjthuxstwuj5gkfvejaadwqfdyqxud68tc6kr0spcjqp90dagwf5dlx6rmz7dnlgluefyje5eavugqf0yf3z',
       state: 'PAID',
     }
-    const mintQuoteChecked = await wallet.checkMintQuote(mintQuote.quote)
+    const mintQuoteChecked = await cashuWallet.checkMintQuote(mintQuote.quote)
     console.log(mintQuoteChecked.state, MintQuoteState.PAID)
     if (mintQuoteChecked.state === MintQuoteState.PAID) {
-      const {proofs} = await wallet.mintProofs(100, mintQuote.quote)
+      const {proofs} = await cashuWallet.mintProofs(100, mintQuote.quote)
       console.log({proofs})
     }
   }
 
   const generateInvoice = async () => {
-    const wallet = await createCashuWallet()
-    const mintQuote = await wallet.createMintQuote(21)
+    const cashuWallet = await createCashuWallet()
+    const mintQuote = await cashuWallet.createMintQuote(21)
     // console.log(mintQuote)
     invoiceString = mintQuote.request
     qrCodeURL = await QRCode.toDataURL(invoiceString)
+    const {quote} = mintQuote
+    console.info({quote})
+    const callback = mintQuoteResponse => {
+      const {
+        unit, amount, state, created_time, expiry,
+      } = mintQuoteResponse
+      console.info({unit, amount, state})
+    }
+    const errorCallback = error => {
+      console.warn(error)
+    }
+    return cashuWallet.onMintQuoteUpdates([quote], callback, errorCallback)
   }
 
   onMount(async () => {
@@ -146,9 +158,12 @@
     // nsec = nip19.nsecEncode(hexToBytes(secretKey))
     // console.log({nsec, npub})
     // createCashuWallet()
-    //   .then(() => console.log('Wallet created.'))
+    //   .then(cashuWallet => {
+    //     console.log('Wallet created.')
+    //     receiveMinted(cashuWallet)
+    //   })
     //   .catch(error => console.error(error))
-    // createNip60Wallet()
+  // createNip60Wallet()
     //   .then(() => console.log('NIP-60 wallet created.'))
     //   .catch(error => console.error(error))
     await generateInvoice()
