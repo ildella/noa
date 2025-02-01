@@ -95,7 +95,6 @@
     "@tauri-apps/cli": "2.2.7",
     "autoprefixer": "10.4.20",
     "axios": "1.7.9",
-    "bip39": "3.1.0",
     "date-fns": "4.1.0",
     "eslint": "9.19.0",
     "eslint-nostandard": "0.3.3",

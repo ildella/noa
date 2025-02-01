@@ -1,17 +1,34 @@
 import {generateSecretKey, getPublicKey} from 'nostr-tools/pure'
 import {bytesToHex} from '@noble/hashes/utils'
+import * as bip39 from '@scure/bip39'
+import {wordlist} from '@scure/bip39/wordlists/english'
 
-export async function load () {
-  const wallet = await localStorage.getItem('wallet')
-  console.debug({wallet})
-  if (!wallet) {
-    const sk = generateSecretKey()
-    const publicKey = getPublicKey(sk)
-    const secretKey = bytesToHex(sk)
-    // const backToBytes = hexToBytes(secretKey)
-    const wallet = {secretKey, publicKey}
-    localStorage.setItem('wallet', JSON.stringify(wallet))
-    return {wallet}
+const generatePublicAddress = () => {
+  const sk = generateSecretKey()
+  const publicKey = getPublicKey(sk)
+  const secretKey = bytesToHex(sk)
+  const address = JSON.stringify({secretKey, publicKey})
+  localStorage.setItem('address', address)
+  return address
+}
+
+const generateMnemonic = () => {
+  const mnemonic = bip39.generateMnemonic(wordlist)
+  if (!bip39.validateMnemonic(mnemonic, wordlist)) {
+    throw new Error('Invalid seed')
   }
-  return {wallet: JSON.parse(wallet)}
+  localStorage.setItem('mnemonic', mnemonic)
+  return mnemonic
+}
+export function load () {
+  const hasAddress = localStorage.getItem('address')
+  const address = hasAddress || generatePublicAddress()
+  console.log(address)
+  const hasMnemonic = localStorage.getItem('mnemonic')
+  const mnemonic = hasMnemonic || generateMnemonic()
+  console.log(mnemonic)
+  return {
+    address: JSON.parse(address),
+    mnemonic,
+  }
 }

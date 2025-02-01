@@ -13,7 +13,7 @@
 
   const {data} = $props()
   const {
-    wallet,
+    address, mnemonic,
   } = $derived(data)
   // let secretHex = $state()
   let identityPublicHex = $state()
@@ -47,7 +47,7 @@
     const {
       publicKey: walletPubHex,
       secretKey: walletSecretHex,
-    } = wallet
+    } = address
     const content = [
       ['balance', '100', 'sat'],
       ['privkey', walletSecretHex],
@@ -59,7 +59,7 @@
     // console.log({nonce})
     const encryptedContent = v2.encrypt(content, conversationKey, nonce)
     // console.log({encryptedContent})
-    const walletEvent = {
+    const nip60NewWalletEvent = {
       kind: 37375,
       content: encryptedContent,
       tags: [
@@ -76,9 +76,8 @@
   }
 
   import {CashuMint, CashuWallet, MintQuoteState} from '@cashu/cashu-ts'
-  // import * as bip39 from 'bip39'
-  // import * as bip39 from '@scure/bip39'
-  // import {wordlist} from '@scure/bip39/wordlists/english'
+  import * as bip39 from '@scure/bip39'
+  import {wordlist} from '@scure/bip39/wordlists/english'
 
   // const mintQuote = {
     //   expiry: null,
@@ -91,11 +90,6 @@
 
   // const mintUrl = 'https://8333.space:3338'
   const mintUrl = 'https://mint.minibits.cash/Bitcoin'
-  // const mnemonic = ''
-  // const mnemonic = bip39.generateMnemonic()
-  // if (!bip39.validateMnemonic(mnemonic, wordlist)) {
-  //   throw new Error('Invalid seed')
-  // }
 
   const createCashuWallet = async () => {
     const mint = new CashuMint(mintUrl)
@@ -163,7 +157,7 @@
     //     receiveMinted(cashuWallet)
     //   })
     //   .catch(error => console.error(error))
-  // createNip60Wallet()
+    // createNip60Wallet()
     //   .then(() => console.log('NIP-60 wallet created.'))
     //   .catch(error => console.error(error))
     await generateInvoice()
@@ -173,7 +167,8 @@
 
 <div id='profile'>
   <h2 class='text-2xl font-semibold mb-4'>Money</h2>
-  <p>Wallet public key: {wallet.publicKey}</p>
+  <p>Wallet pubkey: {address.publicKey}</p>
+  <p>Wallet seed: {mnemonic}</p>
   <p>{mintInfo.name} - running {mintInfo.version}</p>
   <p>{mintInfo.description}</p>
   <button
