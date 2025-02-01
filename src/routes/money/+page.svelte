@@ -93,15 +93,12 @@
 
   const createCashuWallet = async () => {
     const mint = new CashuMint(mintUrl)
-    // const bip39seed = await bip39.mnemonicToSeed(mnemonic)
-    // console.log(bip39seed instanceof Uint8Array, bip39seed)
-    const wallet = new CashuWallet(mint, {})
-    // console.log(wallet.keys, wallet.keysets)
-    // console.log(wallet.keys.get('00500550f0494146'))
-    mintInfo = await wallet.getMintInfo()
-    // console.log(mintInfo)
-    // console.log(mintInfo.nuts)
+    const bip39seed = await bip39.mnemonicToSeed(mnemonic)
+    const wallet = new CashuWallet(mint, {bip39seed})
     await wallet.loadMint()
+    mintInfo = await wallet.getMintInfo()
+    // console.log(wallet.keys, wallet.keysets)
+    console.log(wallet.keys.get('00500550f0494146'))
     return wallet
   }
 
@@ -129,7 +126,7 @@
     invoiceString = mintQuote.request
     qrCodeURL = await QRCode.toDataURL(invoiceString)
     const {quote} = mintQuote
-    console.info({quote})
+    // console.debug({quote})
     const callback = mintQuoteResponse => {
       const {
         unit, amount, state, created_time, expiry,
@@ -151,16 +148,15 @@
     // npub = nip19.npubEncode(publicKey)
     // nsec = nip19.nsecEncode(hexToBytes(secretKey))
     // console.log({nsec, npub})
-    // createCashuWallet()
-    //   .then(cashuWallet => {
-    //     console.log('Wallet created.')
-    //     receiveMinted(cashuWallet)
-    //   })
-    //   .catch(error => console.error(error))
-    // createNip60Wallet()
+    createCashuWallet()
+      .then(cashuWallet => {
+        console.log('Wallet created.')
+      })
+      .catch(error => console.error(error))
+  // createNip60Wallet()
     //   .then(() => console.log('NIP-60 wallet created.'))
     //   .catch(error => console.error(error))
-    await generateInvoice()
+    // await generateInvoice()
   })
 
 </script>
