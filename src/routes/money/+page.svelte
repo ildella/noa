@@ -6,41 +6,30 @@
   // import {gcm} from '@noble/ciphers/aes'
   // import {utf8ToBytes} from '@noble/ciphers/utils'
   import QRCode from 'qrcode'
+  import * as bip39 from '@scure/bip39'
+  import {v2} from 'nostr-tools/nip44'
   import {
     CashuMint, CashuWallet, MintQuoteState,
     PaymentRequest, PaymentRequestTransportType,
   } from '@cashu/cashu-ts'
-  import * as bip39 from '@scure/bip39'
-
-  import {v2} from 'nostr-tools/nip44'
 
   const {data} = $props()
-  const {
-    address, mnemonic,
-  } = $derived(data)
-  // let secretHex = $state()
   let identityPublicHex = $state()
   let lnPaymentRequest = $state()
   let cashuPaymentRequest = $state()
   let lnQRCodeURL = $state()
   let cashuQRCodeURL = $state()
+  let mintInfo = $state({})
+  // let nsec = $state()
+  // let npub = $state()
+  const {
+    address, mnemonic,
+  } = $derived(data)
   const {
     publicKey: walletPubHex,
     secretKey: walletSecretHex,
     nprofile,
   } = $derived(address)
-
-  // const qrCodeURL = $derived.by(async () => {
-  //   // console.log({lnPaymentRequest})
-  //   if (!lnPaymentRequest) return ''
-  //   const url = await QRCode.toDataURL(lnPaymentRequest)
-  //   console.log({url})
-  //   return url
-  // })
-  let mintInfo = $state({})
-
-  // let nsec = $state()
-  // let npub = $state()
 
   const mints = [
     'https://mint.minibits.cash/Bitcoin',
@@ -82,15 +71,6 @@
     // console.log(decryptedContent)
   }
 
-  // const mintQuote = {
-    //   expiry: null,
-    //   paid: true,
-    //   pubkey: 'npub1z4vdnms0r2m0txrd8z8k8x74rrkusxtdvwgjsf9nslvrdz8wrlts7rvy2k',
-    //   quote: 'zW0snEmQKEXHzdrM7RacdrPfDsx6Pj1E0SLeimRB',
-    //   request: 'lnbc1u1pnemq6ppp53p8qenstznv8kr3r2fedjqxzr0dy7xxq90xscc7xt4qzc8ekuwqsdq8w3jhxaqcqzpuxqr8pqsp5qhtxh4atyja40h7ue4r68q72vpc6dlmquxwfzz8ecrlvqlkshu2s9qxpqysgq2kza4zprdefpguf756nptpn0xzfnsswjreqmujdxpq94rczd3k59f4mepycsqys34zktykql3dngdhl395u42hwapacy27yhkzks0zqq932fvc',
-    //   state: 'PAID',
-    // }
-
   // const mintUrl = 'https://8333.space:3338'
   const mintUrl = 'https://mint.minibits.cash/Bitcoin'
 
@@ -105,31 +85,9 @@
     return wallet
   }
 
-  // const receiveMinted = async cashuWallet => {
-  //   const mintQuote = {
-  //     expiry: null,
-  //     paid: true,
-  //     pubkey: 'npub1z4vdnms0r2m0txrd8z8k8x74rrkusxtdvwgjsf9nslvrdz8wrlts7rvy2k',
-  //     quote: 'BNlt-xjMzvoPhYOXX8ZJZG8ZEXU70YaXnbYdOSXa',
-  //     request: 'lnbc1u1pnemqlapp59r5spakkcpf32trxw82hv79v9yt28cp2ehduusgg53k4reauwcesdq8w3jhxaqcqzzsxqyz5vqrzjqvueefmrckfdwyyu39m0lf24sqzcr9vcrmxrvgfn6empxz7phrjxvrttncqq0lcqqyqqqqlgqqqqqqgq2qsp5dsaqlt555vq6qnyqlcr7cekvke6t74pe3f3ej2yusapee9xkza7s9qxpqysgqp936mmmr296wxtdw044tn3kxqfhjthuxstwuj5gkfvejaadwqfdyqxud68tc6kr0spcjqp90dagwf5dlx6rmz7dnlgluefyje5eavugqf0yf3z',
-  //     state: 'PAID',
-  //   }
-  //   const mintQuoteChecked = await cashuWallet.checkMintQuote(mintQuote.quote)
-  //   console.log(mintQuoteChecked.state, MintQuoteState.PAID)
-  //   if (mintQuoteChecked.state === MintQuoteState.PAID) {
-  //     const {proofs} = await cashuWallet.mintProofs(100, mintQuote.quote)
-  //     console.log({proofs})
-  //   }
-  // }
-
-  const generateLNInvoice = async cashuWallet => {
-    // const cashuWallet = await createCashuWallet()
+  const generateLNPaymentRequest = async cashuWallet => {
     const mintQuote = await cashuWallet.createMintQuote(21)
-    // console.log(mintQuote)
-    lnPaymentRequest = mintQuote.request
-    lnQRCodeURL = await QRCode.toDataURL(lnPaymentRequest)
-    const {quote} = mintQuote
-    // console.debug({quote})
+    const {request, quote} = mintQuote
     const callback = mintQuoteResponse => {
       const {
         unit, amount, state, created_time, expiry,
@@ -139,9 +97,10 @@
     const errorCallback = error => {
       console.warn(error)
     }
-    return cashuWallet.onMintQuoteUpdates([quote], callback, errorCallback)
+    const subscription = cashuWallet.onMintQuoteUpdates([quote], callback, errorCallback)
+    console.log({subscription})
+    return request
   }
-
   const generateCashuPaymentRequest = () => {
     const request = new PaymentRequest(
       [
@@ -162,6 +121,14 @@
     return pr
   }
 
+  const regeneratePaymentRequests = async cashuWallet => {
+    console.debug('Wallet created.')
+    cashuPaymentRequest = generateCashuPaymentRequest(cashuWallet)
+    lnPaymentRequest = await generateLNPaymentRequest(cashuWallet)
+    cashuQRCodeURL = await QRCode.toDataURL(cashuPaymentRequest)
+    lnQRCodeURL = await QRCode.toDataURL(lnPaymentRequest)
+  }
+
   onMount(async () => {
     const identities = await localStorage.getItem('identities')
     const [{secretKey, publicKey}] = JSON.parse(identities)
@@ -171,18 +138,8 @@
     // npub = nip19.npubEncode(publicKey)
     // nsec = nip19.nsecEncode(hexToBytes(secretKey))
     // console.log({nsec, npub})
-    createCashuWallet()
-      .then(cashuWallet => {
-        console.log('Wallet created.')
-        // generateLNInvoice(cashuWallet)
-        cashuPaymentRequest = generateCashuPaymentRequest()
-        console.log({cashuPaymentRequest})
-        return QRCode.toDataURL(cashuPaymentRequest)
-      })
-      .then(qrCodeURL => {
-        cashuQRCodeURL = qrCodeURL
-      })
-      .catch(error => console.error(error))
+    const cashuWallet = await createCashuWallet()
+    regeneratePaymentRequests(cashuWallet)
   // createNip60Wallet()
     //   .then(() => console.log('NIP-60 wallet created.'))
     //   .catch(error => console.error(error))
@@ -200,7 +157,7 @@
   <!-- <p>{mintInfo.description}</p> -->
   <button
     class='custom-mid-button'
-    onclick={generateLNInvoice}
+    onclick={regeneratePaymentRequests}
   >New invoice.
   </button>
   <p>Pay with Cashu: {cashuPaymentRequest}</p>
