@@ -16,10 +16,11 @@
   const {data} = $props()
   let identityPublicHex = $state()
   let lnPaymentRequest = $state()
-  let cashuPaymentRequest = $state()
   let lnQRCodeURL = $state()
+  let cashuPaymentRequest = $state()
   let cashuQRCodeURL = $state()
   let mintInfo = $state({})
+  let cashuWallet = $state()
   // let nsec = $state()
   // let npub = $state()
   const {
@@ -85,7 +86,16 @@
     return wallet
   }
 
-  const generateLNPaymentRequest = async cashuWallet => {
+  const receiveMintedLNPayment = async ({quote, amount}) => {
+    const mintQuote = await cashuWallet.checkMintQuote(quote)
+    console.log(mintQuote)
+    if (mintQuote.state === MintQuoteState.PAID) {
+      const {proofs} = await cashuWallet.mintProofs(amount, quote)
+      console.log({proofs})
+    }
+  }
+
+  const generateLNPaymentRequest = async () => {
     const mintQuote = await cashuWallet.createMintQuote(21)
     const {request, quote} = mintQuote
     const callback = mintQuoteResponse => {
@@ -93,12 +103,15 @@
         unit, amount, state, created_time, expiry,
       } = mintQuoteResponse
       console.info({unit, amount, state})
+      receiveMintedLNPayment({quote, amount})
     }
     const errorCallback = error => {
       console.warn(error)
     }
-    const subscription = cashuWallet.onMintQuoteUpdates([quote], callback, errorCallback)
-    console.log({subscription})
+    console.info({quote})
+    // onMintQuotePaid also available
+    const subscription = await cashuWallet.onMintQuoteUpdates([quote], callback, errorCallback)
+    console.debug({subscription})
     return request
   }
   const generateCashuPaymentRequest = () => {
@@ -121,7 +134,7 @@
     return pr
   }
 
-  const regeneratePaymentRequests = async cashuWallet => {
+  const regeneratePaymentRequests = async () => {
     console.debug('Wallet created.')
     cashuPaymentRequest = generateCashuPaymentRequest(cashuWallet)
     lnPaymentRequest = await generateLNPaymentRequest(cashuWallet)
@@ -138,13 +151,16 @@
     // npub = nip19.npubEncode(publicKey)
     // nsec = nip19.nsecEncode(hexToBytes(secretKey))
     // console.log({nsec, npub})
-    const cashuWallet = await createCashuWallet()
+    cashuWallet = await createCashuWallet()
     regeneratePaymentRequests(cashuWallet)
   // createNip60Wallet()
     //   .then(() => console.log('NIP-60 wallet created.'))
     //   .catch(error => console.error(error))
     // await generateLNInvoice()
   })
+
+  let quote = $state('Ys2krWjlnBN-7wjI_AHOaVWnuIgTkleSYKRA3oqV')
+  let amount = $state(21)
 
 </script>
 
@@ -175,5 +191,25 @@
       src={lnQRCodeURL}
       alt='QRCode should be displayed here.'
     />
+  </div>
+  <div class='flex flex-col space-y-4 p-4 bg-gray-100 rounded-lg shadow-md'>
+    <input
+      type='text'
+      bind:value={quote}
+      placeholder='Quote Identifier'
+      class='p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
+    />
+    <input
+      type='text'
+      bind:value={amount}
+      placeholder='Amount in Sats'
+      class='p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
+    />
+    <button
+      class='custom-mid-button p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500'
+      onclick={() => receiveMintedLNPayment({quote, amount})}
+    >
+      Receive
+    </button>
   </div>
 </div>

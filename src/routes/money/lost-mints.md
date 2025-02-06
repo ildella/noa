@@ -1,3 +1,15 @@
+# Quotes to get back
+
+```sh
+http get https://mint.minibits.cash/Bitcoin/v1/mint/quote/bolt11/BNlt-xjMzvoPhYOXX8ZJZG8ZEXU70YaXnbYdOSXa
+http get https://8333.space:3338/v1/mint/quote/bolt11/zW0snEmQKEXHzdrM7RacdrPfDsx6Pj1E0SLeimRB
+
+
+Ys2krWjlnBN-7wjI_AHOaVWnuIgTkleSYKRA3oqV
+http get https://mint.minibits.cash/Bitcoin/v1/mint/quote/bolt11/Ys2krWjlnBN-7wjI_AHOaVWnuIgTkleSYKRA3oqV
+```
+
+
   // const receiveMinted = async cashuWallet => {
   //   const mintQuote = {
   //     expiry: null,
