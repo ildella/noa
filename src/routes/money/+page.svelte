@@ -73,7 +73,8 @@
   }
 
   // const mintUrl = 'https://8333.space:3338'
-  const mintUrl = 'https://mint.minibits.cash/Bitcoin'
+  // const mintUrl = 'https://mint.minibits.cash/Bitcoin'
+  const mintUrl = 'http://localhost:3338'
 
   const createCashuWallet = async () => {
     const mint = new CashuMint(mintUrl)
@@ -81,6 +82,7 @@
     const wallet = new CashuWallet(mint, {bip39seed})
     await wallet.loadMint()
     mintInfo = await wallet.getMintInfo()
+    console.info(mintInfo)
     // console.log(wallet.keys, wallet.keysets)
     // console.log(wallet.keys.get('00500550f0494146'))
     return wallet
@@ -90,8 +92,10 @@
     const mintQuote = await cashuWallet.checkMintQuote(quote)
     console.log(mintQuote)
     if (mintQuote.state === MintQuoteState.PAID) {
-      const {proofs} = await cashuWallet.mintProofs(amount, quote)
-      console.log({proofs})
+      const proofs = await cashuWallet.mintProofs(amount, quote, {
+        // counter: '',
+      })
+      console.log(JSON.stringify(proofs))
     }
   }
 
