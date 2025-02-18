@@ -8,8 +8,8 @@ test('starting page', async ({page}) => {
   await page.waitForURL()
   // await expect(page).toHaveTitle(/NOA/)
   await expect(page).toHaveTitle('Nostr Onboarding')
-  const welcomeH2 = page.locator('h2:has-text("Welcome")')
-  await expect(welcomeH2).toBeVisible()
+  const welcome = page.locator('h1:has-text("Welcome")')
+  await expect(welcome).toBeVisible()
 })
 
 test('edit profile', async ({page}) => {
