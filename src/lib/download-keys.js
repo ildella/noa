@@ -1,6 +1,7 @@
 import {save} from '@tauri-apps/plugin-dialog'
 import {writeTextFile, BaseDirectory} from '@tauri-apps/plugin-fs'
 import {getPublicKey} from 'nostr-tools/pure'
+import {hexToBytes} from '@noble/hashes/utils'
 import * as nip19 from 'nostr-tools/nip19'
 
 import {encrypt, decrypt} from './cipher'
@@ -63,8 +64,18 @@ export const uploadFile = ({file, password, onUploadCompleted}) => {
   reader.readAsArrayBuffer(file)
 }
 
-export const importSecretKey = ({secretKey: nsec}) => {
-  const {data: hex} = nip19.decode(nsec)
+const getPrivkeyBytes = nsec => {
+  try {
+    const isHex = nsec.indexOf('nsec') === -1
+    return isHex ? hexToBytes(nsec) : nip19.decode(nsec).data
+  } catch (error) {
+    throw new Error(`${nsec} not a valid secret key: ${error.message}`, {source: error})
+  }
+}
+
+export const importSecretKey = ({secretKey}) => {
+  // const {data: hex} = nip19.decode(nsec)
+  const hex = getPrivkeyBytes(secretKey)
   const publicKey = getPublicKey(hex)
   localStorage.setItem('identities', JSON.stringify([{secretKey: hex, publicKey}]))
   return true

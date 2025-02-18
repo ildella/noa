@@ -64,7 +64,7 @@
         profileFound = true
       },
     })
-    console.log(subscription)
+    console.log({subscription})
   })
 
 </script>
