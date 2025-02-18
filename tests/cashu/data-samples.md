@@ -1,4 +1,4 @@
-#
+# Cashu data samples
 
 ```js
 deterministic proof

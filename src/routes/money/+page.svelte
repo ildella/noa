@@ -90,13 +90,13 @@
 
   const receiveMintedLNPayment = async ({quote, amount}) => {
     const mintQuote = await cashuWallet.checkMintQuote(quote)
-    console.log(mintQuote)
+    console.log({mintQuote})
     if (mintQuote.state === MintQuoteState.PAID) {
-      const proofs = await cashuWallet.mintProofs(amount, quote, {
-      // TODO: some outputdata
-      })
-      console.log(JSON.stringify(proofs))
-    // TODO: store proof to Dexie/IndexDB
+    // const proofs = await cashuWallet.mintProofs(amount, quote, {
+      // // TODO: some outputdata
+      // })
+      // console.log({proofs})
+    // TODO: store JSON.stringify(proofs) to Dexie/IndexDB
     }
   }
 
@@ -107,7 +107,7 @@
       const {
         unit, amount, state, created_time, expiry,
       } = mintQuoteResponse
-      console.info({unit, amount, state})
+      console.info('callback:', {unit, amount, state})
       receiveMintedLNPayment({quote, amount})
     }
     const errorCallback = error => {
