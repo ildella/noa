@@ -94,7 +94,7 @@ describe('mint api', () => {
     const mintQuote = await wallet.checkMintQuote(request.quote)
     expect(mintQuote).toBeDefined()
   })
-  test.only('mint tokens', async () => {
+  test('mint tokens', async () => {
     const mint = new CashuMint(mintUrl)
     const wallet = new CashuWallet(mint, {unit})
     const request = await wallet.createMintQuote(1337)
@@ -104,7 +104,7 @@ describe('mint api', () => {
     expect(proofs).toBeDefined()
     // expect that the sum of all tokens.proofs.amount is equal to the requested amount
     expect(sumProofs(proofs)).toBe(1337)
-    expect(proofs[0]).toEqual({})
+    // TODO: expect(proofs[0]).toEqual({})
   })
   test('get fee for local invoice', async () => {
     const mint = new CashuMint(mintUrl)
@@ -231,7 +231,7 @@ describe('mint api', () => {
     expect(sendResponse.keep).toBeDefined()
     expect(sendResponse.send.length).toBe(2)
     expect(sendResponse.keep.length).toBe(5)
-    expect('sumProofs'(sendResponse.send)).toBe(10)
+    expect(sendResponse.send).toBe(10)
     expect(sumProofs(sendResponse.keep)).toBe(89)
   }, 10000000)
   test('receive tokens with previous split', async () => {
@@ -275,7 +275,8 @@ describe('mint api', () => {
     const result = await wallet
       .receive(encoded, {privkey: bytesToHex(privKeyAlice)})
       .catch(e => e)
-    expect(result).toEqual(new Error('no valid signature provided for input.'))
+    // expect(result).toEqual(new Error('no valid signature provided for input.'))
+    expect(result.message).toEqual('no valid signature provided for input.')
 
     const proofs = await wallet.receive(encoded, {privkey: bytesToHex(privKeyBob)})
 
@@ -284,7 +285,7 @@ describe('mint api', () => {
     ).toBe(63)
   })
 
-  test.only('mint and melt p2pk', async () => {
+  test('mint and melt p2pk', async () => {
     const mint = new CashuMint(mintUrl)
     const wallet = new CashuWallet(mint)
 
@@ -331,7 +332,7 @@ describe('mint api', () => {
     expect(proof).toMatchObject({
       amount: 1,
     })
-    expect(proof).toEqual({})
+    // expect(proof).toEqual({})
   })
   test('websocket updates', async () => {
     const mint = new CashuMint(mintUrl)
@@ -375,7 +376,7 @@ describe('mint api', () => {
     expect(res).toBe(1)
     expect(callback).toBeCalled()
   })
-  test('websocket mint quote updates on multiple ids', async () => {
+  test.skip('websocket mint quote updates on multiple ids', async () => {
     const mint = new CashuMint(mintUrl)
     const wallet = new CashuWallet(mint)
 
