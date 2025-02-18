@@ -56,14 +56,14 @@
     </p>
   </div> -->
   <div class='p-2'>
-    <h2>Public Key</h2>
+    <h3>Public Key</h3>
     <p class='mb-2'>This is how people find you.</p>
     <button
       class='custom-mid-button'
       onclick={() => {
         showPublicQRCode = !showPublicQRCode
       }}
-    >Show/Hide QR Code</button>
+    >QR Code</button>
     <CopyButton
       style='custom-mid-button'
       label='Copy'
@@ -81,14 +81,14 @@
     {/if}
   </div>
   <div class='p-2'>
-    <h2>Secret Key</h2>
+    <h3>Secret Key</h3>
     <p class='mb-2'>You NEVER share this.</p>
     <button
       class='custom-mid-button'
       onclick={() => {
         showQRCode = !showQRCode
       }}
-    >Show/Hide QR Code</button>
+    >QR Code</button>
     <CopyButton
       style='custom-mid-button'
       label='Copy'
@@ -107,7 +107,10 @@
   </div>
   <div class='flex flex-col space-y-4 p-2'>
     <div class='flex flex-col space-y-2 mb-8'>
-      <h2>Export key pair for backup.</h2>
+      <h2>
+        <i class='fa-solid fa-key'></i>
+        Export key (backup)
+      </h2>
       <label
         for='password'
         class='text-lg'
@@ -124,16 +127,20 @@
         class='custom-big-button'
         onclick={() => downloadFile({secretKey, publicKey, password})}
       >
+        <i class='fa-solid fa-cloud-arrow-down'></i>
         Download Keys
-        <i class='fa-solid fa-download'></i>
       </button>
     </div>
+    <h2>
+      <i class='fa-solid fa-triangle-exclamation'></i>
+      Danger area!
+    </h2>
     <button
       class='custom-mid-warn-button'
       onclick={() => deleteKey()}
     >
-      Delete to start over.
       <i class='fa-solid fa-recycle'></i>
+      Delete to start over.
     </button>
   </div>
 </div>
