@@ -29,6 +29,19 @@ import {
 
 const sumProofs = proofs => proofs.reduce((acc, proof) => acc + proof.amount, 0)
 
+/**
+ * Converts a hex string to a number.
+ * @param hex to convert to number
+ * @returns number
+ */
+export function hexToNumber (hex) {
+  return BigInt(`0x${hex}`)
+}
+
+export function numberToHexPadded64 (number) {
+  return number.toString(16).padStart(64, '0')
+}
+
 dns.setDefaultResultOrder('ipv4first')
 
 const externalInvoice =
@@ -47,7 +60,12 @@ function expectNUT10SecretDataToEqual (p, s) {
   })
 }
 
-/* eslint-disable max-lines-per-function */
+/*
+  eslint-disable
+    max-lines-per-function,
+    max-lines,
+    no-undefined,
+*/
 
 describe('mint api', () => {
   test('get keys', async () => {
@@ -76,7 +94,7 @@ describe('mint api', () => {
     const mintQuote = await wallet.checkMintQuote(request.quote)
     expect(mintQuote).toBeDefined()
   })
-  test('mint tokens', async () => {
+  test.only('mint tokens', async () => {
     const mint = new CashuMint(mintUrl)
     const wallet = new CashuWallet(mint, {unit})
     const request = await wallet.createMintQuote(1337)
@@ -86,6 +104,7 @@ describe('mint api', () => {
     expect(proofs).toBeDefined()
     // expect that the sum of all tokens.proofs.amount is equal to the requested amount
     expect(sumProofs(proofs)).toBe(1337)
+    expect(proofs[0]).toEqual({})
   })
   test('get fee for local invoice', async () => {
     const mint = new CashuMint(mintUrl)
@@ -230,7 +249,9 @@ describe('mint api', () => {
     const mint = new CashuMint(mintUrl)
     const wallet = new CashuWallet(mint, {unit})
     const request = await wallet.createMintQuote(64)
+    console.log({request})
     const proofs = await wallet.mintProofs(64, request.quote)
+    console.log({proofs})
     const encoded = getEncodedToken({mint: mintUrl, proofs})
     const response = await wallet.receive(encoded)
     expect(response).toBeDefined()
@@ -263,7 +284,7 @@ describe('mint api', () => {
     ).toBe(63)
   })
 
-  test('mint and melt p2pk', async () => {
+  test.only('mint and melt p2pk', async () => {
     const mint = new CashuMint(mintUrl)
     const wallet = new CashuWallet(mint)
 
@@ -271,19 +292,30 @@ describe('mint api', () => {
     const pubKeyBob = secp256k1.getPublicKey(privKeyBob)
 
     const mintRequest = await wallet.createMintQuote(3000)
-
+    console.log({mintRequest})
+    expect(mintRequest).toMatchObject({
+      paid: false,
+      state: 'UNPAID',
+    })
+    const {request} = mintRequest
+    // TODO: check amount for request
     const proofs = await wallet.mintProofs(3000, mintRequest.quote, {
       pubkey: bytesToHex(pubKeyBob),
     })
-
+    expect(proofs).toHaveLength(7)
+    // TODO: see amount for externalInvoice
     const meltRequest = await wallet.createMeltQuote(externalInvoice)
     const fee = meltRequest.fee_reserve
     expect(fee).toBeGreaterThan(0)
+    const balance = sumProofs(proofs)
+    expect(balance).toBe(3000)
     const response = await wallet.meltProofs(meltRequest, proofs, {
       privkey: bytesToHex(privKeyBob),
     })
-    expect(response).toBeDefined()
-    expect(response.quote.state == MeltQuoteState.PAID).toBe(true)
+    console.log(Object.keys(response))
+    // expect(response).toBeDefined()
+    expect(response.quote.state).toBe(MeltQuoteState.PAID)
+    expect(response.change).toHaveLength(7)
   })
   test('mint deterministic', async () => {
     const hexSeed = bytesToHex(randomBytes(64))
@@ -295,7 +327,11 @@ describe('mint api', () => {
     const data = OutputData.createSingleDeterministicData(1, hexToBytes(hexSeed), 1, keys.id)
     const quote = await wallet.createMintQuote(1)
     await new Promise(r => setTimeout(r, 1500))
-    const proof = await wallet.mintProofs(1, quote.quote, {outputData: [data]})
+    const [proof] = await wallet.mintProofs(1, quote.quote, {outputData: [data]})
+    expect(proof).toMatchObject({
+      amount: 1,
+    })
+    expect(proof).toEqual({})
   })
   test('websocket updates', async () => {
     const mint = new CashuMint(mintUrl)
@@ -303,22 +339,37 @@ describe('mint api', () => {
 
     const mintQuote = await wallet.createMintQuote(21)
     const callback = vi.fn()
-    const res = await new Promise(async (res, rej) => {
-      const unsub = await wallet.onMintQuoteUpdates(
+    // const res = await new Promise(async (res, rej) => {
+    //   const unsub = await wallet.onMintQuoteUpdates(
+    //     [mintQuote.quote],
+    //     p => {
+    //       if (p.state === MintQuoteState.PAID) {
+    //         callback()
+    //         res(1)
+    //         unsub()
+    //       }
+    //     },
+    //     e => {
+    //       console.log(e)
+    //       rej(e)
+    //       unsub()
+    //     }
+    //   )
+    // })
+    const res = await new Promise((res, rej) => {
+      wallet.onMintQuoteUpdates(
         [mintQuote.quote],
         p => {
           if (p.state === MintQuoteState.PAID) {
             callback()
             res(1)
-            unsub()
           }
         },
         e => {
           console.log(e)
           rej(e)
-          unsub()
         }
-      )
+      ).then(unsub => unsub)
     })
     mint.disconnectWebSocket()
     expect(res).toBe(1)

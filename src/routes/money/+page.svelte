@@ -93,9 +93,10 @@
     console.log(mintQuote)
     if (mintQuote.state === MintQuoteState.PAID) {
       const proofs = await cashuWallet.mintProofs(amount, quote, {
-        // counter: '',
+      // TODO: some outputdata
       })
       console.log(JSON.stringify(proofs))
+    // TODO: store proof to Dexie/IndexDB
     }
   }
 
