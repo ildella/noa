@@ -148,9 +148,9 @@
   }
 
   onMount(async () => {
-    const identities = await localStorage.getItem('identities')
-    const [{secretKey, publicKey}] = JSON.parse(identities)
-    // console.log({publicKey, secretKey})
+    console.log('data.identities:', data.identities)
+    const [{secretKey, publicKey}] = data.identities
+    console.log({publicKey, secretKey})
     // secretHex = secretKey
     identityPublicHex = publicKey
     // npub = nip19.npubEncode(publicKey)

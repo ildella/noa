@@ -23,6 +23,12 @@ yarn android
 yarn android --host 192.168.x.x
 ```
 
+#### Try Money
+
+```sh
+start-cashu-nutshell-mint-docker.sh
+```
+
 ## Onboarding and migration
 
 * https://nostr.org/
