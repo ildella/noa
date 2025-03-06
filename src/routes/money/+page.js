@@ -25,8 +25,7 @@ const generateMnemonic = () => {
   return mnemonic
 }
 
-export function load (data) {
-  console.log(data)
+export function load () {
   const hasAddress = localStorage.getItem('address')
   const address = hasAddress || generatePublicAddress()
   const hasMnemonic = localStorage.getItem('mnemonic')
