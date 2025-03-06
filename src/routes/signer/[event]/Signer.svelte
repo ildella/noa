@@ -79,7 +79,7 @@
 
 <div class='space-y-4 px-4'>
   <h1 class='text-2xl'>Signer</h1>
-  <pre class='bg-gray-100 p-4 rounded overflow-x-auto max-w-full sm:max-w-md md:max-w-lg'>
+  <pre class='bg-gray-100 p-4 rounded-sm overflow-x-auto max-w-full sm:max-w-md md:max-w-lg'>
     <code
       id='signed-event'
       class='language-json'

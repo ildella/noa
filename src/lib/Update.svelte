@@ -99,6 +99,7 @@
 
   onMount(() => {
     // console.debug('check for release:', releasesUrl)
+    if (currentVersion === 'Web') return
     axios(releasesUrl, {timeout: 2500}).then(({data: {version: publishedVersion}}) => {
       // console.debug('Current version:', currentVersion)
       // console.debug('Last published release:', publishedVersion)
