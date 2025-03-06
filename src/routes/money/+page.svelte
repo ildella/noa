@@ -157,7 +157,7 @@
     // nsec = nip19.nsecEncode(hexToBytes(secretKey))
     // console.log({nsec, npub})
     cashuWallet = await createCashuWallet()
-    regeneratePaymentRequests(cashuWallet)
+    // regeneratePaymentRequests(cashuWallet)
   // createNip60Wallet()
     //   .then(() => console.log('NIP-60 wallet created.'))
     //   .catch(error => console.error(error))
