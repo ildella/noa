@@ -16,7 +16,7 @@ const camelcase = [
 ]
 
 const ignores = [
-  'src-tauri/*',
+  'tauri/*',
   'build/*',
   '.svelte-kit/*',
   'docs/*',

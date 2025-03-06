@@ -1,12 +1,14 @@
 import {save} from '@tauri-apps/plugin-dialog'
 import {writeTextFile, BaseDirectory} from '@tauri-apps/plugin-fs'
 import {getPublicKey} from 'nostr-tools/pure'
+import {hexToBytes} from '@noble/hashes/utils'
 import * as nip19 from 'nostr-tools/nip19'
 
 import {encrypt, decrypt} from './cipher'
 
+// eslint-disable-next-line no-undef
+const platform = PLATFORM
 const {Download} = BaseDirectory
-
 const defaultPath = 'nostr-keys.txt'
 
 const askForPath = () => {
@@ -29,9 +31,6 @@ const askForPath = () => {
   }
 }
 
-// eslint-disable-next-line no-undef
-const platform = PLATFORM
-
 export const downloadFile = async ({secretKey, publicKey, password}) => {
   const content = JSON.stringify({secretKey, publicKey})
   const ciphertext = await encrypt({content, password})
@@ -51,15 +50,13 @@ export const downloadFile = async ({secretKey, publicKey, password}) => {
   document.body.removeChild(link)
 }
 
-export const uploadFile = ({file, password}) => {
+export const uploadFile = ({file, password, onUploadCompleted}) => {
   const reader = new FileReader()
   reader.onload = async ({target: {result: arrayBuffer}}) => {
     try {
       const content = await decrypt({arrayBuffer, password})
-      console.debug(content)
       localStorage.setItem('identities', `[${content}]`)
-      // TODO: horror, pass the listener as param
-      location.href = '/'
+      onUploadCompleted()
     } catch (error) {
       console.error('Decryption failed:', error)
     }
@@ -67,8 +64,18 @@ export const uploadFile = ({file, password}) => {
   reader.readAsArrayBuffer(file)
 }
 
-export const importSecretKey = ({secretKey: nsec}) => {
-  const {data: hex} = nip19.decode(nsec)
+const getPrivkeyBytes = nsec => {
+  try {
+    const isHex = nsec.indexOf('nsec') === -1
+    return isHex ? hexToBytes(nsec) : nip19.decode(nsec).data
+  } catch (error) {
+    throw new Error(`${nsec} not a valid secret key: ${error.message}`, {source: error})
+  }
+}
+
+export const importSecretKey = ({secretKey}) => {
+  // const {data: hex} = nip19.decode(nsec)
+  const hex = getPrivkeyBytes(secretKey)
   const publicKey = getPublicKey(hex)
   localStorage.setItem('identities', JSON.stringify([{secretKey: hex, publicKey}]))
   return true

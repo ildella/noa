@@ -41,7 +41,7 @@
       <p>{category.description}</p>
       <div class='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4'>
         {#each category.apps as app}
-          <div class='bg-white p-4 rounded shadow'>
+          <div class='bg-white p-4 rounded-sm shadow-sm'>
             <img
               src={app.logo}
               alt='{app.name} Logo'

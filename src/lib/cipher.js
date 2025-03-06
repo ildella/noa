@@ -6,8 +6,8 @@ import {randomBytes} from '@noble/ciphers/webcrypto'
 const nonceLength = 24
 
 const encrypt = async ({content, password}) => {
-  console.log({password})
-  if (!password) return content
+  if (!password)
+    return content
   const key = await sha256(new TextEncoder().encode(password))
   const nonce = randomBytes(nonceLength)
   const aes = gcm(key, nonce)
@@ -20,6 +20,8 @@ const encrypt = async ({content, password}) => {
 }
 
 const decrypt = async ({arrayBuffer, password}) => {
+  if (!password)
+    return bytesToUtf8(arrayBuffer)
   const ciphertext = new Uint8Array(arrayBuffer)
   const nonce = ciphertext.slice(0, nonceLength)
   const encrypted = ciphertext.slice(nonceLength)
