@@ -7,11 +7,9 @@
       <span class='text-white font-bold text-xl'>NOA
       </span>
     </a>
-    <a
-      class='text-gray-700'
-      href='/about'
-    >
-      About
+    <a href='/about'>
+      <span class='text-gray-700'>About</span>
+
     </a>
   </div>
 </header>
