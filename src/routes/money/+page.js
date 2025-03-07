@@ -3,6 +3,8 @@ import {bytesToHex} from '@noble/hashes/utils'
 import * as bip39 from '@scure/bip39'
 import {wordlist} from '@scure/bip39/wordlists/english'
 import * as nip19 from 'nostr-tools/nip19'
+import {liveQuery} from 'dexie'
+import {db} from '$lib/db'
 
 import {relays} from '$lib/relays'
 
@@ -25,6 +27,10 @@ const generateMnemonic = () => {
   return mnemonic
 }
 
+const incoming = liveQuery(
+  () => db.incoming.toArray()
+)
+
 export function load () {
   const hasAddress = localStorage.getItem('address')
   const address = hasAddress || generatePublicAddress()
@@ -33,5 +39,6 @@ export function load () {
   return {
     address: JSON.parse(address),
     mnemonic,
+    incoming,
   }
 }

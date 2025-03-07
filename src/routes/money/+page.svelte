@@ -13,10 +13,6 @@
     PaymentRequest, PaymentRequestTransportType,
   } from '@cashu/cashu-ts'
 
-  import {db} from '$lib/db'
-  const sumProofs = proofs => proofs.reduce((acc, proof) => acc + proof.amount, 0)
-
-  const {data} = $props()
   let identityPublicHex = $state()
   let lnPaymentRequest = $state()
   let lnQRCodeURL = $state()
@@ -24,25 +20,26 @@
   let cashuQRCodeURL = $state()
   let mintInfo = $state({})
   let cashuWallet = $state()
+  let balance = $state(0)
   // let nsec = $state()
   // let npub = $state()
-  const {
-    address, mnemonic,
-  } = $derived(data)
+  const {data} = $props()
+  const {address, mnemonic, incoming} = $derived(data)
   const {
     // publicKey: walletPubHex,
     secretKey: walletSecretHex,
     nprofile,
   } = $derived(address)
 
-  const balance = $derived.by(async () => {
-    // const allProofs = await db.incoming.map(({proofs}) => proofs)
-    const allProofs = await db.incoming.toArray()
-      .then(items => items.flatMap(({proofs}) => proofs))
-    console.log({allProofs})
-    return sumProofs(allProofs)
-  // return 'N/A'
+  const sumProofs = proofs => proofs.reduce((acc, proof) => acc + proof.amount, 0)
+
+  incoming.subscribe(proofs => {
+    balance = sumProofs(proofs)
   })
+
+  // $effect(() => {
+
+  // })
 
   const mints = [
     'https://mint.minibits.cash/Bitcoin',
@@ -197,13 +194,20 @@
 </script>
 
 <div id='profile'>
+  <p>Balance: {balance}</p>
+<!--   <ul>
+    {#if $incoming}
+      {#each $incoming as friend (friend.id)}
+        <li>{friend.amount}</li>
+      {/each}
+    {/if}
+  </ul> -->
   <h2 class='text-2xl font-semibold mb-4'>Money</h2>
   <p>Wallet pubkey: {address.publicKey}</p>
   <p>Profile: {address.nprofile}</p>
   <p>Wallet seed: {mnemonic}</p>
   <p>{mintInfo.name} - running {mintInfo.version}</p>
   <!-- <p>{mintInfo.description}</p> -->
-  <p>Balance: {balance}</p>
   <button
     class='custom-mid-button'
     onclick={regeneratePaymentRequests}

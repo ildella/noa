@@ -91,6 +91,8 @@ export async function init () {
     })
     .catch(error => console.error(error))
 
+  db.incoming.add({amount: 2})
+
   // const unlisten = await getCurrentWindow().onFocusChanged(({payload: focused}) => {
   //   console.log('Focus changed, window is focused? ' + focused)
   // })
