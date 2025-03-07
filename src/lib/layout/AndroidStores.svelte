@@ -9,7 +9,7 @@
     <p>(Click will download and install.)</p>
   </div>
   <div class='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4'>
-    {#each stores as appStore}
+    {#each stores as appStore (appStore.name)}
       <div class='bg-white p-4 rounded-sm shadow-sm'>
         <button onclick={() => open(appStore.download)}>
           <img

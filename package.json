@@ -1,6 +1,8 @@
 {
   "name": "NOA",
   "description": "Nostr Onboarding App",
+  "version": "0.6.3-beta.1",
+  "type": "module",
   "license": "GPL-3.0",
   "repository": {
     "type": "git",
@@ -25,8 +27,6 @@
     "email": "daniele@frankie.tools",
     "url": "https://ildella.net/"
   },
-  "type": "module",
-  "version": "0.6.3-beta.1",
   "packageManager": "yarn@4.7.0+sha512.5a0afa1d4c1d844b3447ee3319633797bcd6385d9a44be07993ae52ff4facabccafb4af5dcd1c2f9a94ac113e5e9ff56f6130431905884414229e284e37bb7c9",
   "scripts": {
     "build": "vite build",
@@ -86,15 +86,15 @@
     "@noble/ciphers": "1.2.1",
     "@noble/curves": "1.8.1",
     "@noble/hashes": "1.7.1",
-    "@playwright/test": "1.50.1",
+    "@playwright/test": "1.51.0",
     "@scure/bip39": "1.5.4",
     "@stylistic/eslint-plugin-js": "4.2.0",
     "@sveltejs/adapter-static": "3.0.8",
     "@sveltejs/kit": "2.18.0",
     "@sveltejs/vite-plugin-svelte": "5.0.3",
-    "@tailwindcss/postcss": "4.0.10",
+    "@tailwindcss/postcss": "4.0.11",
     "@tauri-apps/cli": "2.3.1",
-    "axios": "1.8.1",
+    "axios": "1.8.2",
     "date-fns": "4.1.0",
     "eslint": "9.21.0",
     "eslint-nostandard": "0.3.6",
@@ -103,15 +103,15 @@
     "globals": "16.0.0",
     "jsdom": "26.0.0",
     "nostr-tools": "2.10.4",
-    "playwright": "1.50.1",
+    "playwright": "1.51.0",
     "qrcode": "1.5.4",
     "semver": "7.7.1",
     "svelte": "5.22.5",
-    "svelte-check": "4.1.4",
-    "tailwindcss": "4.0.10",
+    "svelte-check": "4.1.5",
+    "tailwindcss": "4.0.11",
     "typescript": "5.8.2",
-    "vite": "6.2.0",
-    "vitest": "3.0.7"
+    "vite": "6.2.1",
+    "vitest": "3.0.8"
   },
   "stableVersion": "0.6.2"
 }

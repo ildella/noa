@@ -15,7 +15,7 @@
             href={`/profile/${data.publicKey}`}
             class='clickable font-semibold text-blue-600'
           >Complete Profile</a>
-          <span>associated with this identity.</span>
+          <!-- <span>associated with this identity.</span> -->
         </div>
       </div>
     </div>
@@ -27,8 +27,8 @@
           <a
             href={`/identities/${data.publicKey}`}
             class='clickable font-semibold text-green-600'
-          >View and Backup</a>
-          <span>this new identity.</span>
+          >Verify and Backup</a>
+          <!-- <span>this new identity.</span> -->
         </div>
       </div>
     </div>

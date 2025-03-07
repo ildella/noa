@@ -5,10 +5,10 @@ export async function load ({params}) {
   const identities = JSON.parse(await localStorage.getItem('identities'))
   const [{secretKey, publicKey}] = identities.filter(({publicKey}) => publicKey === key)
   const npub = nip19.npubEncode(publicKey)
-  const shortPublicKey = publicKey.slice(0, 12)
-  const shortNpub = npub.slice(0, 12)
+  // const shortPublicKey = publicKey.slice(0, 12)
+  // const shortNpub = npub.slice(0, 12)
   // const nprofile = nip19.nprofileEncode({ pubkey: hex, relays })
   return {
-    secretKey, publicKey, shortPublicKey, npub, shortNpub,
+    secretKey, publicKey, npub,
   }
 }

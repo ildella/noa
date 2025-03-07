@@ -6,9 +6,7 @@
   import {downloadFile} from '$lib/download-keys.js'
 
   const {data} = $props()
-  const {
-    secretKey, publicKey, shortPublicKey, npub, shortNpub,
-  } = $derived(data)
+  const {secretKey, publicKey, npub} = $derived(data)
   const {help} = $derived(data)
   // const qrCodeURL = $derived.by(() => QRCode.toDataURL(secretKey))
   let qrCodeURL = $state('')

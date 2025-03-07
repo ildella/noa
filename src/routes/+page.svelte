@@ -10,7 +10,7 @@
     platform, identities, help, authorProfile,
   } = $derived(data)
   const isAndroid = $derived(platform === 'android')
-  const {hex, npub} = $derived.by(() => {
+  const {hex} = $derived.by(() => {
     if (!identities) return {}
     const [{publicKey: hex}] = identities
     const npub = nip19.npubEncode(hex)
@@ -86,7 +86,7 @@
     {#if identities}
       <a href={`/identities/${hex}`}>Manage</a>
       <a
-        href={'/identities'}
+        href='/identities'
         disabled={true}
         class='opacity-50 cursor-not-allowed'
         title='Not available yet.'

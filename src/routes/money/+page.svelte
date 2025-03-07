@@ -27,7 +27,7 @@
     address, mnemonic,
   } = $derived(data)
   const {
-    publicKey: walletPubHex,
+    // publicKey: walletPubHex,
     secretKey: walletSecretHex,
     nprofile,
   } = $derived(address)
@@ -44,7 +44,7 @@
     'relay.nostr.band',
   ]
 
-  const createNip60Wallet = async () => {
+  const createNip60Wallet = () => {
     const content = [
       ['balance', '100', 'sat'],
       ['privkey', walletSecretHex],
@@ -90,7 +90,7 @@
 
   const receiveMintedLNPayment = async ({quote, amount}) => {
     const mintQuote = await cashuWallet.checkMintQuote(quote)
-    console.log({mintQuote})
+    console.log({mintQuote, amount})
     if (mintQuote.state === MintQuoteState.PAID) {
     // const proofs = await cashuWallet.mintProofs(amount, quote, {
       // // TODO: some outputdata
@@ -107,7 +107,13 @@
       const {
         unit, amount, state, created_time, expiry,
       } = mintQuoteResponse
-      console.info('callback:', {unit, amount, state})
+      console.debug('callback:', {
+        unit,
+        amount,
+        state,
+        created_time,
+        expiry,
+      })
       receiveMintedLNPayment({quote, amount})
     }
     const errorCallback = error => {
@@ -157,7 +163,7 @@
     // nsec = nip19.nsecEncode(hexToBytes(secretKey))
     // console.log({nsec, npub})
     cashuWallet = await createCashuWallet()
-    // regeneratePaymentRequests(cashuWallet)
+  // regeneratePaymentRequests(cashuWallet)
   // createNip60Wallet()
     //   .then(() => console.log('NIP-60 wallet created.'))
     //   .catch(error => console.error(error))

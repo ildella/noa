@@ -18,5 +18,5 @@
     />
     <span class='font-semibold'>NOA on GitHub</span>
   </a>
-  <p>Version: {currentVersion}</p>
+  <p>Version: {currentVersion} {platform}</p>
 </div>
