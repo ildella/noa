@@ -102,9 +102,12 @@ describe('mint api', () => {
     expect(request.request).toContain('lnbc1337')
     const proofs = await wallet.mintProofs(1337, request.quote)
     expect(proofs).toBeDefined()
-    // expect that the sum of all tokens.proofs.amount is equal to the requested amount
+    expect(proofs).toHaveLength(6)
+    expect(proofs[0]).toMatchObject({
+      amount: 1,
+      dleqValid: true,
+    })
     expect(sumProofs(proofs)).toBe(1337)
-    // TODO: expect(proofs[0]).toEqual({})
   })
   test('get fee for local invoice', async () => {
     const mint = new CashuMint(mintUrl)

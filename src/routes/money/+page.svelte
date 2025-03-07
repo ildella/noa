@@ -14,6 +14,7 @@
   } from '@cashu/cashu-ts'
 
   import {db} from '$lib/db'
+  const sumProofs = proofs => proofs.reduce((acc, proof) => acc + proof.amount, 0)
 
   const {data} = $props()
   let identityPublicHex = $state()
@@ -33,6 +34,15 @@
     secretKey: walletSecretHex,
     nprofile,
   } = $derived(address)
+
+  const balance = $derived.by(async () => {
+    // const allProofs = await db.incoming.map(({proofs}) => proofs)
+    const allProofs = await db.incoming.toArray()
+      .then(items => items.flatMap(({proofs}) => proofs))
+    console.log({allProofs})
+    return sumProofs(allProofs)
+  // return 'N/A'
+  })
 
   const mints = [
     'https://mint.minibits.cash/Bitcoin',
@@ -193,6 +203,7 @@
   <p>Wallet seed: {mnemonic}</p>
   <p>{mintInfo.name} - running {mintInfo.version}</p>
   <!-- <p>{mintInfo.description}</p> -->
+  <p>Balance: {balance}</p>
   <button
     class='custom-mid-button'
     onclick={regeneratePaymentRequests}
