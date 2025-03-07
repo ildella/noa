@@ -92,18 +92,16 @@
     const mintQuote = await cashuWallet.checkMintQuote(quote)
     console.log({mintQuote, amount})
     if (mintQuote.state === MintQuoteState.PAID) {
-    // const proofs = await cashuWallet.mintProofs(amount, quote, {
-      // // TODO: some outputdata
-      // })
-      // console.log({proofs})
+      const proofs = await cashuWallet.mintProofs(amount, quote)
+      console.log({proofs})
     // TODO: store JSON.stringify(proofs) to Dexie/IndexDB
     }
   }
 
-  const generateLNPaymentRequest = async () => {
-    const mintQuote = await cashuWallet.createMintQuote(21)
+  const generateLNPaymentRequest = async ({amount = 21} = {}) => {
+    const mintQuote = await cashuWallet.createMintQuote(amount)
     const {request, quote} = mintQuote
-    const callback = mintQuoteResponse => {
+    const quoteUpdatesCallback = mintQuoteResponse => {
       const {
         unit, amount, state, created_time, expiry,
       } = mintQuoteResponse
@@ -121,11 +119,20 @@
     }
     console.info({quote})
     // onMintQuotePaid also available
-    const subscription = await cashuWallet.onMintQuoteUpdates([quote], callback, errorCallback)
+    const subscription = await cashuWallet.onMintQuoteUpdates(
+      [quote],
+      quoteUpdatesCallback,
+      errorCallback
+    )
+    // const subscription = await cashuWallet.onMintQuotePaid(
+    //   [quote],
+    //   quoteUpdatesCallback,
+    //   errorCallback
+    // )
     console.debug({subscription})
     return request
   }
-  const generateCashuPaymentRequest = () => {
+  const generateCashuPaymentRequest = ({amount = 21} = {}) => {
     const request = new PaymentRequest(
       [
         {
@@ -135,7 +142,7 @@
         },
       ],
       '4840f51e',
-      21,
+      amount,
       'sat',
       [mintUrl],
       'bribe me, bitch!',
@@ -146,11 +153,10 @@
   }
 
   const regeneratePaymentRequests = async () => {
-    console.debug('Wallet created.')
-    cashuPaymentRequest = generateCashuPaymentRequest(cashuWallet)
-    lnPaymentRequest = await generateLNPaymentRequest(cashuWallet)
-    cashuQRCodeURL = await QRCode.toDataURL(cashuPaymentRequest)
+    lnPaymentRequest = await generateLNPaymentRequest()
+    cashuPaymentRequest = generateCashuPaymentRequest()
     lnQRCodeURL = await QRCode.toDataURL(lnPaymentRequest)
+    cashuQRCodeURL = await QRCode.toDataURL(cashuPaymentRequest)
   }
 
   onMount(async () => {
@@ -163,6 +169,7 @@
     // nsec = nip19.nsecEncode(hexToBytes(secretKey))
     // console.log({nsec, npub})
     cashuWallet = await createCashuWallet()
+    console.debug('Wallet created.')
   // regeneratePaymentRequests(cashuWallet)
   // createNip60Wallet()
     //   .then(() => console.log('NIP-60 wallet created.'))
