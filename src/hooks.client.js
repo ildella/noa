@@ -7,6 +7,7 @@ import {enable, isEnabled} from '@tauri-apps/plugin-autostart'
 import {closeConnection} from '$lib/relay-connection'
 import {connect} from '$lib/relay-connection'
 import {nostrsigner, biometric} from '$lib/support'
+import {db} from '$lib/db'
 
 const quit = itemId => {
   closeConnection()

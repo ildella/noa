@@ -13,6 +13,8 @@
     PaymentRequest, PaymentRequestTransportType,
   } from '@cashu/cashu-ts'
 
+  import {db} from '$lib/db'
+
   const {data} = $props()
   let identityPublicHex = $state()
   let lnPaymentRequest = $state()
@@ -94,7 +96,9 @@
     if (mintQuote.state === MintQuoteState.PAID) {
       const proofs = await cashuWallet.mintProofs(amount, quote)
       console.log({proofs})
-    // TODO: store JSON.stringify(proofs) to Dexie/IndexDB
+      const incomingId = await db.incoming.add({quote, amount, proofs})
+      console.log({incomingId})
+    // TODO: store JSON.stringify(proofs) to Dexie ??
     }
   }
 
