@@ -565,6 +565,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@gandlaf21/bolt11-decode@npm:3.1.1":
+  version: 3.1.1
+  resolution: "@gandlaf21/bolt11-decode@npm:3.1.1"
+  dependencies:
+    bech32: "npm:^1.1.2"
+    bn.js: "npm:^4.11.8"
+    buffer: "npm:^6.0.3"
+  checksum: 10c0/fec4821079881cc6faa03f527dcf45e76cff5070f6e98ebd748f38b00c5e5c31956c3cbd380af9a38f114a64bc403cc8544da9d953e7d49d8b9b68a62252451b
+  languageName: node
+  linkType: hard
+
 "@humanfs/core@npm:^0.19.1":
   version: 0.19.1
   resolution: "@humanfs/core@npm:0.19.1"
@@ -1636,6 +1647,7 @@ __metadata:
     "@eslint/js": "npm:9.21.0"
     "@fortawesome/fontawesome-free": "npm:6.7.2"
     "@fortawesome/free-solid-svg-icons": "npm:6.7.2"
+    "@gandlaf21/bolt11-decode": "npm:3.1.1"
     "@noble/ciphers": "npm:1.2.1"
     "@noble/curves": "npm:1.8.1"
     "@noble/hashes": "npm:1.7.1"
@@ -1656,6 +1668,7 @@ __metadata:
     "@tauri-apps/plugin-fs": "npm:2.2.0"
     "@tauri-apps/plugin-shell": "npm:2.2.0"
     axios: "npm:1.8.2"
+    clipanion: "npm:4.0.0-rc.4"
     date-fns: "npm:4.1.0"
     dexie: "npm:4.0.11"
     eslint: "npm:9.21.0"
@@ -1830,6 +1843,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"bech32@npm:^1.1.2":
+  version: 1.1.4
+  resolution: "bech32@npm:1.1.4"
+  checksum: 10c0/5f62ca47b8df99ace9c0e0d8deb36a919d91bf40066700aaa9920a45f86bb10eb56d537d559416fd8703aa0fb60dddb642e58f049701e7291df678b2033e5ee5
+  languageName: node
+  linkType: hard
+
+"bn.js@npm:^4.11.8":
+  version: 4.12.1
+  resolution: "bn.js@npm:4.12.1"
+  checksum: 10c0/b7f37a0cd5e4b79142b6f4292d518b416be34ae55d6dd6b0f66f96550c8083a50ffbbf8bda8d0ab471158cb81aa74ea4ee58fe33c7802e4a30b13810e98df116
+  languageName: node
+  linkType: hard
+
 "brace-expansion@npm:^1.1.7":
   version: 1.1.11
   resolution: "brace-expansion@npm:1.1.11"
@@ -1950,6 +1977,17 @@ __metadata:
   version: 2.2.0
   resolution: "clean-stack@npm:2.2.0"
   checksum: 10c0/1f90262d5f6230a17e27d0c190b09d47ebe7efdd76a03b5a1127863f7b3c9aec4c3e6c8bb3a7bbf81d553d56a1fd35728f5a8ef4c63f867ac8d690109742a8c1
+  languageName: node
+  linkType: hard
+
+"clipanion@npm:4.0.0-rc.4":
+  version: 4.0.0-rc.4
+  resolution: "clipanion@npm:4.0.0-rc.4"
+  dependencies:
+    typanion: "npm:^3.8.0"
+  peerDependencies:
+    typanion: "*"
+  checksum: 10c0/047b415b59a5e9777d00690fba563ccc850eca6bf27790a88d1deea3ecc8a89840ae9aed554ff284cc698a9f3f20256e43c25ff4a7c4c90a71e5e7d9dca61dd1
   languageName: node
   linkType: hard
 
@@ -4510,6 +4548,13 @@ __metadata:
   dependencies:
     punycode: "npm:^2.3.1"
   checksum: 10c0/1521b6e7bbc8adc825c4561480f9fe48eb2276c81335eed9fa610aa4c44a48a3221f78b10e5f18b875769eb3413e30efbf209ed556a17a42aa8d690df44b7bee
+  languageName: node
+  linkType: hard
+
+"typanion@npm:^3.8.0":
+  version: 3.14.0
+  resolution: "typanion@npm:3.14.0"
+  checksum: 10c0/8b03b19844e6955bfd906c31dc781bae6d7f1fb3ce4fe24b7501557013d4889ae5cefe671dafe98d87ead0adceb8afcb8bc16df7dc0bd2b7331bac96f3a7cae2
   languageName: node
   linkType: hard
 

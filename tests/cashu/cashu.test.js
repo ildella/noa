@@ -335,7 +335,6 @@ describe('mint api', () => {
     expect(proof).toMatchObject({
       amount: 1,
     })
-    // expect(proof).toEqual({})
   })
   test('websocket updates', async () => {
     const mint = new CashuMint(mintUrl)

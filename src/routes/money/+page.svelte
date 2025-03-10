@@ -48,44 +48,46 @@
     const wallet = new CashuWallet(mint, {bip39seed})
     await wallet.loadMint()
     mintInfo = await wallet.getMintInfo()
-    console.log({mintInfo})
+    console.debug({mintInfo})
     // console.log(wallet.keys, wallet.keysets)
     // console.log(wallet.keys.get('00500550f0494146'))
     return wallet
   }
 
-  // let quote = $state('Ys2krWjlnBN-7wjI_AHOaVWnuIgTkleSYKRA3oqV')
-  const amount = $state(21)
-
-  const receiveMintedLNPayment = async () => {
-    const {
-      paid, state, quote, request,
-    } = await cashuWallet.checkMintQuote(lnPaymentQuote)
-    console.log(quote === lnPaymentQuote, request === lnPaymentRequest)
-    console.log({state, amount})
+  const mintLnPayment = async ({quote}) => {
+    const {paid, state, request} = await cashuWallet.checkMintQuote(quote)
+    // console.log({state})
     if (state === MintQuoteState.PAID) {
+      const {amount} = await db.quotes
+        .where('quote').equals(quote)
+        .first()
+      console.log('Minting: ', {quote, amount})
       const proofs = await cashuWallet.mintProofs(amount, quote)
       // console.log({proofs})
       await db.incoming.add({quote, amount, proofs})
+    // await db.proofs.add(proofs)
     }
+  }
+
+  const quoteUpdatesCallback = mintQuoteResponse => {
+    const {
+      unit, amount, state, created_time, expiry,
+      quote, request,
+    } = mintQuoteResponse
+    console.log('Mint updated notfication:', {
+      quote,
+      unit,
+      amount,
+      state,
+      created_time,
+      expiry,
+    })
   }
 
   const generateLNPaymentRequest = async ({amount = 21} = {}) => {
     const mintQuote = await cashuWallet.createMintQuote(amount)
     const {request, quote} = mintQuote
-    const quoteUpdatesCallback = mintQuoteResponse => {
-      const {
-        unit, amount, state, created_time, expiry,
-      } = mintQuoteResponse
-      console.log('Mint callback:', {
-        unit,
-        amount,
-        state,
-        created_time,
-        expiry,
-      })
-      receiveMintedLNPayment({quote, amount})
-    }
+    await db.quotes.add({quote, request, amount})
     const errorCallback = error => {
       console.warn(error)
     }
@@ -94,11 +96,16 @@
       quoteUpdatesCallback,
       errorCallback
     )
-    // await cashuWallet.onMintQuotePaid(
-    //   [quote],
-    //   quoteUpdatesCallback,
-    //   errorCallback
-    // )
+    await cashuWallet.onMintQuotePaid(
+      quote,
+      params => {
+        console.log('onMintQuotePaid', params)
+        mintLnPayment(params)
+      },
+      error => {
+        console.error(error)
+      }
+    )
     // console.debug({subscription})
     return {request, quote}
   }
@@ -123,7 +130,7 @@
   }
 
   const regeneratePaymentRequests = async () => {
-    const {request, quote} = await generateLNPaymentRequest()
+    const {request, quote} = await generateLNPaymentRequest({amount: 50})
     lnPaymentRequest = request
     lnPaymentQuote = quote
     cashuPaymentRequest = generateCashuPaymentRequest()
@@ -141,7 +148,6 @@
     // nsec = nip19.nsecEncode(hexToBytes(secretKey))
     // console.log({nsec, npub})
     cashuWallet = await createCashuWallet()
-    console.debug('Wallet created.')
   // regeneratePaymentRequests(cashuWallet)
   // createNip60Wallet()
     //   .then(() => console.log('NIP-60 wallet created.'))
@@ -182,7 +188,7 @@
     /> -->
     <button
       class='custom-mid-button p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-hidden focus:ring-2 focus:ring-blue-500'
-      onclick={() => receiveMintedLNPayment()}
+      onclick={() => mintLnPayment()}
     >
       Receive
     </button>
