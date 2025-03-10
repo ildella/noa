@@ -42,7 +42,7 @@ export async function generateCashuPaymentRequest (amount) {
   return quote.request
 }
 
-export async function sendTokens (amount, proofs, paymentRequest) {
+export async function sendTokens (amount, proofs) {
   const mint = new CashuMint(mintUrl)
   const wallet = new CashuWallet(mint, {unit})
   const sendResponse = await wallet.send(amount, proofs)
@@ -50,9 +50,10 @@ export async function sendTokens (amount, proofs, paymentRequest) {
   return encodedToken
 }
 
-export async function receiveTokens (paymentRequest) {
+export async function receiveTokens (encodedToken) {
   const mint = new CashuMint(mintUrl)
   const wallet = new CashuWallet(mint, {unit})
-  const response = await wallet.receive(paymentRequest)
+  await wallet.loadMint()
+  const response = await wallet.receive(encodedToken)
   return response
 }

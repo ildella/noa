@@ -35,8 +35,8 @@ program
 program
   .command('mint-proofs <amount> <quoteId>')
   .description('Mint proofs for a given quote ID')
-  .action((amount, quoteId) => {
-    const proofs = mintProofs(amount, quoteId)
+  .action(async (amount, quoteId) => {
+    const proofs = await mintProofs(amount, quoteId)
     console.log('Minted Proofs:', proofs)
   })
 
@@ -44,8 +44,8 @@ program
 program
   .command('create-melt-quote <invoice>')
   .description('Create a melt quote for a given LN invoice')
-  .action(invoice => {
-    const quote = createMeltQuote(invoice)
+  .action(async invoice => {
+    const quote = await createMeltQuote(invoice)
     console.log('Melt Quote:', quote)
   })
 
@@ -62,8 +62,8 @@ program
 program
   .command('generate-cashu-payment-request <amount>')
   .description('Generate a Cashu payment request for a given amount')
-  .action(amount => {
-    const paymentRequest = generateCashuPaymentRequest(amount)
+  .action(async amount => {
+    const paymentRequest = await generateCashuPaymentRequest(amount)
     console.log('Cashu Payment Request:', paymentRequest)
   })
 
@@ -71,17 +71,18 @@ program
 program
   .command('send-tokens <amount> <proofs> <paymentRequest>')
   .description('Send tokens to a Cashu payment request')
-  .action((amount, proofs, paymentRequest) => {
-    const encodedToken = sendTokens(amount, JSON.parse(proofs), paymentRequest)
+  .action(async (amount, proofs, paymentRequest) => {
+    const encodedToken = await sendTokens(amount, JSON.parse(proofs), paymentRequest)
     console.log('Encoded Token:', encodedToken)
   })
 
 // Receive Tokens
 program
-  .command('receive-tokens <paymentRequest>')
+  .command('receive-tokens <encodedToken>')
   .description('Receive tokens from a Cashu payment request')
-  .action(paymentRequest => {
-    const response = receiveTokens(paymentRequest)
+  .action(async encodedToken => {
+    console.log({encodedToken})
+    const response = await receiveTokens(encodedToken)
     console.log('Received Tokens:', response)
   })
 

@@ -103,6 +103,7 @@
     "eslint-nostandard": "0.3.6",
     "eslint-plugin-playwright": "2.2.0",
     "eslint-plugin-svelte": "3.0.3",
+    "exstream.js": "0.25.0",
     "globals": "16.0.0",
     "jsdom": "26.0.0",
     "nostr-tools": "2.10.4",

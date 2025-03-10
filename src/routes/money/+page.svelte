@@ -1,5 +1,11 @@
 <script>
+  /*
+    eslint-disable max-lines
+  */
   import {onMount} from 'svelte'
+  // import exstream from 'exstream.js'
+  // const {__} = exstream
+
   // import {sha256} from '@noble/hashes/sha256'
   // import {bytesToHex, hexToBytes} from '@noble/hashes/utils'
   // import {gcm} from '@noble/ciphers/aes'
@@ -9,9 +15,11 @@
   import {
     CashuMint, CashuWallet, MintQuoteState,
     PaymentRequest, PaymentRequestTransportType,
+    getEncodedTokenV4,
   } from '@cashu/cashu-ts'
 
   import {db} from '$lib/db'
+  import SendToken from './SendToken.svelte'
 
   let identityPublicHex = $state()
   let lnPaymentRequest = $state()
@@ -33,10 +41,13 @@
   } = $derived(address)
 
   const sumProofs = proofs => proofs.reduce((acc, proof) => acc + proof.amount, 0)
+  let currentProofs = $state([])
 
-  incoming.subscribe(proofs => {
-    // console.log('Incoming changed:')
-    balance = sumProofs(proofs)
+  incoming.subscribe(quotes => {
+    // console.log('Incoming changed:', quotes)
+    balance = sumProofs(quotes)
+    currentProofs = quotes.map(({proofs}) => proofs).flat()
+    console.log(currentProofs.length)
   })
 
   const mintUrl = 'http://localhost:3338'
@@ -63,9 +74,17 @@
         .first()
       console.log('Minting: ', {quote, amount})
       const proofs = await cashuWallet.mintProofs(amount, quote)
-      // console.log({proofs})
       await db.incoming.add({quote, amount, proofs})
-    // await db.proofs.add(proofs)
+    // console.log(proofs)
+      // proofs.forEach(proof => {
+      //   console.log(proof)
+      //   db.proofs
+      //     .add({id: 'ciao', amount: 1, fuck: 'you'})
+      //     .then(id => {
+      //       console.log('new proof', id)
+      //     })
+      //     .catch(error => console.warn(error))
+      // })
     }
   }
 
@@ -138,6 +157,15 @@
     cashuQRCodeURL = await QRCode.toDataURL(cashuPaymentRequest)
   }
 
+  const sendCash = async ({amount}) => {
+    // console.log(currentProofs)
+    const proofs = currentProofs
+    // console.log(proofs)
+    const response = await cashuWallet.send(amount, proofs, {includeFees: false})
+    const encoded = getEncodedTokenV4({mint: mintUrl, proofs: response.send})
+    console.log(encoded)
+  }
+
   onMount(async () => {
     console.debug('data.identities:', data.identities)
     const [{secretKey, publicKey}] = data.identities
@@ -154,6 +182,8 @@
     //   .catch(error => console.error(error))
     // await generateLNInvoice()
   })
+
+  const clear = () => db.incoming.clear()
 
 </script>
 
@@ -172,34 +202,24 @@
   <!-- <p>Profile: {address.nprofile}</p> -->
   <!-- <p>Wallet seed: {mnemonic}</p> -->
   <!-- <p>{mintInfo.description}</p> -->
-  <div class='flex flex-col space-y-4 p-4 bg-gray-100 rounded-lg shadow-md'>
-    <h3>Receive cash from quote</h3>
-    <input
-      type='text'
-      bind:value={lnPaymentQuote}
-      placeholder='Quote Identifier'
-      class='p-2 border border-gray-300 rounded-md focus:outline-hidden focus:ring-2 focus:ring-blue-500'
-    /><!--
-    <input
-      type='text'
-      bind:value={amount}
-      placeholder='Amount in Sats'
-      class='p-2 border border-gray-300 rounded-md focus:outline-hidden focus:ring-2 focus:ring-blue-500'
-    /> -->
-    <button
-      class='custom-mid-button p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-hidden focus:ring-2 focus:ring-blue-500'
-      onclick={() => mintLnPayment()}
-    >
-      Receive
-    </button>
-  </div>
-
+  <button
+    class='custom-mid-button'
+    onclick={clear}
+  >Clear
+  </button>
+</div>
+<SendToken
+  {sendCash}
+  defaultAmount={balance}
+/>
+<div id='new-invoice'>
+  <h3>New invoice</h3>
   <button
     class='custom-mid-button'
     onclick={regeneratePaymentRequests}
-  >New invoice.
+  >Generate new invoice.
   </button>
-  <p>Pay with Ligthning: {lnPaymentRequest}</p>
+  <p>Ligthning request: {lnPaymentRequest}</p>
   <p>Quote: {lnPaymentQuote}</p>
   <div>
     <img

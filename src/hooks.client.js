@@ -85,11 +85,11 @@ export async function init () {
     .then(() => ({}))
     .catch(error => console.error(error))
 
-  connect()
-    .then(relay => {
-      console.log('Connected to Relay', relay.url)
-    })
-    .catch(error => console.error(error))
+  // connect()
+  //   .then(relay => {
+  //     console.log('Connected to Relay', relay.url)
+  //   })
+  //   .catch(error => console.error(error))
 
   // db.incoming.update(40, {id: 40, amount: 4})
 

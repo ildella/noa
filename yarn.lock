@@ -1675,6 +1675,7 @@ __metadata:
     eslint-nostandard: "npm:0.3.6"
     eslint-plugin-playwright: "npm:2.2.0"
     eslint-plugin-svelte: "npm:3.0.3"
+    exstream.js: "npm:0.25.0"
     globals: "npm:16.0.0"
     jsdom: "npm:26.0.0"
     nostr-tools: "npm:2.10.4"
@@ -2661,6 +2662,13 @@ __metadata:
   version: 3.1.1
   resolution: "exponential-backoff@npm:3.1.1"
   checksum: 10c0/160456d2d647e6019640bd07111634d8c353038d9fa40176afb7cd49b0548bdae83b56d05e907c2cce2300b81cae35d800ef92fefb9d0208e190fa3b7d6bb579
+  languageName: node
+  linkType: hard
+
+"exstream.js@npm:0.25.0":
+  version: 0.25.0
+  resolution: "exstream.js@npm:0.25.0"
+  checksum: 10c0/9efb65038c96ec04935d76519b525e67af4519172425e25ad6be2f95ec7e7ee60b5bd465e4e993897714bb42a184e3251179c384a1cb63c7871498c8b37dff9c
   languageName: node
   linkType: hard
 
