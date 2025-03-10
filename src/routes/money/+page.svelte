@@ -36,7 +36,7 @@
   const {address, mnemonic, incoming} = $derived(data)
   const {
     // publicKey: walletPubHex,
-    secretKey: walletSecretHex,
+    // secretKey: walletSecretHex,
     nprofile,
   } = $derived(address)
 
@@ -47,7 +47,8 @@
     // console.log('Incoming changed:', quotes)
     balance = sumProofs(quotes)
     currentProofs = quotes.map(({proofs}) => proofs).flat()
-  // console.log(currentProofs.length)
+    console.log('proofs:', currentProofs.length)
+    // currentProofs.forEach(proof => console.log(proof))
   })
 
   const mintUrl = 'http://localhost:3338'
@@ -159,9 +160,9 @@
 
   const sendCash = async ({amount}) => {
     // console.log(currentProofs)
-    const proofs = currentProofs
-    console.log('Sending:', {amount})
-    const response = await cashuWallet.send(amount, proofs, {includeFees: false})
+    const total = sumProofs(currentProofs)
+    console.log('Sending:', {total, amount})
+    const response = await cashuWallet.send(amount, currentProofs, {includeFees: false})
     console.log(response)
     const encoded = getEncodedTokenV4({mint: mintUrl, proofs: response.send})
     console.log(encoded)
@@ -211,7 +212,6 @@
 </div>
 <SendToken
   {sendCash}
-  defaultAmount={balance}
 />
 <div id='new-invoice'>
   <h3>New invoice</h3>
