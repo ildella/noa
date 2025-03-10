@@ -35,7 +35,7 @@
   const sumProofs = proofs => proofs.reduce((acc, proof) => acc + proof.amount, 0)
 
   incoming.subscribe(proofs => {
-    console.log('Incoming changed:')
+    // console.log('Incoming changed:')
     balance = sumProofs(proofs)
   })
 
@@ -57,16 +57,17 @@
   // let quote = $state('Ys2krWjlnBN-7wjI_AHOaVWnuIgTkleSYKRA3oqV')
   const amount = $state(21)
 
-  const receiveMintedLNPayment = async ({quote, amount}) => {
-    const mintQuote = await cashuWallet.checkMintQuote(quote)
-    console.log({mintQuote, amount})
-    // if (mintQuote.state === MintQuoteState.PAID) {
-    const proofs = await cashuWallet.mintProofs(amount, quote)
-    console.log({proofs})
-    const incomingId = await db.incoming.add({quote, amount, proofs})
-    console.log({incomingId})
-  // TODO: store JSON.stringify(proofs) to Dexie ??
-    // }
+  const receiveMintedLNPayment = async () => {
+    const {
+      paid, state, quote, request,
+    } = await cashuWallet.checkMintQuote(lnPaymentQuote)
+    console.log(quote === lnPaymentQuote, request === lnPaymentRequest)
+    console.log({state, amount})
+    if (state === MintQuoteState.PAID) {
+      const proofs = await cashuWallet.mintProofs(amount, quote)
+      // console.log({proofs})
+      await db.incoming.add({quote, amount, proofs})
+    }
   }
 
   const generateLNPaymentRequest = async ({amount = 21} = {}) => {
@@ -76,7 +77,7 @@
       const {
         unit, amount, state, created_time, expiry,
       } = mintQuoteResponse
-      console.debug('callback:', {
+      console.log('Mint callback:', {
         unit,
         amount,
         state,
@@ -88,19 +89,17 @@
     const errorCallback = error => {
       console.warn(error)
     }
-    console.info({quote})
-    // onMintQuotePaid also available
-    const subscription = await cashuWallet.onMintQuoteUpdates(
+    await cashuWallet.onMintQuoteUpdates(
       [quote],
       quoteUpdatesCallback,
       errorCallback
     )
-    // const subscription = await cashuWallet.onMintQuotePaid(
+    // await cashuWallet.onMintQuotePaid(
     //   [quote],
     //   quoteUpdatesCallback,
     //   errorCallback
     // )
-    console.debug({subscription})
+    // console.debug({subscription})
     return {request, quote}
   }
   const generateCashuPaymentRequest = ({amount = 21} = {}) => {
@@ -120,7 +119,7 @@
       true // single use
     )
     const pr = request.toEncodedRequest()
-    return {request: pr}
+    return pr
   }
 
   const regeneratePaymentRequests = async () => {
@@ -155,13 +154,13 @@
 <div id='profile'>
   <p>Balance: {balance}</p>
   <p>{mintInfo.name} - running {mintInfo.version}</p>
-  <ul>
+  <!-- <ul>
     {#if $incoming}
       {#each $incoming as friend (friend.id)}
         <li>{friend.amount}</li>
       {/each}
     {/if}
-  </ul>
+  </ul> -->
   <h2 class='text-2xl font-semibold mb-4'>Money</h2>
   <p>Wallet pubkey: {address.publicKey}</p>
   <!-- <p>Profile: {address.nprofile}</p> -->
@@ -183,7 +182,7 @@
     /> -->
     <button
       class='custom-mid-button p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-hidden focus:ring-2 focus:ring-blue-500'
-      onclick={() => receiveMintedLNPayment({lnPaymentQuote})}
+      onclick={() => receiveMintedLNPayment()}
     >
       Receive
     </button>
