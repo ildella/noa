@@ -27,18 +27,25 @@ const generateMnemonic = () => {
   return mnemonic
 }
 
+const mints = [
+  'https://mint.minibits.cash/Bitcoin',
+  'https://8333.space:3338',
+]
+
 const incoming = liveQuery(
   () => db.incoming.toArray()
 )
 
 export function load () {
-  const hasAddress = localStorage.getItem('address')
-  const address = hasAddress || generatePublicAddress()
-  const hasMnemonic = localStorage.getItem('mnemonic')
-  const mnemonic = hasMnemonic || generateMnemonic()
+  const localAddress = localStorage.getItem('address')
+  const address = localAddress || generatePublicAddress()
+  const localMnemonic = localStorage.getItem('mnemonic')
+  const mnemonic = localMnemonic || generateMnemonic()
   return {
     address: JSON.parse(address),
     mnemonic,
     incoming,
+    relays,
+    mints,
   }
 }

@@ -2,19 +2,20 @@
   import {onMount} from 'svelte'
   // import {sha256} from '@noble/hashes/sha256'
   // import {bytesToHex, hexToBytes} from '@noble/hashes/utils'
-  import {randomBytes} from '@noble/ciphers/webcrypto'
   // import {gcm} from '@noble/ciphers/aes'
   // import {utf8ToBytes} from '@noble/ciphers/utils'
   import QRCode from 'qrcode'
   import * as bip39 from '@scure/bip39'
-  import {v2} from 'nostr-tools/nip44'
   import {
     CashuMint, CashuWallet, MintQuoteState,
     PaymentRequest, PaymentRequestTransportType,
   } from '@cashu/cashu-ts'
 
+  import {db} from '$lib/db'
+
   let identityPublicHex = $state()
   let lnPaymentRequest = $state()
+  let lnPaymentQuote = $state()
   let lnQRCodeURL = $state()
   let cashuPaymentRequest = $state()
   let cashuQRCodeURL = $state()
@@ -34,79 +35,38 @@
   const sumProofs = proofs => proofs.reduce((acc, proof) => acc + proof.amount, 0)
 
   incoming.subscribe(proofs => {
+    console.log('Incoming changed:')
     balance = sumProofs(proofs)
   })
 
-  // $effect(() => {
-
-  // })
-
-  const mints = [
-    'https://mint.minibits.cash/Bitcoin',
-    'https://8333.space:3338',
-  ]
-  const relays = [
-    'relay.damus.io',
-    'relay.primal.net',
-    'eden.nostr.land',
-    'relay.vengeful.eu',
-    'relay.nostr.band',
-  ]
-
-  const createNip60Wallet = () => {
-    const content = [
-      ['balance', '100', 'sat'],
-      ['privkey', walletSecretHex],
-    ]
-    // console.log({secretHex, walletPubHex})
-    const conversationKey = v2.utils.getConversationKey(walletSecretHex, identityPublicHex)
-    // console.log({conversationKey})
-    const nonce = randomBytes(32)
-    // console.log({nonce})
-    const encryptedContent = v2.encrypt(content, conversationKey, nonce)
-    // console.log({encryptedContent})
-    const nip60NewWalletEvent = {
-      kind: 37375,
-      content: encryptedContent,
-      tags: [
-        ['d', 'noa-test-wallet'],
-        ...mints.map(mint => ['mint', mint]),
-        ['name', 'NOA embedded NIP-60 wallet'],
-        ...relays.map(relay => ['relay', `wss://${relay}`]),
-      // ['deleted'],
-      ],
-    }
-  // console.log(walletEvent)
-    // const decryptedContent = v2.decrypt(encryptedContent, conversationKey)
-    // console.log(decryptedContent)
-  }
-
-  // const mintUrl = 'https://8333.space:3338'
-  // const mintUrl = 'https://mint.minibits.cash/Bitcoin'
   const mintUrl = 'http://localhost:3338'
 
   const createCashuWallet = async () => {
+    console.debug('Starting wallet...')
     const mint = new CashuMint(mintUrl)
     const bip39seed = await bip39.mnemonicToSeed(mnemonic)
     const wallet = new CashuWallet(mint, {bip39seed})
     await wallet.loadMint()
     mintInfo = await wallet.getMintInfo()
-    console.info(mintInfo)
+    console.log({mintInfo})
     // console.log(wallet.keys, wallet.keysets)
     // console.log(wallet.keys.get('00500550f0494146'))
     return wallet
   }
 
+  // let quote = $state('Ys2krWjlnBN-7wjI_AHOaVWnuIgTkleSYKRA3oqV')
+  const amount = $state(21)
+
   const receiveMintedLNPayment = async ({quote, amount}) => {
     const mintQuote = await cashuWallet.checkMintQuote(quote)
     console.log({mintQuote, amount})
-    if (mintQuote.state === MintQuoteState.PAID) {
-      const proofs = await cashuWallet.mintProofs(amount, quote)
-      console.log({proofs})
-      const incomingId = await db.incoming.add({quote, amount, proofs})
-      console.log({incomingId})
-    // TODO: store JSON.stringify(proofs) to Dexie ??
-    }
+    // if (mintQuote.state === MintQuoteState.PAID) {
+    const proofs = await cashuWallet.mintProofs(amount, quote)
+    console.log({proofs})
+    const incomingId = await db.incoming.add({quote, amount, proofs})
+    console.log({incomingId})
+  // TODO: store JSON.stringify(proofs) to Dexie ??
+    // }
   }
 
   const generateLNPaymentRequest = async ({amount = 21} = {}) => {
@@ -141,7 +101,7 @@
     //   errorCallback
     // )
     console.debug({subscription})
-    return request
+    return {request, quote}
   }
   const generateCashuPaymentRequest = ({amount = 21} = {}) => {
     const request = new PaymentRequest(
@@ -160,20 +120,22 @@
       true // single use
     )
     const pr = request.toEncodedRequest()
-    return pr
+    return {request: pr}
   }
 
   const regeneratePaymentRequests = async () => {
-    lnPaymentRequest = await generateLNPaymentRequest()
+    const {request, quote} = await generateLNPaymentRequest()
+    lnPaymentRequest = request
+    lnPaymentQuote = quote
     cashuPaymentRequest = generateCashuPaymentRequest()
     lnQRCodeURL = await QRCode.toDataURL(lnPaymentRequest)
     cashuQRCodeURL = await QRCode.toDataURL(cashuPaymentRequest)
   }
 
   onMount(async () => {
-    console.log('data.identities:', data.identities)
+    console.debug('data.identities:', data.identities)
     const [{secretKey, publicKey}] = data.identities
-    console.log({publicKey, secretKey})
+    // console.log({publicKey, secretKey})
     // secretHex = secretKey
     identityPublicHex = publicKey
     // npub = nip19.npubEncode(publicKey)
@@ -188,40 +150,52 @@
     // await generateLNInvoice()
   })
 
-  let quote = $state('Ys2krWjlnBN-7wjI_AHOaVWnuIgTkleSYKRA3oqV')
-  let amount = $state(21)
-
 </script>
 
 <div id='profile'>
   <p>Balance: {balance}</p>
-<!--   <ul>
+  <p>{mintInfo.name} - running {mintInfo.version}</p>
+  <ul>
     {#if $incoming}
       {#each $incoming as friend (friend.id)}
         <li>{friend.amount}</li>
       {/each}
     {/if}
-  </ul> -->
+  </ul>
   <h2 class='text-2xl font-semibold mb-4'>Money</h2>
   <p>Wallet pubkey: {address.publicKey}</p>
-  <p>Profile: {address.nprofile}</p>
-  <p>Wallet seed: {mnemonic}</p>
-  <p>{mintInfo.name} - running {mintInfo.version}</p>
+  <!-- <p>Profile: {address.nprofile}</p> -->
+  <!-- <p>Wallet seed: {mnemonic}</p> -->
   <!-- <p>{mintInfo.description}</p> -->
+  <div class='flex flex-col space-y-4 p-4 bg-gray-100 rounded-lg shadow-md'>
+    <h3>Receive cash from quote</h3>
+    <input
+      type='text'
+      bind:value={lnPaymentQuote}
+      placeholder='Quote Identifier'
+      class='p-2 border border-gray-300 rounded-md focus:outline-hidden focus:ring-2 focus:ring-blue-500'
+    /><!--
+    <input
+      type='text'
+      bind:value={amount}
+      placeholder='Amount in Sats'
+      class='p-2 border border-gray-300 rounded-md focus:outline-hidden focus:ring-2 focus:ring-blue-500'
+    /> -->
+    <button
+      class='custom-mid-button p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-hidden focus:ring-2 focus:ring-blue-500'
+      onclick={() => receiveMintedLNPayment({lnPaymentQuote})}
+    >
+      Receive
+    </button>
+  </div>
+
   <button
     class='custom-mid-button'
     onclick={regeneratePaymentRequests}
   >New invoice.
   </button>
-  <p>Pay with Cashu: {cashuPaymentRequest}</p>
-  <div>
-    <img
-      class='w-64 h-64 object-contain'
-      src={cashuQRCodeURL}
-      alt='QRCode should be displayed here.'
-    />
-  </div>
   <p>Pay with Ligthning: {lnPaymentRequest}</p>
+  <p>Quote: {lnPaymentQuote}</p>
   <div>
     <img
       class='w-64 h-64 object-contain'
@@ -229,24 +203,12 @@
       alt='QRCode should be displayed here.'
     />
   </div>
-  <div class='flex flex-col space-y-4 p-4 bg-gray-100 rounded-lg shadow-md'>
-    <input
-      type='text'
-      bind:value={quote}
-      placeholder='Quote Identifier'
-      class='p-2 border border-gray-300 rounded-md focus:outline-hidden focus:ring-2 focus:ring-blue-500'
+  <p>Pay with Cashu: {cashuPaymentRequest}</p>
+  <div>
+    <img
+      class='w-64 h-64 object-contain'
+      src={cashuQRCodeURL}
+      alt='QRCode should be displayed here.'
     />
-    <input
-      type='text'
-      bind:value={amount}
-      placeholder='Amount in Sats'
-      class='p-2 border border-gray-300 rounded-md focus:outline-hidden focus:ring-2 focus:ring-blue-500'
-    />
-    <button
-      class='custom-mid-button p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-hidden focus:ring-2 focus:ring-blue-500'
-      onclick={() => receiveMintedLNPayment({quote, amount})}
-    >
-      Receive
-    </button>
   </div>
 </div>
