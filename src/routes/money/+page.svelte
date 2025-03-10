@@ -13,7 +13,7 @@
   import QRCode from 'qrcode'
   import * as bip39 from '@scure/bip39'
   import {
-    CashuMint, CashuWallet, MintQuoteState,
+    CashuMint, CashuWallet, MintQuoteState, CheckStateEnum,
     PaymentRequest, PaymentRequestTransportType,
     getEncodedTokenV4,
   } from '@cashu/cashu-ts'
@@ -48,7 +48,7 @@
     balance = sumProofs(quotes)
     currentProofs = quotes.map(({proofs}) => proofs).flat()
     console.log('proofs:', currentProofs.length)
-    // currentProofs.forEach(proof => console.log(proof))
+  // currentProofs.forEach(proof => console.log(proof))
   })
 
   const mintUrl = 'http://localhost:3338'
@@ -158,6 +158,10 @@
     cashuQRCodeURL = await QRCode.toDataURL(cashuPaymentRequest)
   }
 
+  const markSpent = proof => {
+    console.log('spent:', proof)
+  }
+
   const sendCash = async ({amount}) => {
     // console.log(currentProofs)
     const total = sumProofs(currentProofs)
@@ -166,6 +170,18 @@
     console.log(response)
     const encoded = getEncodedTokenV4({mint: mintUrl, proofs: response.send})
     console.log(encoded)
+    cashuWallet.onProofStateUpdates(
+      response.send,
+      ({state, proof}) => {
+        console.log({state})
+        if (state === CheckStateEnum.SPENT) {
+          markSpent(proof)
+        }
+      },
+      error => {
+        console.warn(error)
+      }
+    )
   }
 
   onMount(async () => {
@@ -210,9 +226,7 @@
   >Clear
   </button>
 </div>
-<SendToken
-  {sendCash}
-/>
+<SendToken {sendCash}/>
 <div id='new-invoice'>
   <h3>New invoice</h3>
   <button
