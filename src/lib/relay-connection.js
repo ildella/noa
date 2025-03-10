@@ -1,5 +1,4 @@
 import {Relay} from 'nostr-tools/relay'
-// import { SimplePool } from 'nostr-tools/pool'
 
 let relay
 let isConnected = false
@@ -7,7 +6,7 @@ let isConnected = false
 const relays = [
   'relay.damus.io',
   'relay.primal.net',
-  'eden.nostr.land',
+  // 'eden.nostr.land',
   'relay.vengeful.eu',
   'relay.nostr.band',
 ]

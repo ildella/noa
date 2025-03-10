@@ -65,6 +65,8 @@ export async function load ({url}) {
     'windows',
   ]
 
+  const [{publicKey: currentProfileHex}] = identities
+
   return {
     about,
     // eslint-disable-next-line @stylistic/js/max-len
@@ -72,6 +74,7 @@ export async function load ({url}) {
     chosenLanguage: detectedLanguage,
     help,
     identities,
+    currentProfileHex,
     // eslint-disable-next-line no-undef
     platform: PLATFORM,
     platforms,

@@ -4,7 +4,8 @@
   import {finalizeEvent, verifyEvent} from 'nostr-tools/pure'
   import {page} from '$app/state'
   import {invalidateAll} from '$app/navigation'
-  import {publish, subscribe} from '$lib/relay-connection'
+  // import {publish, subscribe} from '$lib/relay-connection'
+  import {subscribe, publish} from '$lib/relays-pool-connection'
 
   const {identities, publicKey: hex} = page.data
   const since = getUnixTime(subDays(Date.now(), 200))
@@ -60,6 +61,7 @@
       since,
       onEvent: event => {
         const {content} = event
+        console.log(content, hex)
         propertyState = JSON.parse(content)
         profileFound = true
       },

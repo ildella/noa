@@ -5,9 +5,9 @@ import {defaultWindowIcon} from '@tauri-apps/api/app'
 import {Menu} from '@tauri-apps/api/menu'
 import {enable, isEnabled} from '@tauri-apps/plugin-autostart'
 import {closeConnection} from '$lib/relay-connection'
-import {connect} from '$lib/relay-connection'
+// import {connect} from '$lib/relay-connection'
 import {nostrsigner, biometric} from '$lib/support'
-import {db} from '$lib/db'
+// import {db} from '$lib/db'
 
 const quit = itemId => {
   closeConnection()
@@ -86,10 +86,10 @@ export async function init () {
     .catch(error => console.error(error))
 
   // connect()
-  //   .then(relay => {
-  //     console.log('Connected to Relay', relay.url)
-  //   })
-  //   .catch(error => console.error(error))
+  // .then(relay => {
+  //   console.log('Connected to Relay', relay.url)
+  // })
+  // .catch(error => console.error(error))
 
   // db.incoming.update(40, {id: 40, amount: 4})
 

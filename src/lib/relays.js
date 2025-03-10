@@ -5,3 +5,5 @@ export const relays = [
   'relay.vengeful.eu',
   'relay.nostr.band',
 ]
+
+export const relayURLs = relays.map(url => `wss://${url}`)
