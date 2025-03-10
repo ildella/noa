@@ -1,26 +1,23 @@
 <script>
-
   import {subDays, getUnixTime} from 'date-fns'
-  import {
-    subscribe, querySync, disconnect, publish,
-  } from '$lib/relays-pool-connection'
-  import * as nip19 from 'nostr-tools/nip19'
+  import {subscribe, disconnect, publish} from '$lib/relays-pool-connection'
 
   const {data} = $props()
-  // console.log(data.messages)
-  const {messages, currentProfileHex} = data
+  const {posts, currentProfileHex} = data
   const receivedEvents = $state([])
-  const displayedMessages = $derived([
-    ...messages,
+  const displayedPosts = $derived([
+    ...posts,
     ...receivedEvents,
   ])
-  console.log(displayedMessages)
+  console.log(displayedPosts)
 
   $effect(async () => {
-    console.log('effect')
+    const since = subDays(Date.now(), 200)
+    console.log('Subscribe since:', since)
     await subscribe({
       authors: [currentProfileHex],
       kinds: [1],
+      since: getUnixTime(since),
       onevent: event => {
         console.log(event)
         receivedEvents.push(event)
@@ -31,18 +28,19 @@
 </script>
 
 <div id='chats'>
-  <h2>Chats</h2>
-  <ul>
-    {#if displayedMessages}
-      {#each displayedMessages as {
-        id, content, created_at, pubkey, tags,
-      } (id)}
-        <li>
-          <span>{pubkey}: {content}</span>
-          <span>at ${created_at}</span>
-          <span>${tags}</span>
-        </li>
-      {/each}
-    {/if}
+  <h2>Posts</h2>
+  <ul class='space-y-4'>
+    {#each displayedPosts as {
+      id, content, created_at, pubkey, tags,
+    } (id)}
+      <li class='p-4 border rounded-lg shadow-sm bg-white hover:bg-gray-50 transition duration-200'>
+        <div class='text-sm font-medium text-gray-700'>{pubkey}</div>
+        <p class='mt-1 text-gray-600'>{content}</p>
+        <div class='mt-2 flex justify-between text-xs text-gray-500'>
+          <span>at {created_at}</span>
+          <span>{tags.join(', ')}</span> <!-- Assuming tags is an array -->
+        </div>
+      </li>
+    {/each}
   </ul>
 </div>
