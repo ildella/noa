@@ -47,7 +47,7 @@
     // console.log('Incoming changed:', quotes)
     balance = sumProofs(quotes)
     currentProofs = quotes.map(({proofs}) => proofs).flat()
-    console.log(currentProofs.length)
+  // console.log(currentProofs.length)
   })
 
   const mintUrl = 'http://localhost:3338'
@@ -160,8 +160,9 @@
   const sendCash = async ({amount}) => {
     // console.log(currentProofs)
     const proofs = currentProofs
-    // console.log(proofs)
+    console.log('Sending:', {amount})
     const response = await cashuWallet.send(amount, proofs, {includeFees: false})
+    console.log(response)
     const encoded = getEncodedTokenV4({mint: mintUrl, proofs: response.send})
     console.log(encoded)
   }
