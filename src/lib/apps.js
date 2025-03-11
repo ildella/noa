@@ -15,8 +15,30 @@ export const categories = [
     ],
   },
   {
+    name: 'Wallets',
+    description: 'Bitcoin wallets for everyday use.',
+    apps: [
+      {
+        name: 'Cashu.me',
+        logo: 'apps/cashume.png',
+        os: 'web',
+        identifiers: {
+          web: 'https://cashu.me',
+        },
+      },
+      {
+        name: 'Minibits',
+        logo: 'apps/minibits.png',
+        os: 'Android',
+        identifiers: {
+          android: 'com.minibits_wallet',
+        },
+      },
+    ],
+  },
+  {
     name: 'Social',
-    description: 'Twitter-like clients. Pick the one you like.',
+    description: 'Twitter-like clients.',
     apps: [
       {
         name: 'Amethyst',
@@ -30,21 +52,11 @@ export const categories = [
         os: 'iOS',
         identifiers: {ios: 'damus/id1628663131'},
       },
-      {
-        name: 'Primal',
-        logo: 'apps/primal.svg',
-        os: 'Android',
-        identifiers: {
-          android: 'net.primal.android',
-          ios: 'primal/id1673134518',
-          web: 'https://primal.net/',
-        },
-      },
     ],
   },
   {
     name: 'Identity and Profile',
-    // description: 'Full-featured apps to manage your identity and your profile',
+    description: 'When you need more than just this app.',
     apps: [
       {
         name: 'Amber',
@@ -60,5 +72,4 @@ export const categories = [
       },
     ],
   },
-
 ]

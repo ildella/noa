@@ -1,8 +1,3 @@
-<script>
-  import {page} from '$app/state'
-  const {data: {about: {currentVersion}}} = page
-</script>
-
 <header
   id='header'
   class='fixed top-0 left-0 w-full bg-noa-500 p-3 shadow-md'
@@ -12,11 +7,9 @@
       <span class='text-white font-bold text-xl'>NOA
       </span>
     </a>
-    <a
-      class='text-gray-700'
-      href='/about'
-    >
-      {currentVersion}
+    <a href='/about'>
+      <span class='text-gray-700'>About</span>
+
     </a>
   </div>
 </header>

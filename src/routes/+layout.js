@@ -10,11 +10,12 @@ const platform = PLATFORM
 /* eslint-disable @stylistic/js/max-len */
 const help = {
   welcome: 'We first self-generate a new Identity and associate a User Profile.',
+  dashboard: 'Your Nostr command center.',
   what: 'We are about to get rid of platform-based communication and go back to protocol-based communication. Like it was with email.',
   why: 'Platforms are built and owned by someone, typically a very large company. They hold the keys and the access to the network and can play as they please. Protocols are public and open, anyone can build on it.',
-  identity: 'An Identity is just a self-generated digital key pair, here represented as simple "piece of text". It’s yours alone, and you have complete control over it.',
+  identity: 'An Identity is a self-generated digital key pair, here represented as plain text. It’s yours alone, and you have complete control over it.',
   keypair: 'The identity is represented by a key pair: a public key that you can share with others, and a secret key that you keep safe and private.',
-  import: 'You can import your Nostr identity by either uploading a file or pasting your secret key. If your file is password-protected, please enter the password below.',
+  import: 'Import your Nostr identity either by uploading a file or pasting your secret key.',
   // identity: 'It is almost like an email address or a phone number, but there is no central authority involved to issue it. This software will generate a unique one for you. Remember: you are the only one to hold it. Be responsible.',
 }
 /* eslint-enable @stylistic/js/max-len */
@@ -28,7 +29,7 @@ const appInfo = async () => {
   } catch (error) {
     console.debug('No tauri app:', error.message)
   }
-  return {appName: 'NOA', currentVersion: 'About'}
+  return {appName: 'NOA', currentVersion: 'Web'}
 }
 
 export async function load ({url}) {
@@ -64,6 +65,8 @@ export async function load ({url}) {
     'windows',
   ]
 
+  const [{publicKey: currentProfileHex}] = identities
+
   return {
     about,
     // eslint-disable-next-line @stylistic/js/max-len
@@ -71,6 +74,7 @@ export async function load ({url}) {
     chosenLanguage: detectedLanguage,
     help,
     identities,
+    currentProfileHex,
     // eslint-disable-next-line no-undef
     platform: PLATFORM,
     platforms,

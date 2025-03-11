@@ -12,5 +12,5 @@
   <a
     class='text-blue-500'
     href='/'
-  >Go back to Home page</a>
+  >Back to Home page</a>
 </div>

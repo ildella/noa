@@ -5,7 +5,7 @@ target=debug
 
 echo "Staging $target with build? $build"
 
-desktopTarget=src-tauri/target/$target/bundle
+desktopTarget=tauri/target/$target/bundle
 packagesFolder=/var/www/noa/$target
 linuxFolder=$packagesFolder/linux
 debTargetPath="$linuxFolder"/NOA_amd64-$target.deb

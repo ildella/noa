@@ -23,7 +23,7 @@
     }
   })
 
-  const importFile = () => {
+  const runImport = () => {
     if (hasSecretKey === true) {
       const success = importSecretKey({secretKey})
       if (success === true)
@@ -31,8 +31,9 @@
     }
     if (hasFiles === true) {
       const file = files[0]
-      console.log(file)
-      return uploadFile({file, password})
+      const onUploadCompleted = () => goto('/')
+      console.log(file, password)
+      return uploadFile({file, password, onUploadCompleted})
     }
   }
 
@@ -58,12 +59,11 @@
       />
       <p class='text-sm text-gray-500'>The optional password used during file export from NOA.</p>
     </div>
-
     <div class='flex flex-col space-y-2 mb-8'>
       <label
         for='nostr-keys'
         class='text-lg'
-      >Upload a file</label>
+      >Upload a file...</label>
       <input
         type='file'
         id='nostr-keys'
@@ -73,9 +73,8 @@
         bind:files
         class='custom-input-file'
       />
-      <p class='text-sm text-gray-500'>Accepted only files exported by NOA.</p>
+      <p class='text-sm text-gray-500'>Only text files exported by NOA.</p>
     </div>
-
     <div class='flex flex-col space-y-2 mb-8'>
       <label
         for='secretKey'
@@ -89,11 +88,10 @@
         class='custom-input-text'
       />
     </div>
-
     <button
       disabled={importDisabled}
       class='custom-big-button'
-      onclick={() => importFile()}
+      onclick={() => runImport()}
     >
       Import
     </button>

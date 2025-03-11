@@ -10,7 +10,7 @@
     platform, identities, help, authorProfile,
   } = $derived(data)
   const isAndroid = $derived(platform === 'android')
-  const {hex, npub} = $derived.by(() => {
+  const {hex} = $derived.by(() => {
     if (!identities) return {}
     const [{publicKey: hex}] = identities
     const npub = nip19.npubEncode(hex)
@@ -22,6 +22,7 @@
     stores: {},
     apps: {},
   })
+  // {identities ? 'opacity-50 cursor-not-allowed' : ''}
 
   // const toggleCollapse = section => {
   //   sections[section].collapsed = !sections[section].collapsed
@@ -42,10 +43,18 @@
 
 </script>
 
-<div class='container'>
-  <h2>Welcome</h2>
-  <p>{help.welcome}</p>
-</div>
+{#if !identities}
+  <div class='container'>
+    <h1>Welcome</h1>
+    <p>{help.welcome}</p>
+  </div>
+{/if}
+{#if identities}
+  <div class='container'>
+    <h2>Dashboard</h2>
+    <p>{help.dashboard}</p>
+  </div>
+{/if}
 
 <div class='container {sections.identity.classes}'>
   <h2>Identity</h2>
@@ -63,19 +72,25 @@
     id='actions'
     class='py-6'
   >
-    <a
-      class="custom-big-button {identities ? 'opacity-50 cursor-not-allowed' : ''}"
-      disabled={identities}
-      href='/auth/nostr'
-    >Generate</a>
-    <a
-      class="custom-big-button {identities ? 'opacity-50 cursor-not-allowed' : ''}"
-      disabled={identities}
-      href='/auth/nostr/import'
-    >Import
-    </a>
+    {#if !identities}
+      <a
+        class='custom-big-button'
+        href='/auth/nostr'
+      >Generate</a>
+      <a
+        class='custom-big-button'
+        href='/auth/nostr/import'
+      >Import
+      </a>
+    {/if}
     {#if identities}
       <a href={`/identities/${hex}`}>Manage</a>
+      <a
+        href='/identities'
+        disabled={true}
+        class='opacity-50 cursor-not-allowed'
+        title='Not available yet.'
+      >Switch</a>
     {/if}
   </div>
 </div>
@@ -92,10 +107,13 @@
         class='custom-big-button'
         href={`/profile/${hex}`}
       >Edit</a>
+      <!-- <a
+        href='#'
+        onclick={() => openNostrLink(npub)}
+      >View </a> -->
       <button
         class='clickable'
         aria-label='Open Nostr Profile'
-        onclick={() => openNostrLink(npub)}
       >View (live)</button>
     </div>
   </div>

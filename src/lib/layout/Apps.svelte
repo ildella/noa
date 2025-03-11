@@ -35,20 +35,20 @@
     <h2>Apps</h2>
     <h5>A short selection of Nostr apps.</h5>
   </div>
-  {#each categories as category}
+  {#each categories as category (category.name)}
     <div class='mb-8'>
       <h3>{category.name}</h3>
       <p>{category.description}</p>
       <div class='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4'>
-        {#each category.apps as app}
-          <div class='bg-white p-4 rounded shadow'>
+        {#each category.apps as app (app.name)}
+          <div class='bg-white p-4 rounded-sm shadow-sm'>
             <img
               src={app.logo}
               alt='{app.name} Logo'
               class='mb-2 w-32 h-32 object-cover'
             >
             <h4>{app.name}</h4>
-            {#each platforms as os}
+            {#each platforms as os (os)}
               {#if app.identifiers[os]}
                 <button
                   class='custom-mid-button m-1'
