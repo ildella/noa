@@ -10,7 +10,7 @@
     platform, identities, help, authorProfile,
   } = $derived(data)
   const isAndroid = $derived(platform === 'android')
-  const {hex} = $derived.by(() => {
+  const {hex, npub} = $derived.by(() => {
     if (!identities) return {}
     const [{publicKey: hex}] = identities
     const npub = nip19.npubEncode(hex)
@@ -107,14 +107,10 @@
         class='custom-big-button'
         href={`/profile/${hex}`}
       >Edit</a>
-      <!-- <a
+      <a
         href='#'
         onclick={() => openNostrLink(npub)}
-      >View </a> -->
-      <button
-        class='clickable'
-        aria-label='Open Nostr Profile'
-      >View (live)</button>
+      >View </a>
     </div>
   </div>
 
