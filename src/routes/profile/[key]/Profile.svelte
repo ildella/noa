@@ -25,7 +25,6 @@
   const submitDisabled = $derived(sending || unchanged)
 
   const send = async () => {
-    console.log(identities)
     const [{secretKey, publicKey}] = identities
     console.debug('Store and send to backend.')
     const formModelString = JSON.stringify(formModel)
@@ -66,7 +65,7 @@
         profileFound = true
       },
     })
-    console.log({subscription})
+    console.debug({subscription})
   })
 
 </script>

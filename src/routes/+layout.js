@@ -13,7 +13,7 @@ const help = {
   dashboard: 'Your Nostr command center.',
   what: 'We are about to get rid of platform-based communication and go back to protocol-based communication. Like it was with email.',
   why: 'Platforms are built and owned by someone, typically a very large company. They hold the keys and the access to the network and can play as they please. Protocols are public and open, anyone can build on it.',
-  identity: 'An Identity is a self-generated digital key pair, here represented as plain text. It’s yours alone, and you have complete control over it.',
+  identity: 'An Identity is a self-generated digital key pair, here represented as plain text. You have complete control over it.',
   keypair: 'The identity is represented by a key pair: a public key that you can share with others, and a secret key that you keep safe and private.',
   import: 'Import your Nostr identity either by uploading a file or pasting your secret key.',
   // identity: 'It is almost like an email address or a phone number, but there is no central authority involved to issue it. This software will generate a unique one for you. Remember: you are the only one to hold it. Be responsible.',
