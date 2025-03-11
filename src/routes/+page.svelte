@@ -1,145 +1,40 @@
 <script>
-  import {message} from '@tauri-apps/plugin-dialog'
-  import * as nip19 from 'nostr-tools/nip19'
-  import {open} from '$lib/open-url'
-  import AndroidStores from '$lib/layout/AndroidStores.svelte'
-  import Apps from '$lib/layout/Apps.svelte'
-
-  const {data} = $props()
-  const {
-    platform, identities, help, authorProfile,
-  } = $derived(data)
-  const isAndroid = $derived(platform === 'android')
-  const {hex, npub} = $derived.by(() => {
-    if (!identities) return {}
-    const [{publicKey: hex}] = identities
-    const npub = nip19.npubEncode(hex)
-    return {hex, npub}
-  })
-  const sections = $state({
-    identity: {},
-    profile: {},
-    stores: {},
-    apps: {},
-  })
-  const switchFeatureDisabled = true
-  // {identities ? 'opacity-50 cursor-not-allowed' : ''}
-
-  // const toggleCollapse = section => {
-  //   sections[section].collapsed = !sections[section].collapsed
-  //   const status = sections[section].collapsed
-  //   sections[section].classes = status === true ? 'hidden' : ''
-  // }
-
-  const openNostrLink = async npub => {
-    console.log({npub})
-    if (!platform) return open(`https://njump.me/${npub}`)
-    try {
-      await open(`nostr://${npub}`)
-    } catch (e) {
-      console.debug(e)
-      await open(`https://njump.me/${npub}`)
-    }
-  }
-
 </script>
 
-{#if !identities}
-  <div class='container'>
-    <h1>Welcome</h1>
-    <p>{help.welcome}</p>
-  </div>
-{/if}
-{#if identities}
-  <div class='container'>
-    <h2>Dashboard</h2>
-    <p>{help.dashboard}</p>
-  </div>
-{/if}
+<div class='bg-purple-50 p-8 text-center'>
+  <h1 class='text-3xl font-bold mb-2'>Your Nostr Identity in Seconds</h1>
+  <p class='text-lg'>The uncensorable, decentralized, secure way to connect online.</p>
+</div>
 
-<div class='container {sections.identity.classes}'>
-  <h2>Identity</h2>
-  <h5>Your personal key pair.
-    <button
-      aria-label='info'
-      onclick={() => message(help.identity, {
-        title: '',
-        kind: 'info',
-      })}
-    >
-    </button>
-  </h5>
-  <div
-    id='actions'
-    class='py-6'
-  >
-    {#if !identities}
-      <a
-        class='custom-big-button'
-        href='/auth/nostr'
-      >Generate</a>
-      <a
-        class='custom-big-button'
-        href='/auth/nostr/import'
-      >Import
-      </a>
-    {/if}
-    {#if identities}
-      <a href={`/identities/${hex}`}>Manage</a>
-      <a
-        href='/identities'
-        class={switchFeatureDisabled ? 'cursor-not-allowed opacity-65' : ''}
-        title='Not available yet.'
-      >Switch</a>
-    {/if}
+<div class='p-8'>
+  <h2 class='text-2xl font-semibold mb-4 text-center'>Why Nostr?</h2>
+  <div class='grid grid-cols-1 md:grid-cols-3 gap-4'>
+    <div class='text-center'>
+      <i class='fas fa-network-wired text-3xl mb-2 text-blue-500'></i>
+      <p><strong>Decentralized:</strong> No company controls your data.</p>
+    </div>
+    <div class='text-center'>
+      <i class='fas fa-user-shield text-3xl mb-2 text-blue-500'></i>
+      <p><strong>User Control:</strong> You manage your own identities and profiles.</p>
+    </div>
+    <div class='text-center'>
+      <i class='fas fa-rocket text-3xl mb-2 text-blue-500'></i>
+      <p><strong>Easy Setup:</strong> It is just two steps, we'll guide you trough it.</p>
+    </div>
   </div>
 </div>
 
-{#if identities}
-  <div class='container'>
-    <h2>Profile</h2>
-    <h5>A personalized touch to your identity to make it into a nice User Profile.</h5>
-    <div
-      id='actions'
-      class='py-6'
-    >
-      <a
-        class='custom-big-button'
-        href={`/profile/${hex}`}
-      >Edit</a>
-      <a
-        href='#'
-        onclick={() => openNostrLink(npub)}
-      >View </a>
-    </div>
-  </div>
-
-  {#if isAndroid}
-    <AndroidStores />
-  {/if}
-
-  <Apps />
-  <div class='container'>
-    <h2>Now you are ready.</h2>
-    <a
-      class='text-xl text-noa-600'
-      href='#/'
-      tabindex='0'
-      onclick={event => {
-        event.preventDefault()
-        openNostrLink(authorProfile)
-      }}
-    >
-      Come say hello :)</a>
-  </div>
-  <!--
-  <div class='container'>
-    <h2>Advanced.</h2>
-    <a
-      class='text-xl text-noa-600'
-      href='/signed'
-    >
-      See all past signed events.</a>
-  </div>
-   -->
-{/if}
+<div class='text-center p-4'>
+  <a
+    href='/home'
+    class='bg-blue-500 text-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-blue-600'
+  >
+    Get Started
+  </a>
+  <a
+    class='clickable'
+    href='https://nostr.org/'
+  >
+    <p class='p-6'>Learn more at Nostr.org</p>
+  </a>
+</div>
