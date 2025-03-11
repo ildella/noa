@@ -33,7 +33,7 @@
 }
 
 @utility clickable {
-  @apply text-noa-600 text-lg py-2 px-4 hover:text-noa-700 transition duration-200 ease-in-out cursor-pointer;
+  @apply text-noa-600 text-lg py-2 px-4 hover:text-noa-700 transition;
 }
 
 h1 {

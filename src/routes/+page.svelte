@@ -22,6 +22,7 @@
     stores: {},
     apps: {},
   })
+  const switchFeatureDisabled = true
   // {identities ? 'opacity-50 cursor-not-allowed' : ''}
 
   // const toggleCollapse = section => {
@@ -87,8 +88,7 @@
       <a href={`/identities/${hex}`}>Manage</a>
       <a
         href='/identities'
-        disabled={true}
-        class='opacity-50 cursor-not-allowed'
+        class={switchFeatureDisabled ? 'cursor-not-allowed opacity-65' : ''}
         title='Not available yet.'
       >Switch</a>
     {/if}
