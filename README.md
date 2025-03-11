@@ -19,7 +19,7 @@ yarn web
 yarn desktop
 yarn android
 
-# Use the following if there are networking issue
+# You can specify the host, if needed.
 yarn android --host 192.168.x.x
 ```
 

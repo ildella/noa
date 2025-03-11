@@ -32,15 +32,33 @@ const appInfo = async () => {
   return {appName: 'NOA', currentVersion: 'Web'}
 }
 
+const platforms = [
+  'web',
+  'ios',
+  'android',
+  'linux',
+  'osx',
+  'windows',
+]
+
+const loadItentities = () => {
+  const identities = JSON.parse(localStorage.getItem('identities'))
+  if (!identities)
+    return {}
+  const [{publicKey: currentProfileHex}] = identities
+  return {identities, currentProfileHex}
+}
+
 export async function load ({url}) {
   const detectedLanguage = navigator.language || navigator.userLanguage
-  const identitiesString = await localStorage.getItem('identities')
-  const identities = JSON.parse(identitiesString)
+  const about = await appInfo()
+  const {identities, currentProfileHex} = loadItentities()
+  console.log('identities:', identities)
   const {pathname} = url
   if (platform) {
     await onOpenUrl(async urls => {
       if (!identities || identities.length === 0) {
-        console.info('Geenrate an identity first.')
+        console.info('Generate an identity first.')
         return
       }
       const [url] = urls
@@ -54,18 +72,6 @@ export async function load ({url}) {
       location.href = `/signer/${decoded}`
     })
   }
-
-  const about = await appInfo()
-  const platforms = [
-    'web',
-    'ios',
-    'android',
-    'linux',
-    'osx',
-    'windows',
-  ]
-
-  const [{publicKey: currentProfileHex}] = identities
 
   return {
     about,
