@@ -35,7 +35,7 @@
   bundle: {
     active: true,
     category: 'Utility',
-    licenseFile: 'LICENSE',
+    licenseFile: '../LICENSE',
     android: {
       minSdkVersion: 24,
     },
