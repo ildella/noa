@@ -2,7 +2,6 @@
 
 set -euo pipefail
 
-yarn version patch
 yarn version prerelease
 NEW_VERSION=$(< "package.json" jq -r .version)
 git commit -am "Bump prerelease for new development cycle: $NEW_VERSION"
