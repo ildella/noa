@@ -6,7 +6,7 @@
   build: {
     beforeDevCommand: 'yarn dev',
     devUrl: 'http://localhost:1520',
-    beforeBuildCommand: 'yarn build -l warn',
+    beforeBuildCommand: 'yarn build -l error',
     frontendDist: '../build',
   },
   app: {
