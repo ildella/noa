@@ -2,4 +2,4 @@
 
 set -euo pipefail
 
-veloce
+veloce webapp-deploy noa
