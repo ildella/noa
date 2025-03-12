@@ -5,7 +5,7 @@ on:
     tags:
       - 'v*'
     branches:
-      - master
+      - improve-build-2
 
 jobs:
   publish-tauri:
@@ -60,5 +60,5 @@ jobs:
           releaseName: 'NOA v__VERSION__'
           releaseBody: 'See the assets to download this version and install.'
           releaseDraft: false
-          prerelease: ${{ github.ref == 'refs/heads/master' }}
+          prerelease: true
           args: ${{ matrix.args }}
