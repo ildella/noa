@@ -19,3 +19,9 @@ git tag "$RELEASED_VERSION"
 git push --tags
 
 echo "New version: $RELEASED_VERSION"
+
+echo "
+  To create a GitHub release:
+
+    $ gh release create $RELEASED_VERSION --generate-notes
+"
