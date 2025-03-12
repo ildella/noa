@@ -4,9 +4,9 @@ target=${1:-'release'}
 echo Target: "$target"
 
 androidTarget=tauri/gen/android/app/build/outputs
-desktopTarget=tauri/target/$target/bundle/
+desktopBundleFolder=tauri/target/$target/bundle/
 apkFilename=app-arm64-$target.apk
-apkSourcePath="$androidTarget/apk/arm64/$target/$apkFilename"
+apkFilePath="$androidTarget/apk/arm64/$target/$apkFilename"
 
 packagesFolder=/var/www/noa/$target
 apkFolder=$packagesFolder/apk/
@@ -30,22 +30,40 @@ cat <<EOF > release.json
 }
 EOF
 
-if [ "$target" == "debug" ]; then
-  echo "Copying to local folders as well."
-  cp "$apkSourcePath" "$apkTargetPath"
-  cp "$desktopTarget"/deb/NOA_"$VERSION"_amd64.deb "$debTargetPath"
-  cp release.json "$packagesFolder"
-fi
+## Not using this anymore, deprecated
+# if [ "$target" == "debug" ]; then
+#   echo "Copying to local folders as well."
+#   cp "$apkFilePath" "$apkTargetPath"
+#   cp "$desktopBundleFolder"/deb/NOA_"$VERSION"_amd64.deb "$debTargetPath"
+#   cp release.json "$packagesFolder"
+# fi
 
-scp "$apkSourcePath" root@"$FRANKIE_DOMAIN":"$apkTargetPath"
-scp "$desktopTarget"deb/NOA_"$VERSION"_amd64.deb root@"$FRANKIE_DOMAIN":"$debTargetPath"
-scp release.json root@"$FRANKIE_DOMAIN":"$packagesFolder"
+debFilePath="$desktopBundleFolder"deb/NOA_"$VERSION"_amd64.deb
+rpmFilePath="$desktopBundleFolder"rpm/NOA-"$VERSION"-1.x86_64.rpm
+destinationBase=root@"$FRANKIE_DOMAIN"
+
+echo "
+Publishing to $destinationBase
+  
+  $apkFilePath
+  $debFilePath
+  $rpmFilePath
+
+"
+
+scp "$apkFilePath" "$destinationBase":"$apkTargetPath"
+scp "$debFilePath" "$destinationBase":"$debTargetPath"
+scp release.json "$destinationBase":"$packagesFolder"
 
 if [ "$target" == "release" ]; then
-  scp "$desktopTarget"rpm/NOA-"$VERSION"-1.x86_64.rpm root@"$FRANKIE_DOMAIN":"$rpmTargetPath"
-  # scp "$desktopTarget"appimage/NOA_"$VERSION"_amd64.AppImage root@"$FRANKIE_DOMAIN":"$appimageTargetPath"
-  echo "Run this to publish to ZapStore:"
-  echo "zapstore publish -a $apkSourcePath -v $VERSION"
+  scp "$rpmFilePath" "$destinationBase":"$rpmTargetPath"
+  # scp "$desktopBundleFolder"appimage/NOA_"$VERSION"_amd64.AppImage "$destinationBase":"$appimageTargetPath"
+  echo "
+  Run this to publish to ZapStore:
+
+    $ zapstore publish -a $apkFilePath -v $VERSION
+
+"
 fi
 
 rm release.json

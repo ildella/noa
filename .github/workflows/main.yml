@@ -3,7 +3,7 @@ name: 'publish'
 on:
   push:
     branches:
-      - release
+      - master
 
 jobs:
   publish-tauri:
@@ -14,12 +14,12 @@ jobs:
       matrix:
         include:
           - platform: 'macos-latest' # for Arm based macs (M1 and above).
-            args: '--target aarch64-apple-darwin'
+            args: '--target aarch64-apple-darwin -vvv'
           - platform: 'macos-latest' # for Intel based macs.
-            args: '--target x86_64-apple-darwin'
-          - platform: 'ubuntu-22.04'
+            args: '--target x86_64-apple-darwin -vvv'
+          - platform: 'ubuntu-24.04'
             args: ''
-          - platform: 'windows-latest'
+          - platform: 'windows-latest -vvv'
             args: ''
 
     runs-on: ${{ matrix.platform }}
@@ -39,22 +39,16 @@ jobs:
           targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
 
       - name: install dependencies (ubuntu only)
-        if: matrix.platform == 'ubuntu-22.04' # This must match the platform value defined above.
+        if: matrix.platform == 'ubuntu-24.04' # This must match the platform value defined above.
         run: |
           sudo apt-get update
           sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
 
-      # - name: setup yarn 
-      #   run: corepack enable
-
-      # - name: install frontend dependencies
-      #   run: yarn install
-
       - name: Install frontend dependencies
         run: |
           corepack enable
-          corepack use yarn
-          yarn install
+          yarn install --immutable
+          yarn svelte-kit sync
 
       - uses: tauri-apps/tauri-action@v0
         env:
@@ -64,5 +58,5 @@ jobs:
           releaseName: 'App v__VERSION__'
           releaseBody: 'See the assets to download this version and install.'
           releaseDraft: true
-          prerelease: false
+          prerelease: true
           args: ${{ matrix.args }}

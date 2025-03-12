@@ -57,7 +57,6 @@
   onMount(async () => {
     // eslint-disable-next-line no-undef
     if (PLATFORM === 'linux') {
-      // console.debug('isFocused:', await getCurrentWindow().isFocused())
       await getCurrentWindow().setFocus()
       console.debug('isFocused:', await getCurrentWindow().isFocused())
     }
@@ -67,8 +66,10 @@
       identities,
       type,
     } = page.data
+    // console.log('event', JSON.stringify(unsigedEvent))
+    // console.log('callbackUrl', callbackUrl)
     const [{secretKey}] = identities
-    const signedEvent = finalizeEvent(unsigedEvent, secretKey)
+    const signedEvent = finalizeEvent({...unsigedEvent, tags: unsigedEvent.tags || []}, secretKey)
     signedEventString = JSON.stringify(signedEvent)
     requestType = type
     const endpoint = encodeURIComponent(signedEventString)

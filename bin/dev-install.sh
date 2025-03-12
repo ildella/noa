@@ -4,7 +4,7 @@ set -uo pipefail
 
 target=${1:-'release'}
 # params if debug -> -d
-params=
+# params=
 VERSION=$(grep '^version =' tauri/Cargo.toml | sed 's/version = "\(.*\)"/\1/')
 echo "Target: $target | version: $VERSION"
 # This handler is installed by `yarn tauri dev`. 
