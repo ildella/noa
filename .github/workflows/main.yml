@@ -14,13 +14,13 @@ jobs:
       matrix:
         include:
           - platform: 'macos-latest' # for Arm based macs (M1 and above).
-            args: '--target aarch64-apple-darwin -vvv'
+            args: '--target aarch64-apple-darwin -v'
           - platform: 'macos-latest' # for Intel based macs.
-            args: '--target x86_64-apple-darwin -vvv'
+            args: '--target x86_64-apple-darwin -v'
           - platform: 'ubuntu-24.04'
             args: ''
           - platform: 'windows-latest'
-            args: '-vvv'
+            args: '-v'
 
     runs-on: ${{ matrix.platform }}
     steps:
@@ -57,6 +57,6 @@ jobs:
           tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
           releaseName: 'App v__VERSION__'
           releaseBody: 'See the assets to download this version and install.'
-          releaseDraft: true
+          releaseDraft: false
           prerelease: true
           args: ${{ matrix.args }}
