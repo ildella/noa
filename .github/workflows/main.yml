@@ -19,8 +19,8 @@ jobs:
             args: '--target x86_64-apple-darwin -vvv'
           - platform: 'ubuntu-24.04'
             args: ''
-          - platform: 'windows-latest -vvv'
-            args: ''
+          - platform: 'windows-latest'
+            args: '-vvv'
 
     runs-on: ${{ matrix.platform }}
     steps:
