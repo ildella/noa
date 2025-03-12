@@ -8,11 +8,9 @@ The simplest possible experience to onboard pre-nostr people to Nostr.
 yarn
 ```
 
-To setup the build for native desktop and mobile platforms, more work is required. Documentation coming "soon".
+## Development
 
-## Start
-
-Developments mode
+Start locally in dev mode:
 
 ```sh
 yarn web
@@ -23,7 +21,21 @@ yarn android
 yarn android --host 192.168.x.x
 ```
 
-## Onboarding and migration
+Build:
+
+```sh
+## Check package.json for all available shortcut scripts.
+
+yarn desktop.build
+yarn android.build
+
+```
+
+## Onboarding and migration from Legacy platforms
 
 * https://nostr.org/
 * Migrate from Twitter: https://exit.pub/
+
+## Build status
+
+[![publish](https://github.com/ildella/noa/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/ildella/noa/actions/workflows/main.yml)
