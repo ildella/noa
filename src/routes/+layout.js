@@ -9,7 +9,7 @@ const platform = PLATFORM
 
 /* eslint-disable @stylistic/js/max-len */
 const help = {
-  welcome: 'We first self-generate a new Identity and associate a User Profile.',
+  welcome: 'We self-generate a new Identity and then fill the associated social Profile.',
   dashboard: 'Your Nostr command center.',
   what: 'We are about to get rid of platform-based communication and go back to protocol-based communication. Like it was with email.',
   why: 'Platforms are built and owned by someone, typically a very large company. They hold the keys and the access to the network and can play as they please. Protocols are public and open, anyone can build on it.',
