@@ -1,7 +1,7 @@
 {
   "name": "NOA",
   "description": "Nostr Onboarding App",
-  "version": "0.6.5-1",
+  "version": "0.6.5-2",
   "type": "module",
   "license": "GPL-3.0",
   "repository": {
@@ -114,5 +114,6 @@
     "typescript": "5.8.2",
     "vite": "6.2.1",
     "vitest": "3.0.8"
-  }
+  },
+  "stableVersion": "0.6.5-1"
 }
