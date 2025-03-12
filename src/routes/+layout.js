@@ -3,6 +3,7 @@ import {
   onOpenUrl,
   // getCurrent as getCurrentDeepLinkUrls,
 } from '@tauri-apps/plugin-deep-link'
+import {goto} from '$app/navigation'
 
 // eslint-disable-next-line no-undef
 const platform = PLATFORM
@@ -49,27 +50,32 @@ const loadItentities = () => {
   return {identities, currentProfileHex}
 }
 
-export async function load ({url}) {
+export async function load ({url, route, params}) {
   const detectedLanguage = navigator.language || navigator.userLanguage
   const about = await appInfo()
   const {identities, currentProfileHex} = loadItentities()
   const {pathname} = url
-  console.log({platform})
+  // console.log('platform:', platform)
+  // console.log('url:', url)
+  // console.log('pathname:', pathname)
+  // console.log('route:', Object.keys(route))
+  // console.log('route:', route.id, route.errors)
+  // console.log('params:', params.event)
   if (platform) {
     await onOpenUrl(async urls => {
+      console.debug('urls:', urls)
       if (!identities || identities.length === 0) {
         console.info('Generate an identity first.')
         return
       }
       const [url] = urls
-      console.log('url:', url)
+      // console.log('first url:', url)
       const decoded = decodeURIComponent(url.replaceAll('nostrsigner:', ''))
-      console.debug('decoded:', decoded)
       if (pathname === '/signer') {
         console.warn('Already on signer page. Ignoring Deep Link.')
         return
       }
-      location.href = `/signer/${decoded}`
+      return goto(`/signer/${decoded}`, {replaceState: true})
     })
   }
 
