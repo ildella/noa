@@ -35,7 +35,3 @@ yarn android.build
 
 * https://nostr.org/
 * Migrate from Twitter: https://exit.pub/
-
-## Build status
-
-[![publish](https://github.com/ildella/noa/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/ildella/noa/actions/workflows/main.yml)
