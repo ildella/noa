@@ -48,9 +48,9 @@
       'rpm', 
       // 'appimage', // > 130 MB...
       // 'nsi', 
-      // 'msi', 
-      // 'app', 
-      // 'dmg',
+      'msi', 
+      'app', 
+      'dmg',
     ],
     copyright: 'Copyright © 2024-2025 Daniele Dellafiore',
     publisher: 'Daniele Dellafiore',
