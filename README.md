@@ -2,7 +2,9 @@
 
 The simplest possible experience to onboard pre-nostr people to Nostr and let them sign-in to other Nostr services.
 
-NOA is a multi platform app, with [packages](https://github.com/ildella/noa/releases/latest) already available for Android, Linux, Windows and OSX. A [Web](https://nostr.frankie.tools/) version is available as well.
+NOA is a multi platform app, with [packages](https://github.com/ildella/noa/releases/latest) already available for Android, Linux, Windows and OSX. 
+
+A [Web](https://nostr.frankie.tools/) version is available as well. The Android app can also be installed by [Zapstore](https://zapstore.dev/)
 
 Built on Tauri 2 and Svelte 5.
 
