@@ -59,9 +59,8 @@ export default defineConfig({
       // eslint-disable-next-line no-undefined
       : undefined,
     watch: {
-      // 3. tell vite to ignore watching `src-tauri`
       ignored: [
-        '**/src-tauri/**',
+        '**/tauri/**',
         '**/tests/**',
         '**/test-results/**',
         '**/playwright-report/**',

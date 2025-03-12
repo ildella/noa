@@ -2,11 +2,11 @@
 
 set -euo pipefail
 
-CURRENT_VERSION=$(grep '^version =' src-tauri/Cargo.toml | sed 's/version = "\(.*\)"/\1/')
+CURRENT_VERSION=$(grep '^version =' tauri/Cargo.toml | sed 's/version = "\(.*\)"/\1/')
 echo "Releasing from: $CURRENT_VERSION"
 
-cargo release release --manifest-path src-tauri/Cargo.toml --no-publish --no-tag --no-push --no-confirm --execute
-RELEASED_VERSION=$(grep '^version =' src-tauri/Cargo.toml | sed 's/version = "\(.*\)"/\1/')
+cargo release release --manifest-path tauri/Cargo.toml --no-publish --no-tag --no-push --no-confirm --execute
+RELEASED_VERSION=$(grep '^version =' tauri/Cargo.toml | sed 's/version = "\(.*\)"/\1/')
 echo "Bump package.json -> $RELEASED_VERSION"
 yarn version "$RELEASED_VERSION"
 ## LOL, I know. But it messes up if I run it only once.

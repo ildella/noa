@@ -1,6 +1,40 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@theme {
+  --color-noa-50: #eff5fe;
+  --color-noa-100: #e2ebfd;
+  --color-noa-200: #cbdafa;
+  --color-noa-300: #abc1f6;
+  --color-noa-400: #7992ee;
+  --color-noa-500: #6d7ee7;
+  --color-noa-600: #515bda;
+  --color-noa-700: #4248c0;
+  --color-noa-800: #383e9b;
+  --color-noa-900: #343b7b;
+  --color-noa-950: #1e2048;
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
+
+@utility clickable {
+  @apply text-noa-600 text-lg py-2 px-4 hover:text-noa-700 transition;
+}
 
 h1 {
   @apply text-3xl font-bold my-4;
@@ -26,24 +60,21 @@ button:disabled {
 input:disabled {
   @apply opacity-65 cursor-not-allowed;
 }
-a {
+/*a {
   @apply clickable
 }
-
+*/
 .custom-input-text {
-  @apply border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-noa-500;
-}
-.clickable {
-  @apply text-noa-600 text-lg py-2 px-4 hover:text-noa-700 transition duration-200 ease-in-out;
+  @apply border border-gray-300 rounded-md p-2 focus:outline-hidden focus:ring-2 focus:ring-noa-500;
 }
 .custom-big-button {
   @apply bg-noa-500 text-white text-lg py-3 px-6 rounded-lg hover:bg-noa-600 transition duration-200 ease-in-out;
 }
 .custom-mid-button {
-  @apply bg-zinc-500 hover:bg-zinc-600 text-white text-base py-2 px-4 rounded transition duration-300 ease-in-out font-semibold ;
+  @apply bg-zinc-500 hover:bg-zinc-600 text-white text-base py-2 px-4 rounded-sm transition duration-300 ease-in-out font-semibold ;
 }
 .custom-mid-warn-button {
-  @apply bg-orange-500 hover:bg-orange-600 text-white text-base py-2 px-4 rounded transition duration-300 ease-in-out font-semibold ;
+  @apply bg-orange-500 hover:bg-orange-600 text-white text-base py-2 px-4 rounded-sm transition duration-300 ease-in-out font-semibold ;
 }
 .custom-bottom-button {
   @apply bg-noa-600 text-white text-lg py-3 px-6 hover:bg-green-600 transition duration-200 ease-in-out;
@@ -58,11 +89,17 @@ a {
   @apply block text-sm font-medium text-gray-700;
 }
 .custom-input-text {
-  @apply mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500;
+  @apply mt-1 block w-full border-gray-300 rounded-md shadow-xs focus:border-indigo-500 focus:ring-indigo-500;
 }
 .custom-input-checkbox {
   @apply h-5 w-5 text-indigo-600 transition duration-150 ease-in-out;
 }
 .custom-drop-area {
   @apply border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:bg-gray-100 transition-colors;
+}
+.custom-overlay-text-transition {
+  @apply
+    fixed top-1/2 left-1/2
+    transform -translate-x-1/2 -translate-y-1/2
+    bg-green-500 text-white p-2 rounded;
 }

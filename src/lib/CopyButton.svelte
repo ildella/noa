@@ -23,15 +23,6 @@
   }
 </script>
 
-<style lang='postcss'>
-  .custom-overlay-text-transition {
-    @apply
-      fixed top-1/2 left-1/2
-      transform -translate-x-1/2 -translate-y-1/2
-      bg-green-500 text-white p-2 rounded;
-  }
-</style>
-
 {#if copied}
   <div
     transition:fade={{duration}}

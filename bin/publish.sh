@@ -3,8 +3,8 @@
 target=${1:-'release'}
 echo Target: "$target"
 
-androidTarget=src-tauri/gen/android/app/build/outputs
-desktopTarget=src-tauri/target/$target/bundle/
+androidTarget=tauri/gen/android/app/build/outputs
+desktopTarget=tauri/target/$target/bundle/
 apkFilename=app-arm64-$target.apk
 apkSourcePath="$androidTarget/apk/arm64/$target/$apkFilename"
 

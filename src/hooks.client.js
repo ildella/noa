@@ -4,11 +4,9 @@ import {TrayIcon} from '@tauri-apps/api/tray'
 import {defaultWindowIcon} from '@tauri-apps/api/app'
 import {Menu} from '@tauri-apps/api/menu'
 import {enable, isEnabled} from '@tauri-apps/plugin-autostart'
-import {closeConnection} from '$lib/relay-connection'
 import {nostrsigner, biometric} from '$lib/support'
 
 const quit = itemId => {
-  closeConnection()
   getCurrentWindow().hide()
   if (itemId === 'quit')
     return getCurrentWindow().close()
@@ -61,7 +59,7 @@ const registerTrayIcon = async () => {
 export async function init () {
   // eslint-disable-next-line no-undef
   const platform = PLATFORM
-  console.log('Initializing:', platform || 'Web')
+  console.debug('Initializing:', platform || 'Web')
   window.addEventListener('keydown', handleKeydown)
   if (platform === 'linux') {
     await registerTrayIcon()

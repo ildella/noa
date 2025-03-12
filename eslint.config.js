@@ -8,6 +8,7 @@ const camelcase = [
   {
     allow: [
       'created_at',
+      'created_time',
       'display_name',
       'package_name',
       'sha256_cert_fingerprints',
@@ -16,7 +17,7 @@ const camelcase = [
 ]
 
 const ignores = [
-  'src-tauri/*',
+  'tauri/*',
   'build/*',
   '.svelte-kit/*',
   'docs/*',
@@ -31,6 +32,7 @@ export default [
   ...nostandard(),
   ...eslintPluginSvelte.configs['flat/recommended'],
   {
+    name: 'NOA Rules',
     languageOptions: {globals: globals.browser},
     rules: {
       camelcase,
