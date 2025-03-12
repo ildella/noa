@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+echo "Cleanup local machine"
+
 printf "\n\n--- xdg-mime ---\n"
 xdg-mime query default x-scheme-handler/nostrsigner
 
