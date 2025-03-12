@@ -11,17 +11,18 @@ echo "Bump package.json -> $RELEASED_VERSION"
 yarn version "$RELEASED_VERSION"
 ## LOL, I know. But it messes up if I run it only once.
 yarn version "$RELEASED_VERSION"
-
-echo "Tag $RELEASED_VERSION and push to repo."
 git commit -am "Update version for release: $RELEASED_VERSION"
 git push
-git tag "$RELEASED_VERSION"
+
+GITHUB_RELEASE_TAG=v"$RELEASED_VERSION"
+echo "Tag $GITHUB_RELEASE_TAG and push to repo."
+git tag "$GITHUB_RELEASE_TAG"
 git push --tags
 
-echo "New version: $RELEASED_VERSION"
-
 echo "
-  To create a GitHub release:
+  Release $GITHUB_RELEASE_TAG is ready.
 
-    $ gh release create $RELEASED_VERSION --generate-notes
+  To create a GitHub release and trigger the bundle build:
+
+    $ gh release create $GITHUB_RELEASE_TAG --generate-notes
 "
