@@ -47,7 +47,6 @@ jobs:
       - name: Install frontend dependencies
         run: |
           corepack enable
-          corepack use yarn
           yarn install --immutable
           yarn svelte-kit sync
 
