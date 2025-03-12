@@ -53,8 +53,8 @@ export async function load ({url}) {
   const detectedLanguage = navigator.language || navigator.userLanguage
   const about = await appInfo()
   const {identities, currentProfileHex} = loadItentities()
-  console.log('identities:', identities)
   const {pathname} = url
+  console.log({platform})
   if (platform) {
     await onOpenUrl(async urls => {
       if (!identities || identities.length === 0) {
@@ -62,7 +62,7 @@ export async function load ({url}) {
         return
       }
       const [url] = urls
-      console.debug('url:', url)
+      console.log('url:', url)
       const decoded = decodeURIComponent(url.replaceAll('nostrsigner:', ''))
       console.debug('decoded:', decoded)
       if (pathname === '/signer') {
