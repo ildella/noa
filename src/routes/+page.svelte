@@ -3,10 +3,10 @@
   // const {data: {about: {currentVersion}}} = page
 
   const platforms = [
-    {name: 'Android', icon: 'https://cdn-icons-png.flaticon.com/512/226/226770.png', link: '#'},
-    {name: 'macOS', icon: 'https://cdn.simpleicons.org/apple', link: '#'},
-    {name: 'Linux', icon: 'https://cdn-icons-png.flaticon.com/512/6124/6124995.png', link: '#'},
-    {name: 'Windows', icon: 'https://pngimg.com/uploads/windows_logos/windows_logos_PNG31.png', link: '#'},
+    {name: 'Linux', icon: 'linux.gif', link: '#'},
+    {name: 'macOS', icon: 'apple.png', link: '#'},
+    {name: 'Windows', icon: 'windows.png', link: '#'},
+    {name: 'Android', icon: 'android.png', link: '#'},
   ]
 </script>
 
@@ -34,7 +34,7 @@
   </div>
 </div>
 
-<!-- <div
+<div
   id='download'
   class='text-center'
 >
@@ -57,7 +57,6 @@
     {/each}
   </div>
 </div>
- -->
 
 <div class='p-8 text-center text-sm text-gray-500'>
   <p>
@@ -67,3 +66,14 @@
     >nostr.org</a>
   </p>
 </div>
+<!-- <a
+  target='_blank'
+  rel='noopener noreferrer'
+  href='https://icons8.com/icon/fG5Tnj4ARIoI/linux'
+>Icons</a> by
+<a
+  target='_blank'
+  rel='noopener noreferrer'
+  href='https://icons8.com'
+>Icons8</a>
+ -->
