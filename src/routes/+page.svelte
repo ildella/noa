@@ -3,10 +3,10 @@
   // const {data: {about: {currentVersion}}} = page
 
   const platforms = [
-    {name: 'Linux', icon: 'linux.gif', link: '#'},
-    {name: 'macOS', icon: 'apple.png', link: '#'},
-    {name: 'Windows', icon: 'windows.png', link: '#'},
-    {name: 'Android', icon: 'android.png', link: '#'},
+    {name: 'Linux', icon: 'linux.gif', link: 'download#linux'},
+    {name: 'macOS', icon: 'apple.png', link: 'download#macos'},
+    {name: 'Windows', icon: 'windows.png', link: 'download#windows'},
+    {name: 'Android', icon: 'android.png', link: 'download#android'},
   ]
 </script>
 
@@ -41,7 +41,7 @@
   <h2 class='text-2xl font-semibold text-gray-700'>
     Download for Your Platform
   </h2>
-  <div class='flex flex-wrap justify-center gap-4 sm:flex-col md:flex-row'>
+  <div class='flex flex-wrap justify-center gap-4'>
     {#each platforms as {name, icon, link} (name)}
       <a
         href={link}
@@ -77,3 +77,4 @@
   href='https://icons8.com'
 >Icons8</a>
  -->
+ 

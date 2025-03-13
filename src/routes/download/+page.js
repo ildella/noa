@@ -1,5 +1,7 @@
-export function load () {
-  const githubBaseUrl = 'https://github.com/ildella/noa/releases/download/noa-v0.6.7/'
+export async function load ({fetch}) {
+  const response = await fetch('https://api.github.com/repos/ildella/noa/releases/latest')
+  const {tag_name: lastVersion} = await response.json()
+  const githubBaseUrl = `https://github.com/ildella/noa/releases/download/${lastVersion}`
   const platforms = {
     Linux: [
       {name: 'Deb', link: `${githubBaseUrl}/NOA_0.6.7_amd64.deb `, icon: 'debian.png'},
@@ -7,11 +9,11 @@ export function load () {
       // {name: 'Flatpak', link: '#flatpak-link', icon: 'linux.gif'},
       // {name: 'Snap', link: '#snap-link', icon: 'linux.gif'},
     ],
-    OSX: [
+    macOS: [
       {name: 'DMG aarch64', link: `${githubBaseUrl}/NOA_0.6.7_aarch64.dmg`, icon: 'apple.png'},
       {name: 'DMG x64', link: `${githubBaseUrl}/NOA_0.6.7_x64.dmg`, icon: 'apple.png'},
-      {name: 'App aarch64', link: `${githubBaseUrl}/NOA_aarch64.app.tar.gz`, icon: 'apple.png'},
-      {name: 'App x64', link: `${githubBaseUrl}/NOA_x64.app.tar.gz`, icon: 'apple.png'},
+      {name: 'App (tar.gz) aarch64', link: `${githubBaseUrl}/NOA_aarch64.app.tar.gz`, icon: 'apple.png'},
+      {name: 'App (tar.gz) x64', link: `${githubBaseUrl}/NOA_x64.app.tar.gz`, icon: 'apple.png'},
     ],
     Windows: [
       {name: 'MSI Installer', link: `${githubBaseUrl}/NOA_0.6.7_x64_en-US.msi`, icon: 'windows.png'},

@@ -4,11 +4,11 @@
 </script>
 
 <div class='container mx-auto p-4 max-w-sm'>
-  <h1 class='text-3xl font-bold text-gray-700 mb-6'>Downloads</h1>
+  <h1 class='text-3xl font-bold text-gray-700'>Downloads</h1>
   {#each Object.entries(platforms) as [platform, packages] (platform)}
     <div
       id={platform.toLowerCase()}
-      class='mb-8'
+      class='mb-8 py-1'
     >
       <h2 class='text-xl font-semibold text-gray-600 flex items-center'>
         <!-- <img
