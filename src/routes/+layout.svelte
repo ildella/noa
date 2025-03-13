@@ -19,7 +19,7 @@
 
 <div class='container mx-auto max-w-3xl overflow-x-hidden'>
   <Header />
-  <main class='py-20 px-4'>
+  <main class='py-16 px-4'>
     <!-- <Transition pathname={data?.pathname} children={children}> -->
     {@render children?.()}
     <!-- </Transition> -->
